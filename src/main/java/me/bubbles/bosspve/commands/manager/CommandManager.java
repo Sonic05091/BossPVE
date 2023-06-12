@@ -1,31 +1,46 @@
 package me.bubbles.bosspve.commands.manager;
 
 import me.bubbles.bosspve.BossPVE;
+import me.bubbles.bosspve.commands.Data;
 import me.bubbles.bosspve.commands.base.BaseCommand;
 
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 public class CommandManager {
     private BossPVE plugin;
-    private HashSet<Command> commandsList = new HashSet<>();
+
+    private HashSet<Command> commands;
 
     public CommandManager(BossPVE plugin) {
         this.plugin=plugin;
+        this.commands=new HashSet<>();
         registerCommands();
+    }
+
+    public void registerCommands() {
+        addCommand(
+                new BaseCommand(plugin),
+                new Data(plugin)
+        );
     }
 
     public void addCommand(Command... commands) {
         for(Command command : commands) {
-            plugin.getCommand(command.getCommand()).setExecutor(command);
-            commandsList.add(command);
-            if(!command.getArgsMessage().isEmpty()) {
-                registerArguments(command.getArguments());
+            try {
+                plugin.getCommand(command.getCommand()).setExecutor(command);
+                plugin.getCommand(command.getCommand()).setTabCompleter(command);
+                this.commands.add(command);
+                if(!command.getArguments().isEmpty()) {
+                    registerArguments(command.getArguments());
+                }
+            } catch (NullPointerException e) {
+                plugin.getLogger().warning("Command /"+command.getCommand()+", could not be registered. Most likely due to improper plugin.yml");
             }
         }
     }
 
-    public void registerArguments(List<Argument> arguments) {
+    public void registerArguments(ArrayList<Argument> arguments) {
         for(Argument argument : arguments) {
             if(argument.getAlias()!=null) {
                 try {
@@ -34,15 +49,14 @@ public class CommandManager {
                     plugin.getLogger().warning("Command /"+argument.getAlias()+", could not be registered. Most likely due to improper plugin.yml");
                 }
             }
-            if(argument.getArguments().isEmpty()) {
-                break;
+            if(!argument.getArguments().isEmpty()) {
+                registerArguments(argument.getArguments());
             }
-            registerArguments(argument.getArguments());
         }
     }
 
-    public void registerCommands() {
-        addCommand(new BaseCommand(plugin));
+    public HashSet<Command> getCommands() {
+        return commands;
     }
 
 }

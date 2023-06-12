@@ -1,8 +1,7 @@
 package me.bubbles.bosspve.commands.manager;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.util.Messages;
-import me.bubbles.bosspve.util.UtilMessage;
+import me.bubbles.bosspve.util.UtilSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,15 +13,17 @@ import java.util.List;
 
 public class Argument implements CommandExecutor {
 
+    public int relativeIndex;
+    private int index;
     public BossPVE plugin;
-    public int index;
-    private List<Argument> arguments = new ArrayList<>();
+    public UtilSender utilSender;
+    private ArrayList<Argument> arguments = new ArrayList<>();
     public String no_perms;
     private String arg;
     private String display;
     private String permission;
     private String alias;
-    private UtilMessage utilMessage;
+    public List<String> acList;
 
     // CONSTRUCTORS
     public Argument(BossPVE plugin, String arg, String display, int index) {
@@ -30,15 +31,29 @@ public class Argument implements CommandExecutor {
         this.index=index+1;
         this.arg=arg;
         this.display=display;
-        this.alias=null;
+        this.acList=new ArrayList<>();
+    }
+
+    public Argument(BossPVE plugin, String arg, int index) {
+        this(plugin,arg,arg,index);
     }
 
     // ON RUN
     public void run(CommandSender sender, String[] args, boolean alias) {
+        this.utilSender=new UtilSender(plugin,sender);
         if(alias) {
-            index=0;
+            relativeIndex=0;
+        }else{
+            relativeIndex=index;
         }
-        this.utilMessage =new UtilMessage(plugin,sender);
+        if(!(args.length==relativeIndex)) { // IF PLAYER SENDS ARGUMENTS
+            for(Argument argument : getArguments()) { // ARGUMENTS
+                if(argument.getArg().equalsIgnoreCase(args[relativeIndex])) {
+                    argument.run(sender, args,false);
+                    return;
+                }
+            }
+        }
     }
 
     // ON ALIAS
@@ -57,7 +72,7 @@ public class Argument implements CommandExecutor {
         return arg;
     }
 
-    public List<Argument> getArguments() {
+    public ArrayList<Argument> getArguments() {
         return arguments;
     }
 
@@ -73,20 +88,20 @@ public class Argument implements CommandExecutor {
     // PERMISSION
 
     public void setPermission(String permission) {
-        String node = plugin.getName() + "." + permission;
+        String node = plugin.getName().toLowerCase() + "." + permission;
         this.permission=node;
-        this.no_perms=Messages.NO_PERMS.getValue().replace("%node%",node);
+        this.no_perms=plugin.getConfigManager().getConfig("messages.yml").getFileConfiguration().getString("noPerms").replace("%node%",node);
     }
 
     public boolean permissionCheck() {
         if(permission==null)
             return true;
-        if(!utilMessage.isPlayer()) {
+        if(!utilSender.isPlayer()) {
             return true;
         }
-        Player player = (Player) utilMessage.getSender();
-        if(player.hasPermission(permission)) {
-            utilMessage.sendMessage(no_perms);
+        Player player = utilSender.getPlayer();
+        if(!player.hasPermission(permission)) {
+            utilSender.sendMessage(no_perms);
             return false;
         }else{
             return true;
@@ -106,12 +121,21 @@ public class Argument implements CommandExecutor {
         stringBuilder.append(topLine);
 
         for(Argument argument : arguments) {
+            if(argument.getPermission()!=null) {
+                if(!utilSender.hasPermission(argument.getPermission())) {
+                    continue;
+                }
+            }
             String command = "\n" + "%primary%" + argument.getDisplay();
             stringBuilder.append(command);
         }
 
         return stringBuilder.toString();
 
+    }
+
+    public String getPermission() {
+        return permission;
     }
 
 }

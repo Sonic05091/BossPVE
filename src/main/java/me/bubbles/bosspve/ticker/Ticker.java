@@ -13,12 +13,12 @@ public class Ticker {
         this.plugin=plugin;
     }
 
-    private void Count() {
+    private void tick() {
         BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
         scheduler.scheduleSyncDelayedTask(plugin, () -> {
             if(enabled) {
                 plugin.onTick();
-                Count();
+                tick();
             }
         }, 1);
     }
@@ -26,7 +26,7 @@ public class Ticker {
     public Ticker toggle() {
         enabled=!enabled;
         if(enabled) {
-            Count();
+            tick();
         }
         return this;
     }
@@ -37,7 +37,7 @@ public class Ticker {
         }
         enabled=bool;
         if(enabled) {
-            Count();
+            tick();
         }
         return this;
     }

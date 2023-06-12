@@ -1,0 +1,5 @@
+noPerms: "%prefix% %primary%You do not have permission to do this! Node: %secondary%%node%%primary%."
+
+prefix: "&8[&c&lBossPVE&8]"
+primary: "&7"
+secondary: "&c"

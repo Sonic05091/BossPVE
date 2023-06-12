@@ -1,37 +1,52 @@
 package me.bubbles.bosspve.commands.manager;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.util.Messages;
-import me.bubbles.bosspve.util.UtilMessage;
+import me.bubbles.bosspve.util.UtilSender;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 
-public class Command implements CommandExecutor {
+public class Command implements CommandExecutor, TabCompleter {
 
     public BossPVE plugin;
     public String no_perms;
     private String command;
     private String permission;
-    private List<Argument> arguments = new ArrayList<>();
-    public UtilMessage utilMessage;
+    private ArrayList<Argument> arguments = new ArrayList<>();
+    public UtilSender utilSender;
     public final int index=0;
 
-    public Command(String command, BossPVE plugin) {
+    public Command(BossPVE plugin, String command) {
         this.command=command;
         this.plugin=plugin;
     }
 
     public void run(CommandSender sender, String[] args) {
-        this.utilMessage=new UtilMessage(plugin,sender);
+        this.utilSender=new UtilSender(plugin,sender);
+        if(getArguments().isEmpty()) {
+            return;
+        }
+        if(!(args.length==0)) { // IF PLAYER SENDS ARGUMENTS
+            for(Argument argument : getArguments()) { // ARGUMENTS
+                if(argument.getArg().equalsIgnoreCase(args[index])) {
+                    argument.run(sender, args,false);
+                    return;
+                }
+            }
+        }
+        utilSender.sendMessage(getArgsMessage());
     }
 
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
+        this.utilSender=new UtilSender(plugin,sender);
         run(sender,args); // this is so I can use super statements for run
         return true;
     }
@@ -43,12 +58,12 @@ public class Command implements CommandExecutor {
     public boolean permissionCheck() {
         if(permission==null)
             return true;
-        if(!utilMessage.isPlayer()) {
+        if(!utilSender.isPlayer()) {
             return true;
         }
-        Player player = (Player) utilMessage.getSender();
-        if(player.hasPermission(permission)) {
-            utilMessage.sendMessage(no_perms);
+        Player player = utilSender.getPlayer();
+        if(!player.hasPermission(permission)) {
+            utilSender.sendMessage(no_perms);
             return false;
         }else{
             return true;
@@ -56,9 +71,9 @@ public class Command implements CommandExecutor {
     }
 
     public void setPermission(String permission) {
-        String node = plugin.getName() + "." + permission;
+        String node = plugin.getName().toLowerCase() + "." + permission;
         this.permission=node;
-        this.no_perms=Messages.NO_PERMS.getValue().replace("%node%",node);
+        this.no_perms=plugin.getConfigManager().getConfig("messages.yml").getFileConfiguration().getString("noPerms").replace("%node%",node);
     }
 
     public String getArgsMessage() {
@@ -67,10 +82,12 @@ public class Command implements CommandExecutor {
         String topLine = "%prefix%" + "%primary%" + " Commands:";
         stringBuilder.append(topLine);
 
-        // IF YOU ARE COPYING MY CODE, REMOVE THIS LINE - THE LINE BELOW IS SPECIFIC TO THIS PLUGIN
-        stringBuilder.append("\n").append("%primary%").append("/").append(getCommand()).append(" ").append("%secondary%").append("<player>");
-
         for(Argument arg : arguments) {
+            if(arg.getPermission()!=null) {
+                if(!utilSender.hasPermission(arg.getPermission())) {
+                    continue;
+                }
+            }
             String command = "\n" + "%primary%" + "/" + getCommand() + "%secondary%" + " " + arg.getDisplay() + "\n";
             stringBuilder.append(command);
         }
@@ -83,8 +100,51 @@ public class Command implements CommandExecutor {
         arguments.addAll(Arrays.asList(args));
     }
 
-    public List<Argument> getArguments() {
+    public ArrayList<Argument> getArguments() {
         return arguments;
+    }
+
+    public String getPermission() {
+        return permission;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String s, String[] strings) {
+        if(command.getName().equalsIgnoreCase(getCommand())) {
+            tabIndex=0;
+            int depth = strings.length-1;
+            return getArgsAtDepth(getArguments(),depth,strings);
+        }
+        return null;
+    }
+
+    private int tabIndex;
+
+    public List<String> getArgsAtDepth(List<Argument> arguments, int depth, String[] args) {
+        List<String> result = new ArrayList<>();
+        List<Argument> oneDeep = new ArrayList<>();
+        for(Argument argument : arguments) {
+            if(depth==0) {
+                result.add(argument.getArg());
+            }
+            if(tabIndex==depth) {
+                if(args[depth].equalsIgnoreCase(argument.getArg())) {
+                    for(Argument depthArg : argument.getArguments()) {
+                        result.add(depthArg.getArg());
+                    }
+                }
+            }
+            oneDeep.add(argument);
+        }
+        if(tabIndex==depth) {
+            return result;
+        }
+        if(tabIndex>depth) {
+            Bukkit.getLogger().log(Level.SEVERE,"bad work");
+            return result;
+        }
+        tabIndex++;
+        return getArgsAtDepth(oneDeep,depth,args);
     }
 
 }

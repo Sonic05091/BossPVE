@@ -3,16 +3,21 @@ package me.bubbles.bosspve;
 import me.bubbles.bosspve.commands.manager.CommandManager;
 import me.bubbles.bosspve.configs.ConfigManager;
 import me.bubbles.bosspve.events.manager.EventManager;
+import me.bubbles.bosspve.items.manager.EnchantManager;
+import me.bubbles.bosspve.items.manager.ItemManager;
 import me.bubbles.bosspve.ticker.Ticker;
-import me.bubbles.bosspve.users.UserManager;
-import org.bukkit.entity.Player;
+import me.bubbles.bosspve.ticker.TimerManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.time.Instant;
 
 public final class BossPVE extends JavaPlugin {
     private CommandManager commandManager;
     private EventManager eventManager;
     private ConfigManager configManager;
-    private UserManager userManager;
+    private ItemManager itemManager;
+    private EnchantManager enchantManager;
+    private TimerManager timerManager;
     private Ticker ticker;
     private String name="bosspve";
 
@@ -25,30 +30,25 @@ public final class BossPVE extends JavaPlugin {
         getConfig().options().copyDefaults();
         saveDefaultConfig();
         configManager.addConfig(
-                "config.yml"
+                "config.yml",
+                "messages.yml"
         );
 
         // MANAGERS
-        commandManager=new CommandManager(this);
+        timerManager=new TimerManager(this);
         eventManager=new EventManager(this);
-        userManager=new UserManager(this);
+        itemManager=new ItemManager(this);
+        enchantManager=new EnchantManager(this);
+        commandManager=new CommandManager(this);
 
         // Ticker
-        // TODO MAKE TICKER USEFUL
-        ticker=new Ticker(this).setEnabled(false);
+        ticker=new Ticker(this).setEnabled(true);
 
-        //// USERS (in case of plugin is loaded after startup)
-        if(!(getServer().getOnlinePlayers().size()==0)) {
-            for(Player player : getServer().getOnlinePlayers()) {
-                userManager.addPlayer(player);
-            }
-        }
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
-        ticker.setEnabled(false);
+
     }
 
     // RELOAD CFG
@@ -57,9 +57,14 @@ public final class BossPVE extends JavaPlugin {
     }
 
     // TICKER
-    public void onTick() {} // TODO
+    public void onTick() {
+        enchantManager.onTick();
+    }
 
     // GETTERS
+    public long getEpochTimestamp() {
+        return Instant.now().getEpochSecond();
+    }
     public CommandManager getCommandManager() {
         return commandManager;
     }
@@ -69,8 +74,14 @@ public final class BossPVE extends JavaPlugin {
     public ConfigManager getConfigManager() {
         return configManager;
     }
-    public UserManager getUserManager() {
-        return userManager;
+    public ItemManager getItemManager() {
+        return itemManager;
+    }
+    public EnchantManager getEnchantManager() {
+        return enchantManager;
+    }
+    public TimerManager getTimerManager() {
+        return timerManager;
     }
     public Ticker getTicker() {
         return ticker;

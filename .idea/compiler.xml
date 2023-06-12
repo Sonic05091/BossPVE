@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="BossPVE" target="1.8" />
+      <module name="BossPVE" target="9" />
     </bytecodeTargetLevel>
   </component>
 </project>

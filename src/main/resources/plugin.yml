@@ -1,4 +1,12 @@
 name: BossPVE
 version: '${project.version}'
 main: me.bubbles.bosspve.BossPVE
-api-version: 1.19
+api-version: '1.20'
+commands:
+  bosspve:
+    usage: /<command>
+    description: Base command
+    aliases: [bpve]
+  data:
+    usage: /<command>
+    description: Get NBT data
