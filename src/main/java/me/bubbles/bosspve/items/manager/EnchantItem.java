@@ -23,7 +23,7 @@ public class EnchantItem extends Item {
         ItemStack itemStack = nmsAsItemStack();
         itemStack.addUnsafeEnchantment(enchant,1);
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setLore(new UtilItemStack(itemStack).getUpdatedLore());
+        itemMeta.setLore(new UtilItemStack(plugin,itemStack).getUpdatedLore());
         itemStack.setItemMeta(itemMeta);
         setNMSStack(itemStack);
     }
@@ -50,7 +50,7 @@ public class EnchantItem extends Item {
             if(secondSlot.getAmount()>1) {
                 return;
             }
-            UtilItemStack uiu = new UtilItemStack(firstSlot);
+            UtilItemStack uiu = new UtilItemStack(plugin,firstSlot);
             ItemStack result = uiu.enchantItem(secondSlot);
             e.getInventory().setItem(2,result);
             result.setAmount(1);

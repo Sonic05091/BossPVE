@@ -34,7 +34,7 @@ public class UpdateAnvil extends Event {
         if(secondSlot.getAmount()>1) {
             return;
         }
-        UtilItemStack uiu = new UtilItemStack(firstSlot);
+        UtilItemStack uiu = new UtilItemStack(plugin,firstSlot);
         ItemStack result = uiu.enchantItem(secondSlot);
         e.getInventory().setItem(2,result);
         result.setAmount(1);

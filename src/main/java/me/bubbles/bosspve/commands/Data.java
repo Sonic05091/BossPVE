@@ -2,12 +2,10 @@ package me.bubbles.bosspve.commands;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.commands.manager.Command;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundTag;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.Set;
 
 public class Data extends Command {
 
@@ -23,7 +21,7 @@ public class Data extends Command {
         }
         ItemStack bukkitStack = utilSender.getPlayer().getInventory().getItemInMainHand();
         net.minecraft.world.item.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(bukkitStack);
-        NBTTagCompound nbtTagCompound = nmsItemStack.w();
+        CompoundTag nbtTagCompound = nmsItemStack.getOrCreateTag();
         /*Set<String> nbtList = nbtTagCompound.e();
         StringBuilder stringBuilder = new StringBuilder();
         for(String string : nbtList) {

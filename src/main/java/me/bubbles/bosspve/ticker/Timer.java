@@ -9,9 +9,10 @@ public class Timer {
     private long lastCall;
     private BossPVE plugin;
 
-    public Timer(int cap) {
+    public Timer(BossPVE plugin, int cap) {
         this.cap=cap;
         this.ticks=0;
+        this.plugin=plugin;
         this.lastCall=plugin.getEpochTimestamp();
     }
 

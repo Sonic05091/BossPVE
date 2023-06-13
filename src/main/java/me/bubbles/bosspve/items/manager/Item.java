@@ -1,7 +1,7 @@
 package me.bubbles.bosspve.items.manager;
 
 import me.bubbles.bosspve.BossPVE;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundTag;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack;
@@ -10,11 +10,9 @@ import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +23,8 @@ public class Item {
     private net.minecraft.world.item.ItemStack nmsStack;
     private ShapedRecipe recipe;
     private ItemStack itemStack;
+    private int baseXP;
+    private int baseMoney;
 
     public Item(BossPVE plugin, Material material, String nbtIdentifier) {
         this.plugin=plugin;
@@ -32,9 +32,27 @@ public class Item {
         itemStack.setAmount(1);
         this.nbtIdentifier=nbtIdentifier;
         this.nmsStack = CraftItemStack.asNMSCopy(itemStack);
-        NBTTagCompound nbtTagCompound = nmsStack.w();
-        nbtTagCompound.a("bpveIdentifier",nbtIdentifier);
-        nmsStack.c(nbtTagCompound);
+        CompoundTag nbtTagCompound = nmsStack.getOrCreateTag();
+        nbtTagCompound.putString("bpveIdentifier",nbtIdentifier);
+        nmsStack.setTag(nbtTagCompound);
+        this.baseXP=1;
+        this.baseMoney=1;
+    }
+
+    public int getBaseXP() {
+        return baseXP;
+    }
+
+    public void setBaseXP(int baseXP) {
+        this.baseXP = baseXP;
+    }
+
+    public int getBaseMoney() {
+        return baseMoney;
+    }
+
+    public void setBaseMoney(int baseMoney) {
+        this.baseMoney = baseMoney;
     }
 
     public ShapedRecipe getRecipe() {
@@ -117,11 +135,11 @@ public class Item {
         if(itemStack.getData()==null) {
             return false;
         }
-        NBTTagCompound nbtTagCompound = CraftItemStack.asNMSCopy(itemStack).v();
-        if(nbtTagCompound.l("bpveIdentifier")==null) {
+        CompoundTag nbtTagCompound = CraftItemStack.asNMSCopy(itemStack).getOrCreateTag();
+        if(nbtTagCompound.getString("bpveIdentifier")==null) {
             return false;
         }
-        String name = nbtTagCompound.l("bpveIdentifier");
+        String name = nbtTagCompound.getString("bpveIdentifier");
         return name.equals(nbtIdentifier);
     }
 

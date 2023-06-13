@@ -1,5 +1,8 @@
 package me.bubbles.bosspve.util;
 
+import me.bubbles.bosspve.BossPVE;
+import me.bubbles.bosspve.items.manager.Enchant;
+import me.bubbles.bosspve.items.manager.Item;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -9,13 +12,17 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UtilItemStack {
 
     private ItemStack itemStack;
+    private BossPVE plugin;
 
-    public UtilItemStack(ItemStack itemStack) {
+    public UtilItemStack(BossPVE plugin, ItemStack itemStack) {
         this.itemStack=itemStack;
     }
 
@@ -86,6 +93,50 @@ public class UtilItemStack {
         receiverMeta.setLore(getUpdatedLore(receiver));
         receiver.setItemMeta(receiverMeta);
         return receiver;
+    }
+
+    public int calculateMoneyMultiplier() {
+        if(!itemStack.hasItemMeta()) {
+            return 1;
+        }
+        Item item = plugin.getItemManager().getItemFromStack(itemStack);
+        if(item==null) {
+            return 1;
+        }
+        if(!itemStack.getItemMeta().hasEnchants()) {
+            return item.getBaseMoney();
+        }
+        int result=item.getBaseMoney();
+        for(Enchant enchant : getCustomEnchants()) {
+            result*=enchant.getMoneyMultiplier();
+        }
+        return result;
+    }
+
+    public int calculateXpMultiplier() {
+        if(!itemStack.hasItemMeta()) {
+            return 1;
+        }
+        Item item = plugin.getItemManager().getItemFromStack(itemStack);
+        if(item==null) {
+            return 1;
+        }
+        if(!itemStack.getItemMeta().hasEnchants()) {
+            return item.getBaseXP();
+        }
+        int result=item.getBaseXP();
+        for(Enchant enchant : getCustomEnchants()) {
+            result*=enchant.getXpMultiplier();
+        }
+        return result;
+    }
+
+    public HashSet<Enchant> getCustomEnchants() {
+        HashSet<Enchant> result=new HashSet<>();
+        // probably unsafe but idc
+        result.addAll((Collection<? extends Enchant>) itemStack.getItemMeta().getEnchants().keySet().stream()
+                .filter(enchantment -> enchantment instanceof Enchant).collect(Collectors.toList()));
+        return result;
     }
 
 }

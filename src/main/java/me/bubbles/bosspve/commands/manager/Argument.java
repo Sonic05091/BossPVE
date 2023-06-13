@@ -86,7 +86,6 @@ public class Argument implements CommandExecutor {
     }
 
     // PERMISSION
-
     public void setPermission(String permission) {
         String node = plugin.getName().toLowerCase() + "." + permission;
         this.permission=node;

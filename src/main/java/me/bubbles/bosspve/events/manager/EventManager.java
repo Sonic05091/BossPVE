@@ -27,8 +27,8 @@ public class EventManager {
     }
 
     public void onEvent(org.bukkit.event.Event event) {
-        plugin.getEnchantManager().onEvent(event);
         plugin.getItemManager().onEvent(event);
+        plugin.getEntityManager().onEvent(event);
         events.stream()
                 .filter(eventObj -> eventObj.getEvent().equals(event.getClass()))
                 .collect(Collectors.toList())

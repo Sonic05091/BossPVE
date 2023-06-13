@@ -2,6 +2,7 @@ package me.bubbles.bosspve.items.enchants;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.items.manager.Enchant;
+import me.bubbles.bosspve.items.manager.ItemManager;
 import me.bubbles.bosspve.ticker.Timer;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -15,9 +16,9 @@ public class Speed extends Enchant {
 
     private Timer timer;
 
-    public Speed(BossPVE plugin) {
-        super(plugin, "Speed", Material.FEATHER, 5);
-        timer=new Timer(20);
+    public Speed(ItemManager itemManager) {
+        super(itemManager, "Speed", Material.FEATHER, 5);
+        timer=new Timer(plugin,20);
         plugin.getTimerManager().addTimer(timer);
     }
 

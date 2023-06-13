@@ -2,6 +2,7 @@ package me.bubbles.bosspve;
 
 import me.bubbles.bosspve.commands.manager.CommandManager;
 import me.bubbles.bosspve.configs.ConfigManager;
+import me.bubbles.bosspve.entities.manager.EntityManager;
 import me.bubbles.bosspve.events.manager.EventManager;
 import me.bubbles.bosspve.items.manager.EnchantManager;
 import me.bubbles.bosspve.items.manager.ItemManager;
@@ -16,8 +17,8 @@ public final class BossPVE extends JavaPlugin {
     private EventManager eventManager;
     private ConfigManager configManager;
     private ItemManager itemManager;
-    private EnchantManager enchantManager;
     private TimerManager timerManager;
+    private EntityManager entityManager;
     private Ticker ticker;
     private String name="bosspve";
 
@@ -35,10 +36,11 @@ public final class BossPVE extends JavaPlugin {
         );
 
         // MANAGERS
+        // THIS ORDER IS VERY IMPORTANT, SWAPPING THINGS AROUND WILL CAUSE VALUES TO BE RETURNED AS NULL
         timerManager=new TimerManager(this);
         eventManager=new EventManager(this);
         itemManager=new ItemManager(this);
-        enchantManager=new EnchantManager(this);
+        entityManager=new EntityManager(this);
         commandManager=new CommandManager(this);
 
         // Ticker
@@ -58,7 +60,8 @@ public final class BossPVE extends JavaPlugin {
 
     // TICKER
     public void onTick() {
-        enchantManager.onTick();
+        itemManager.onTick();
+        timerManager.onTick();
     }
 
     // GETTERS
@@ -77,11 +80,11 @@ public final class BossPVE extends JavaPlugin {
     public ItemManager getItemManager() {
         return itemManager;
     }
-    public EnchantManager getEnchantManager() {
-        return enchantManager;
-    }
     public TimerManager getTimerManager() {
         return timerManager;
+    }
+    public EntityManager getEntityManager() {
+        return entityManager;
     }
     public Ticker getTicker() {
         return ticker;

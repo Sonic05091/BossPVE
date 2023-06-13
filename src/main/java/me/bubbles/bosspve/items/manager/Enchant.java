@@ -33,15 +33,15 @@ public class Enchant extends Enchantment {
     private EnchantItem enchantItem;
     private Material material;
 
-    public Enchant(BossPVE plugin, String name, Material material, int maxLevel) {
-        this(plugin,name,material,maxLevel,0);
+    public Enchant(ItemManager itemManager, String name, Material material, int maxLevel) {
+        this(itemManager,name,material,maxLevel,0);
     }
 
-    public Enchant(BossPVE plugin, String name, Material material, int maxLevel, int coolDown) {
+    public Enchant(ItemManager itemManager, String name, Material material, int maxLevel, int coolDown) {
         super(NamespacedKey.minecraft(name.toLowerCase()));
-        timerManager=new PlayerTimerManager(plugin);
         this.name=name;
-        this.plugin=plugin;
+        this.plugin=itemManager.plugin;
+        timerManager=new PlayerTimerManager(plugin);
         this.coolDown=coolDown;
         this.xpMultiplier=1;
         this.moneyMultiplier=1;
@@ -49,12 +49,12 @@ public class Enchant extends Enchantment {
         this.lootMultiplier=1;
         this.maxLevel=maxLevel;
         this.material=material;
-        register();
+        register(itemManager);
     }
 
-    public void register() {
+    public void register(ItemManager itemManager) {
         enchantItem=new EnchantItem(plugin, material, this, name);
-        plugin.getItemManager().registerItem(enchantItem);
+        itemManager.registerItem(enchantItem);
         if(Arrays.stream(Enchantment.values()).collect(Collectors.toList()).contains(this)) {
             return;
         }
@@ -143,7 +143,7 @@ public class Enchant extends Enchantment {
             return true;
         }
         if(!timerManager.contains(player)) {
-            timerManager.addTimer(player,new Timer(coolDown));
+            timerManager.addTimer(player,new Timer(plugin,coolDown));
             return true;
         }
         return timerManager.isTimerActive(player);
@@ -154,7 +154,7 @@ public class Enchant extends Enchantment {
             return;
         }
         if(!timerManager.contains(player)) {
-            timerManager.addTimer(player, new Timer(coolDown));
+            timerManager.addTimer(player, new Timer(plugin,coolDown));
             return;
         }
         timerManager.restartTimer(player);

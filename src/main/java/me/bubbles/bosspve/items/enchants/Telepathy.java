@@ -2,6 +2,7 @@ package me.bubbles.bosspve.items.enchants;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.items.manager.Enchant;
+import me.bubbles.bosspve.items.manager.ItemManager;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Container;
@@ -16,8 +17,8 @@ import java.util.Collection;
 
 public class Telepathy extends Enchant {
 
-    public Telepathy(BossPVE plugin) {
-        super(plugin, "Telepathy", Material.BOOK, 1);
+    public Telepathy(ItemManager itemManager) {
+        super(itemManager, "Telepathy", Material.BOOK, 1);
     }
 
     @Override

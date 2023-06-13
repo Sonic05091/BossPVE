@@ -11,6 +11,7 @@ public class BaseCommand extends Command {
         super(plugin, "bosspve");
         addArguments(
                 new ItemArg(plugin, index),
+                new SpawnArg(plugin, index),
                 new ReloadArg(plugin, index)
         );
     }

@@ -10,16 +10,22 @@ import java.util.stream.Collectors;
 
 public class ItemManager {
 
-    private BossPVE plugin;
+    public BossPVE plugin;
     private HashSet<Item> items;
+    private EnchantManager enchantManager;
 
     public ItemManager(BossPVE plugin) {
         this.plugin = plugin;
         items=new HashSet<>();
+        enchantManager=new EnchantManager(this);
         /*registerItem(
                 new LifeBook(plugin),
                 new ReviveBook(plugin,this)
         );*/
+    }
+
+    public EnchantManager getEnchantManager() {
+        return enchantManager;
     }
 
     public void registerItem(Item... items) {
@@ -45,8 +51,13 @@ public class ItemManager {
         return items;
     }
 
+    public void onTick() {
+        enchantManager.onTick();
+    }
+
     public void onEvent(Event event) {
         items.forEach(item -> item.onEvent(event));
+        enchantManager.onEvent(event);
     }
 
     public Item getItemFromStack(ItemStack itemStack) {
