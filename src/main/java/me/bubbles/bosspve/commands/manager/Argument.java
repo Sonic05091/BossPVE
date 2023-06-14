@@ -23,7 +23,6 @@ public class Argument implements CommandExecutor {
     private String display;
     private String permission;
     private String alias;
-    public List<String> acList;
 
     // CONSTRUCTORS
     public Argument(BossPVE plugin, String arg, String display, int index) {
@@ -31,7 +30,6 @@ public class Argument implements CommandExecutor {
         this.index=index+1;
         this.arg=arg;
         this.display=display;
-        this.acList=new ArrayList<>();
     }
 
     public Argument(BossPVE plugin, String arg, int index) {

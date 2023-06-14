@@ -6,15 +6,16 @@ import me.bubbles.bosspve.items.manager.Item;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class UtilItemStack {
@@ -23,6 +24,7 @@ public class UtilItemStack {
     private BossPVE plugin;
 
     public UtilItemStack(BossPVE plugin, ItemStack itemStack) {
+        this.plugin=plugin;
         this.itemStack=itemStack;
     }
 
@@ -30,10 +32,40 @@ public class UtilItemStack {
     public List<String> getUpdatedLore(ItemStack itemStack) {
         List<String> lore=new ArrayList<>();
         for(Enchantment enchantment : itemStack.getEnchantments().keySet()) {
-            String str = ChatColor.translateAlternateColorCodes('&',"&9" + enchantment.getName() + " " + itemStack.getItemMeta().getEnchantLevel(enchantment));
-            lore.add(str);
+            lore.add(ChatColor.translateAlternateColorCodes('&',
+                    "&9" + enchantment.getName() + " " + itemStack.getItemMeta().getEnchantLevel(enchantment)
+            ));
         }
         return lore;
+    }
+
+    public List<String> getUpdatedLoreForPlayer(ItemStack itemStack, Player player) {
+        int dmg=(int) calculateDamage(1,player)-1;
+        int xp=calculateXp(1,player);
+        int money=calculateMoney(1,player);
+        List<String> lore = new ArrayList<>(getUpdatedLore(itemStack));
+        Item item = plugin.getItemManager().getItemFromStack(itemStack);
+        if(item!=null) {
+            if((!item.getDescription().equals(""))&&item.getDescription()!=null) {
+                lore.add(item.getDescription());
+            }
+            if(item.getType().equals(Item.Type.WEAPON)) {
+                lore.add(ChatColor.translateAlternateColorCodes('&',
+                        "&8Base Damage:&7 "+dmg
+                ));
+                lore.add(ChatColor.translateAlternateColorCodes('&',
+                        "&8Base XP:&7 "+xp
+                ));
+                lore.add(ChatColor.translateAlternateColorCodes('&',
+                        "&8Base Money:&7 $"+money
+                ));
+            }
+        }
+        return lore;
+    }
+
+    public List<String> getUpdatedLoreForPlayer(Player player) {
+        return getUpdatedLoreForPlayer(itemStack,player);
     }
 
     public List<String> getUpdatedLore() {
@@ -95,47 +127,101 @@ public class UtilItemStack {
         return receiver;
     }
 
-    public int calculateMoneyMultiplier() {
+    public int calculateMoney(int init, Player player) {
+        int result=init;
         if(!itemStack.hasItemMeta()) {
-            return 1;
+            return init;
         }
         Item item = plugin.getItemManager().getItemFromStack(itemStack);
         if(item==null) {
-            return 1;
+            if(itemStack.getItemMeta().hasEnchants()) {
+                for(Enchant enchant : getCustomEnchants()) {
+                    if(enchant.allowUsage(player)) {
+                        result*=enchant.getMoneyMultiplier(itemStack.getItemMeta().getEnchantLevel(enchant));
+                    }
+                }
+            }
+            return result;
         }
-        if(!itemStack.getItemMeta().hasEnchants()) {
-            return item.getBaseMoney();
+        if(!item.allowUsage(player)) {
+            return result;
         }
-        int result=item.getBaseMoney();
-        for(Enchant enchant : getCustomEnchants()) {
-            result*=enchant.getMoneyMultiplier();
+        result+=item.getBaseMoney();
+        if(itemStack.getItemMeta().hasEnchants()) {
+            for(Enchant enchant : getCustomEnchants()) {
+                if(enchant.allowUsage(player)) {
+                    result*=enchant.getMoneyMultiplier(itemStack.getItemMeta().getEnchantLevel(enchant));
+                }
+            }
         }
         return result;
     }
 
-    public int calculateXpMultiplier() {
+    public int calculateXp(int init, Player player) {
+        int result=init;
         if(!itemStack.hasItemMeta()) {
-            return 1;
+            return init;
         }
         Item item = plugin.getItemManager().getItemFromStack(itemStack);
         if(item==null) {
-            return 1;
+            if(itemStack.getItemMeta().hasEnchants()) {
+                for(Enchant enchant : getCustomEnchants()) {
+                    if(enchant.allowUsage(player)) {
+                        result*=enchant.getXpMultiplier(itemStack.getItemMeta().getEnchantLevel(enchant));
+                    }
+                }
+            }
+            return result;
         }
-        if(!itemStack.getItemMeta().hasEnchants()) {
-            return item.getBaseXP();
+        if(!item.allowUsage(player)) {
+            return result;
         }
-        int result=item.getBaseXP();
-        for(Enchant enchant : getCustomEnchants()) {
-            result*=enchant.getXpMultiplier();
+        result+=item.getBaseXP();
+        if(itemStack.getItemMeta().hasEnchants()) {
+            for(Enchant enchant : getCustomEnchants()) {
+                if(enchant.allowUsage(player)) {
+                    result*=enchant.getXpMultiplier(itemStack.getItemMeta().getEnchantLevel(enchant));
+                }
+            }
+        }
+        return result;
+    }
+
+    public double calculateDamage(double init, Player player) {
+        double result=init;
+        if(!itemStack.hasItemMeta()) {
+            return init;
+        }
+        Item item = plugin.getItemManager().getItemFromStack(itemStack);
+        if(item==null) {
+            if(itemStack.getItemMeta().hasEnchants()) {
+                for(Enchant enchant : getCustomEnchants()) {
+                    if(enchant.allowUsage(player)) {
+                        result*=enchant.getDamageMultiplier(itemStack.getItemMeta().getEnchantLevel(enchant));
+                    }
+                }
+            }
+            return result;
+        }
+        if(!item.allowUsage(player)) {
+            return result;
+        }
+        result+=item.getBaseDamage();
+        if(itemStack.getItemMeta().hasEnchants()) {
+            for(Enchant enchant : getCustomEnchants()) {
+                if(enchant.allowUsage(player)) {
+                    result*=enchant.getDamageMultiplier(itemStack.getItemMeta().getEnchantLevel(enchant));
+                }
+            }
         }
         return result;
     }
 
     public HashSet<Enchant> getCustomEnchants() {
-        HashSet<Enchant> result=new HashSet<>();
         // probably unsafe but idc
-        result.addAll((Collection<? extends Enchant>) itemStack.getItemMeta().getEnchants().keySet().stream()
-                .filter(enchantment -> enchantment instanceof Enchant).collect(Collectors.toList()));
+        HashSet<Enchant> result=new HashSet<>();
+        itemStack.getItemMeta().getEnchants().keySet().stream()
+                .filter(enchantment -> enchantment instanceof Enchant).collect(Collectors.toList()).forEach(enchantment -> result.add((Enchant) enchantment));
         return result;
     }
 

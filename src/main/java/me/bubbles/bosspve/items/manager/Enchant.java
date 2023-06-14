@@ -26,10 +26,6 @@ public class Enchant extends Enchantment {
     private String name;
     private int maxLevel;
     private int coolDown;
-    private double lootMultiplier;
-    private double damageMultiplier;
-    private double moneyMultiplier;
-    private double xpMultiplier;
     private EnchantItem enchantItem;
     private Material material;
 
@@ -43,10 +39,6 @@ public class Enchant extends Enchantment {
         this.plugin=itemManager.plugin;
         timerManager=new PlayerTimerManager(plugin);
         this.coolDown=coolDown;
-        this.xpMultiplier=1;
-        this.moneyMultiplier=1;
-        this.damageMultiplier=1;
-        this.lootMultiplier=1;
         this.maxLevel=maxLevel;
         this.material=material;
         register(itemManager);
@@ -170,36 +162,20 @@ public class Enchant extends Enchantment {
         return enchantItem;
     }
 
-    public double getMoneyMultiplier() {
-        return moneyMultiplier;
+    public double getMoneyMultiplier(int level) {
+        return 1;
     }
 
-    public void setMoneyMultiplier(double moneyMultiplier) {
-        this.moneyMultiplier = moneyMultiplier;
+    public int getLevelRequirement() {
+        return -1;
     }
 
-    public double getXpMultiplier() {
-        return xpMultiplier;
+    public double getXpMultiplier(int level) {
+        return 1;
     }
 
-    public void setXpMultiplier(double xpMultiplier) {
-        this.xpMultiplier = xpMultiplier;
-    }
-
-    public double getDamageMultiplier() {
-        return damageMultiplier;
-    }
-
-    public void setDamageMultiplier(double damageMultiplier) {
-        this.damageMultiplier = damageMultiplier;
-    }
-
-    public double getLootMultiplier() {
-        return lootMultiplier;
-    }
-
-    public void setLootMultiplier(double lootMultiplier) {
-        this.lootMultiplier = lootMultiplier;
+    public double getDamageMultiplier(int level) {
+        return 1;
     }
 
     @Override
@@ -240,6 +216,13 @@ public class Enchant extends Enchantment {
     @Override
     public boolean canEnchantItem(ItemStack itemStack) {
         return false;
+    }
+
+    public boolean allowUsage(Player player) {
+        if(getLevelRequirement()<=0) {
+            return true;
+        }
+        return plugin.getMySQL().getData(player.getUniqueId()).getLevel()>=getLevelRequirement();
     }
 
 }

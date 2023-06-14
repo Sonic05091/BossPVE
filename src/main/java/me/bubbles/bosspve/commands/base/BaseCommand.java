@@ -10,8 +10,10 @@ public class BaseCommand extends Command {
     public BaseCommand(BossPVE plugin) {
         super(plugin, "bosspve");
         addArguments(
+                new LevelArg(plugin, index),
+                new XpArg(plugin, index),
                 new ItemArg(plugin, index),
-                new SpawnArg(plugin, index),
+                new SummonArg(plugin, index),
                 new ReloadArg(plugin, index)
         );
     }

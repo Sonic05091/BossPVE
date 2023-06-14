@@ -11,9 +11,6 @@ public class ItemArg extends Argument {
     public ItemArg(BossPVE plugin, int index) {
         super(plugin, "item", "item <item>", index);
         setPermission("admin");
-        for(Item item : plugin.getItemManager().getItems()) {
-            acList.add(item.getNBTIdentifier());
-        }
     }
 
     @Override

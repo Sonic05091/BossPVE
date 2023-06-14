@@ -1,6 +1,5 @@
 package me.bubbles.bosspve.items.enchants;
 
-import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.items.manager.Enchant;
 import me.bubbles.bosspve.items.manager.ItemManager;
 import me.bubbles.bosspve.ticker.Timer;
@@ -18,6 +17,7 @@ public class Speed extends Enchant {
 
     public Speed(ItemManager itemManager) {
         super(itemManager, "Speed", Material.FEATHER, 5);
+        getEnchantItem().setDisplayName("&f&lSpeed");
         timer=new Timer(plugin,20);
         plugin.getTimerManager().addTimer(timer);
     }
@@ -29,6 +29,9 @@ public class Speed extends Enchant {
         }
         HashMap<Player, ItemStack> list = playersWithEnchantInAnyHand();
         list.forEach((player, itemStack) -> {
+            if(!allowUsage(player)) {
+                return;
+            }
             PotionEffect speed = new PotionEffect(PotionEffectType.SPEED,40,itemStack.getItemMeta().getEnchantLevel(this)-1);
             player.addPotionEffect(speed);
         });

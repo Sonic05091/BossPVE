@@ -1,10 +1,8 @@
 package me.bubbles.bosspve.events.manager;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.events.AnvilEnchantedBook;
-import me.bubbles.bosspve.events.Join;
-import me.bubbles.bosspve.events.Leave;
-import me.bubbles.bosspve.events.UpdateAnvil;
+import me.bubbles.bosspve.events.*;
+import org.bukkit.entity.Player;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -22,7 +20,9 @@ public class EventManager {
                 new Join(plugin),
                 new Leave(plugin),
                 new AnvilEnchantedBook(plugin),
-                new UpdateAnvil(plugin)
+                new UpdateAnvil(plugin),
+                new PlayerDmgOther(plugin),
+                new UpdateLore(plugin)
         );
     }
 

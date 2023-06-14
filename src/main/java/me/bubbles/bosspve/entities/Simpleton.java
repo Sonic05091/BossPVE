@@ -15,9 +15,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_20_R1.entity.CraftEntity;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -38,7 +38,7 @@ public class Simpleton extends Skeleton implements IEntityBase {
         setPos(location.getX(),location.getY(),location.getZ());
         setCustomNameVisible(true);
         setCustomName(Component.literal(ChatColor.translateAlternateColorCodes('&',customName)));
-        setHealth(getHealth());
+        setHealth(getDefaultHp());
         goalSelector.addGoal(0, new AvoidEntityGoal<Player>(
                 this, Player.class, 5, 1D, 1.5D
         ));
@@ -52,6 +52,10 @@ public class Simpleton extends Skeleton implements IEntityBase {
                 this
         ));
         expToDrop=0;
+        if(getDrops()!=null) {
+            drops.clear();
+            drops.addAll(getDrops());
+        }
         addTag(getNBTIdentifier());
         if(this.plugin==null) {
             this.plugin=plugin;
@@ -62,7 +66,11 @@ public class Simpleton extends Skeleton implements IEntityBase {
     public void onEvent(Event event) {
         if(event instanceof EntityDeathEvent) {
             UtilCustomEvents uce = new UtilCustomEvents(plugin,event);
-            uce.CustomEntityDeathEvent(this);
+            uce.customEntityDeathEvent(this);
+        }
+        if(event instanceof EntityDamageByEntityEvent) {
+            UtilCustomEvents uce = new UtilCustomEvents(plugin,event);
+            uce.customEntityDamageByEntityEvent(this);
         }
     }
 
@@ -78,12 +86,12 @@ public class Simpleton extends Skeleton implements IEntityBase {
 
     @Override
     public int getMoney() {
-        return 0;
+        return 10;
     }
 
     @Override
     public int getXp() {
-        return 0;
+        return 1;
     }
 
     @Override
@@ -92,13 +100,18 @@ public class Simpleton extends Skeleton implements IEntityBase {
     }
 
     @Override
-    public String uncoloredName() {
+    public String getUncoloredName() {
         return ChatColor.stripColor(customName);
     }
 
     @Override
     public String getNBTIdentifier() {
         return "simpleton";
+    }
+
+    @Override
+    public int getDamage() {
+        return 1;
     }
 
 }

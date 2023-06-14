@@ -1,6 +1,5 @@
 package me.bubbles.bosspve.items.enchants;
 
-import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.items.manager.Enchant;
 import me.bubbles.bosspve.items.manager.ItemManager;
 import org.bukkit.GameMode;
@@ -19,6 +18,7 @@ public class Telepathy extends Enchant {
 
     public Telepathy(ItemManager itemManager) {
         super(itemManager, "Telepathy", Material.BOOK, 1);
+        getEnchantItem().setDisplayName("&1Telepathy");
     }
 
     @Override
@@ -30,6 +30,9 @@ public class Telepathy extends Enchant {
                 return;
             }
             Player player = e.getPlayer();
+            if(!allowUsage(player)) {
+                return;
+            }
             if(player.getGameMode().equals(GameMode.CREATIVE)||player.getGameMode().equals(GameMode.SPECTATOR)) {
                 return;
             }
@@ -55,22 +58,6 @@ public class Telepathy extends Enchant {
             }
             player.getInventory().addItem(drops.iterator().next());
         }
-        /*if(event instanceof EntityDeathEvent) {
-            EntityDeathEvent e = (EntityDeathEvent) event;
-            if(e.getEntity().getKiller()==null) {
-                return;
-            }
-            Player player = e.getEntity().getKiller();
-            if(player.getInventory().firstEmpty()==-1) {
-                return;
-            }
-            Collection<ItemStack> drops = e.getDrops();
-            if(drops.isEmpty()) {
-                return;
-            }
-            e.getDrops().clear();
-            player.getInventory().addItem(drops.iterator().next());
-        }*/
     }
 
 }

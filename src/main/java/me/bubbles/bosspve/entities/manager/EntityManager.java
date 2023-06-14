@@ -35,7 +35,7 @@ public class EntityManager {
 
     public IEntityBase getEntityByName(String name) {
         for(IEntityBase entity : entities) {
-            if(ChatColor.stripColor(entity.uncoloredName()).replace(" ","_").equalsIgnoreCase(name)) {
+            if(ChatColor.stripColor(entity.getUncoloredName()).replace(" ","_").equalsIgnoreCase(name)) {
                 return entity;
             }
         }

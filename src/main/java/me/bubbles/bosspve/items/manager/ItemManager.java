@@ -1,6 +1,7 @@
 package me.bubbles.bosspve.items.manager;
 
 import me.bubbles.bosspve.BossPVE;
+import me.bubbles.bosspve.items.weapons.DefaultWeapon;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
@@ -18,10 +19,9 @@ public class ItemManager {
         this.plugin = plugin;
         items=new HashSet<>();
         enchantManager=new EnchantManager(this);
-        /*registerItem(
-                new LifeBook(plugin),
-                new ReviveBook(plugin,this)
-        );*/
+        registerItem(
+                new DefaultWeapon(plugin)
+        );
     }
 
     public EnchantManager getEnchantManager() {

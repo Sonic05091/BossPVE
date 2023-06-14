@@ -7,14 +7,11 @@ import me.bubbles.bosspve.items.manager.Item;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-public class SpawnArg extends Argument {
+public class SummonArg extends Argument {
 
-    public SpawnArg(BossPVE plugin, int index) {
-        super(plugin, "spawn", "spawn <entity>", index);
+    public SummonArg(BossPVE plugin, int index) {
+        super(plugin, "summon", "summon <entity>", index);
         setPermission("admin");
-        for(Item item : plugin.getItemManager().getItems()) {
-            acList.add(item.getNBTIdentifier());
-        }
     }
 
     @Override
@@ -37,14 +34,14 @@ public class SpawnArg extends Argument {
             return;
         }
         base.spawn(utilSender.getPlayer().getLocation());
-        utilSender.sendMessage("%prefix% %primary%Entity %secondary%"+ChatColor.stripColor(base.uncoloredName())+"%primary% has been spawned.");
+        utilSender.sendMessage("%prefix% %primary%Entity %secondary%"+ChatColor.stripColor(base.getUncoloredName())+"%primary% has been spawned.");
     }
 
     private String getItemsList() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("%prefix% %primary%Items:");
+        stringBuilder.append("%prefix% %primary%Entities:");
         for(IEntityBase entity : plugin.getEntityManager().getEntities()) {
-            stringBuilder.append("\n").append("%primary%").append("- ").append("%secondary%").append(ChatColor.stripColor(entity.uncoloredName()).replaceAll(" ","_"));
+            stringBuilder.append("\n").append("%primary%").append("- ").append("%secondary%").append(ChatColor.stripColor(entity.getUncoloredName()).replaceAll(" ","_"));
         }
         return stringBuilder.toString();
     }

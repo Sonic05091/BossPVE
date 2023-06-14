@@ -17,9 +17,8 @@ public class EnchantItem extends Item {
     private Enchant enchant;
 
     public EnchantItem(BossPVE plugin, Material material, Enchant enchant, String nbtIdentifier) {
-        super(plugin, material, nbtIdentifier+"Ench");
+        super(plugin, material, nbtIdentifier+"Ench",Type.ENCHANT);
         this.enchant=enchant;
-        setDisplayName("&7&lEnchanted Item");
         ItemStack itemStack = nmsAsItemStack();
         itemStack.addUnsafeEnchantment(enchant,1);
         ItemMeta itemMeta = itemStack.getItemMeta();

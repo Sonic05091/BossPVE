@@ -6,8 +6,11 @@ import me.bubbles.bosspve.entities.manager.EntityManager;
 import me.bubbles.bosspve.events.manager.EventManager;
 import me.bubbles.bosspve.items.manager.EnchantManager;
 import me.bubbles.bosspve.items.manager.ItemManager;
+import me.bubbles.bosspve.mysql.MySQL;
 import me.bubbles.bosspve.ticker.Ticker;
 import me.bubbles.bosspve.ticker.TimerManager;
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.time.Instant;
@@ -19,8 +22,9 @@ public final class BossPVE extends JavaPlugin {
     private ItemManager itemManager;
     private TimerManager timerManager;
     private EntityManager entityManager;
+    private Economy economy;
+    private MySQL mySQL;
     private Ticker ticker;
-    private String name="bosspve";
 
     @Override
     public void onEnable() {
@@ -42,6 +46,8 @@ public final class BossPVE extends JavaPlugin {
         itemManager=new ItemManager(this);
         entityManager=new EntityManager(this);
         commandManager=new CommandManager(this);
+        mySQL=new MySQL(configManager.getConfig("config.yml").getFileConfiguration().getConfigurationSection("mySQL"));
+        setupEconomy();
 
         // Ticker
         ticker=new Ticker(this).setEnabled(true);
@@ -62,6 +68,19 @@ public final class BossPVE extends JavaPlugin {
     public void onTick() {
         itemManager.onTick();
         timerManager.onTick();
+    }
+
+    // VAULT
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        economy = rsp.getProvider();
+        return economy != null;
     }
 
     // GETTERS
@@ -85,6 +104,12 @@ public final class BossPVE extends JavaPlugin {
     }
     public EntityManager getEntityManager() {
         return entityManager;
+    }
+    public Economy getEconomy() {
+        return economy;
+    }
+    public MySQL getMySQL() {
+        return mySQL;
     }
     public Ticker getTicker() {
         return ticker;

@@ -15,7 +15,8 @@ public interface IEntityBase {
     int getMoney();
     int getXp();
     int getDefaultHp();
-    String uncoloredName();
+    int getDamage();
+    String getUncoloredName();
     String getNBTIdentifier();
     default boolean hasSameTagAs(Entity entity) {
         if(entity.getTags().isEmpty()) {

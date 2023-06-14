@@ -13,7 +13,7 @@ public class UtilItemUser extends UtilItemStack {
     private Player player;
 
     public UtilItemUser(BossPVE plugin, ItemStack itemStack, Item item, Player player) {
-        super(itemStack);
+        super(plugin,itemStack);
         this.plugin=plugin;
         this.itemStack=itemStack;
         this.item=item;
