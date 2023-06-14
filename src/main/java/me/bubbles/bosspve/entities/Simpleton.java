@@ -52,10 +52,10 @@ public class Simpleton extends Skeleton implements IEntityBase {
                 this
         ));
         expToDrop=0;
-        /*if(getDrops()!=null) {
+        if(getDrops()!=null) {
             drops.clear();
             drops.addAll(getDrops());
-        }*/
+        }
         addTag(getNBTIdentifier());
         if(this.plugin==null) {
             this.plugin=plugin;
