@@ -38,7 +38,7 @@ public class Simpleton extends Skeleton implements IEntityBase {
         setPos(location.getX(),location.getY(),location.getZ());
         setCustomNameVisible(true);
         setCustomName(Component.literal(ChatColor.translateAlternateColorCodes('&',customName)));
-        setHealth(getHealth());
+        setHealth(getDefaultHp());
         goalSelector.addGoal(0, new AvoidEntityGoal<Player>(
                 this, Player.class, 5, 1D, 1.5D
         ));
