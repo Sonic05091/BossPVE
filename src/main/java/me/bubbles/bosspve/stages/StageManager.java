@@ -1,4 +1,4 @@
-package me.bubbles.bosspve.stage;
+package me.bubbles.bosspve.stages;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.configs.Config;
