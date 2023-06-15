@@ -18,6 +18,13 @@ public class Timer {
 
     public void onTick() {
         ticks=clamp(ticks+1);
+        if(ticks==cap) {
+            onComplete();
+        }
+    }
+
+    public void onComplete() {
+
     }
 
     public int getTicks() {

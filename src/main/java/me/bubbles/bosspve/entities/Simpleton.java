@@ -96,7 +96,7 @@ public class Simpleton extends Skeleton implements IEntityBase {
 
     @Override
     public int getDefaultHp() {
-        return 30;
+        return 2000;
     }
 
     @Override

@@ -3,7 +3,6 @@ package me.bubbles.bosspve.commands.base;
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.commands.manager.Argument;
 import me.bubbles.bosspve.entities.manager.IEntityBase;
-import me.bubbles.bosspve.items.manager.Item;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -21,7 +20,7 @@ public class SummonArg extends Argument {
             return;
         }
         if(args.length==relativeIndex) { // SENDS NO ARGS
-            utilSender.sendMessage(getItemsList());
+            utilSender.sendMessage(getEntitiesList());
             return;
         }
         if(!utilSender.isPlayer()) {
@@ -37,7 +36,7 @@ public class SummonArg extends Argument {
         utilSender.sendMessage("%prefix% %primary%Entity %secondary%"+ChatColor.stripColor(base.getUncoloredName())+"%primary% has been spawned.");
     }
 
-    private String getItemsList() {
+    private String getEntitiesList() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("%prefix% %primary%Entities:");
         for(IEntityBase entity : plugin.getEntityManager().getEntities()) {

@@ -24,7 +24,7 @@ public class UtilUser {
             if(level!=uud.getLevel()) {
                 sendMessage("%prefix% %primary%You have level up from %secondary%"+level+"%primary% to %secondary%"+uud.getLevel()+"%primary%.");
             } else {
-                sendMessage("%prefix %primary%You have gained %secondary%"+xp+" xp%primary%.");
+                sendMessage("%prefix% %primary%You have gained %secondary%"+xp+" xp%primary%.");
             }
         }
         mySQL.save(uud);
@@ -52,7 +52,7 @@ public class UtilUser {
             sendMessage("%prefix% %primary%You killed a %secondary%"+entity.getUncoloredName()+"%primary% and gained %secondary%$"+money+
                     " %primary%and leveled up from %secondary%"+level+"%primary% to %secondary%"+uud.getLevel()+"%primary%.");
         } else {
-            sendMessage("%prefix %primary%You killed a %secondary%"+entity.getUncoloredName()+"%primary% and gained %secondary%$"+money+" and %secondary%"+xp+" xp%primary%.");
+            sendMessage("%prefix% %primary%You killed a %secondary%"+entity.getUncoloredName()+"%primary% and gained %secondary%$"+money+"%primary% and %secondary%"+xp+" xp%primary%.");
         }
         mySQL.save(uud);
         plugin.getEconomy().depositPlayer(player,money);
@@ -68,7 +68,7 @@ public class UtilUser {
                 sendMessage("%prefix% %primary%You gained %secondary%$"+money+
                         " %primary%and leveled up from %secondary%"+level+"%primary% to %secondary%"+uud.getLevel()+"%primary%.");
             } else {
-                sendMessage("%prefix %primary%You gained %secondary%$"+money+" and %secondary%"+xp+" xp%primary%.");
+                sendMessage("%prefix% %primary%You gained %secondary%$"+money+"%primary% and %secondary%"+xp+" xp%primary%.");
             }
         }
         mySQL.save(uud);

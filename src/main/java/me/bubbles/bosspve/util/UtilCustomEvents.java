@@ -10,8 +10,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.stream.Collectors;
-
 public class UtilCustomEvents {
 
     private Event event;

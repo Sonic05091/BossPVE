@@ -7,6 +7,7 @@ import me.bubbles.bosspve.events.manager.EventManager;
 import me.bubbles.bosspve.items.manager.EnchantManager;
 import me.bubbles.bosspve.items.manager.ItemManager;
 import me.bubbles.bosspve.mysql.MySQL;
+import me.bubbles.bosspve.stage.StageManager;
 import me.bubbles.bosspve.ticker.Ticker;
 import me.bubbles.bosspve.ticker.TimerManager;
 import net.milkbowl.vault.economy.Economy;
@@ -22,6 +23,7 @@ public final class BossPVE extends JavaPlugin {
     private ItemManager itemManager;
     private TimerManager timerManager;
     private EntityManager entityManager;
+    private StageManager stageManager;
     private Economy economy;
     private MySQL mySQL;
     private Ticker ticker;
@@ -36,7 +38,8 @@ public final class BossPVE extends JavaPlugin {
         saveDefaultConfig();
         configManager.addConfig(
                 "config.yml",
-                "messages.yml"
+                "messages.yml",
+                "stages.yml"
         );
 
         // MANAGERS
@@ -47,6 +50,7 @@ public final class BossPVE extends JavaPlugin {
         entityManager=new EntityManager(this);
         commandManager=new CommandManager(this);
         mySQL=new MySQL(configManager.getConfig("config.yml").getFileConfiguration().getConfigurationSection("mySQL"));
+        stageManager=new StageManager(this, configManager.getConfig("stages.yml"));
         setupEconomy();
 
         // Ticker
@@ -104,6 +108,9 @@ public final class BossPVE extends JavaPlugin {
     }
     public EntityManager getEntityManager() {
         return entityManager;
+    }
+    public StageManager getStageManager() {
+        return stageManager;
     }
     public Economy getEconomy() {
         return economy;

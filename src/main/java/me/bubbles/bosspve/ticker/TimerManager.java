@@ -26,4 +26,8 @@ public class TimerManager {
         timers.remove(timer);
     }
 
+    public boolean containsTimer(Timer timer) {
+        return timers.contains(timer);
+    }
+
 }
