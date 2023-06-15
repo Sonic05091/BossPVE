@@ -12,6 +12,7 @@ public class LevelArg extends Argument {
     public LevelArg(BossPVE plugin, int index) {
         super(plugin, "level", "level <player>", index);
         setPermission("level");
+        setAlias("level");
     }
 
     @Override

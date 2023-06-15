@@ -12,6 +12,7 @@ public class XpArg extends Argument {
     public XpArg(BossPVE plugin, int index) {
         super(plugin, "xp", "xp <player>", index);
         setPermission("xp");
+        setAlias("xp");
     }
 
     @Override

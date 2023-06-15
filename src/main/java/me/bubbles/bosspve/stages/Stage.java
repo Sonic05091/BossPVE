@@ -137,13 +137,6 @@ public class Stage {
 
     }
 
-    public Stage getInside(Location location) {
-        if(isInside(location)) {
-            return this;
-        }
-        return null;
-    }
-
     public boolean isAllowed(Player player) {
         UtilUserData utilUserData = plugin.getMySQL().getData(player.getUniqueId());
         return utilUserData.getLevel()>=getLevelRequirement();

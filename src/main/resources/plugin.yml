@@ -13,3 +13,9 @@ commands:
   stage:
     usage: /<command>
     description: Go to a stage
+  level:
+    usage: /<command>
+    description: Check the level of yourself or others
+  xp:
+    usage: /<command>
+    description: Check the xp amount of yourself or others

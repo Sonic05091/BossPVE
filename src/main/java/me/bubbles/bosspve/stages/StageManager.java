@@ -3,6 +3,7 @@ package me.bubbles.bosspve.stages;
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.configs.Config;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -51,7 +52,7 @@ public class StageManager {
     }
 
     public Stage getStage(Location location) {
-        Optional<Stage> optStage = stageList.stream().filter(stage -> stage.getInside(location)!=null).findFirst();
+        Optional<Stage> optStage = stageList.stream().filter(stage -> stage.isInside(location)).findFirst();
         return optStage.orElse(null);
     }
 
@@ -62,6 +63,10 @@ public class StageManager {
 
     public HashSet<Stage> getStages() {
         return stageList;
+    }
+
+    public boolean inAStage(Player player) {
+        return getStage(player.getLocation())!=null;
     }
 
 }

@@ -133,7 +133,7 @@ public class UtilItemStack {
         Stage stage = plugin.getStageManager().getStage(player.getLocation());
         if(stage!=null) {
             if(stage.isAllowed(player)) {
-                result*=stage.getXpMultiplier();
+                result*=stage.getMoneyMultiplier();
             }
         }
         if(!itemStack.hasItemMeta()) {
