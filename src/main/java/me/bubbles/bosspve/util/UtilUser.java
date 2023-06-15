@@ -43,7 +43,7 @@ public class UtilUser {
         mySQL.save(uud);
     }
 
-    public void giveXpAndMoney(int xp, int money, IEntityBase entity) {
+    public void giveXpAndMoney(int xp, double money, IEntityBase entity) {
         MySQL mySQL = plugin.getMySQL();
         UtilUserData uud = mySQL.getData(player.getUniqueId());
         int level=uud.getLevel();
@@ -58,7 +58,7 @@ public class UtilUser {
         plugin.getEconomy().depositPlayer(player,money);
     }
 
-    public void giveXpAndMoney(int xp, int money, boolean message) {
+    public void giveXpAndMoney(int xp, double money, boolean message) {
         MySQL mySQL = plugin.getMySQL();
         UtilUserData uud = mySQL.getData(player.getUniqueId());
         int level=uud.getLevel();

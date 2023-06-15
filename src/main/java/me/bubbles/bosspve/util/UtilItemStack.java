@@ -3,6 +3,7 @@ package me.bubbles.bosspve.util;
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.items.manager.Enchant;
 import me.bubbles.bosspve.items.manager.Item;
+import me.bubbles.bosspve.stages.Stage;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -41,8 +42,8 @@ public class UtilItemStack {
 
     public List<String> getUpdatedLoreForPlayer(ItemStack itemStack, Player player) {
         int dmg=(int) calculateDamage(1,player)-1;
-        int xp=calculateXp(1,player);
-        int money=calculateMoney(1,player);
+        int xp=(int) calculateXp(1,player);
+        int money=(int) calculateMoney(1,player);
         List<String> lore = new ArrayList<>(getUpdatedLore(itemStack));
         Item item = plugin.getItemManager().getItemFromStack(itemStack);
         if(item!=null) {
@@ -127,10 +128,16 @@ public class UtilItemStack {
         return receiver;
     }
 
-    public int calculateMoney(int init, Player player) {
-        int result=init;
+    public double calculateMoney(double init, Player player) {
+        double result=init;
+        Stage stage = plugin.getStageManager().getStage(player.getLocation());
+        if(stage!=null) {
+            if(stage.isAllowed(player)) {
+                result*=stage.getXpMultiplier();
+            }
+        }
         if(!itemStack.hasItemMeta()) {
-            return init;
+            return result;
         }
         Item item = plugin.getItemManager().getItemFromStack(itemStack);
         if(item==null) {
@@ -157,10 +164,16 @@ public class UtilItemStack {
         return result;
     }
 
-    public int calculateXp(int init, Player player) {
-        int result=init;
+    public double calculateXp(double init, Player player) {
+        double result=init;
+        Stage stage = plugin.getStageManager().getStage(player.getLocation());
+        if(stage!=null) {
+            if(stage.isAllowed(player)) {
+                result*=stage.getXpMultiplier();
+            }
+        }
         if(!itemStack.hasItemMeta()) {
-            return init;
+            return result;
         }
         Item item = plugin.getItemManager().getItemFromStack(itemStack);
         if(item==null) {

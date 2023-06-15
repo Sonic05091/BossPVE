@@ -2,8 +2,10 @@ package me.bubbles.bosspve.stages;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.entities.manager.IEntityBase;
+import me.bubbles.bosspve.util.UtilUserData;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import java.util.HashSet;
 import java.util.List;
@@ -93,6 +95,47 @@ public class Stage {
 
     public int getLevelRequirement() {
         return Integer.parseInt(section.getName());
+    }
+
+    public double getXpMultiplier() {
+        return xpMultiplier;
+    }
+
+    public double getMoneyMultiplier() {
+        return moneyMultiplier;
+    }
+
+    public boolean isInside(Location location) {
+
+        // POS 1
+        double x1 = pos1.getX();
+        double z1 = pos1.getZ();
+        double y1 = pos1.getY();
+
+        // POS 2
+        double x2 = pos2.getX();
+        double z2 = pos2.getZ();
+        double y2 = pos2.getY();
+
+        // WITHIN
+        boolean withinX = (location.getX() > Math.min(x1,x2) && (location.getX() < Math.max(x1,x2)));
+        boolean withinZ = (location.getZ() > Math.min(z1,z2) && (location.getZ() < Math.max(z1,z2)));
+        boolean withinY = (location.getY() > Math.min(y1,y2) && (location.getY() < Math.max(y1,y2)));
+
+        return withinX && withinY && withinZ;
+
+    }
+
+    public Stage getInside(Location location) {
+        if(isInside(location)) {
+            return this;
+        }
+        return null;
+    }
+
+    public boolean isAllowed(Player player) {
+        UtilUserData utilUserData = plugin.getMySQL().getData(player.getUniqueId());
+        return utilUserData.getLevel()>=getLevelRequirement();
     }
 
 }

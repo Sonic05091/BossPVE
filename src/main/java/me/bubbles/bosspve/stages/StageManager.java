@@ -2,6 +2,9 @@ package me.bubbles.bosspve.stages;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.configs.Config;
+import me.bubbles.bosspve.util.UtilUserData;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -37,6 +40,11 @@ public class StageManager {
 
     public void setSpawningEnabledAll(boolean bool) {
         stageList.forEach(stage -> stage.setEnabled(bool));
+    }
+
+    public Stage getStage(Location location) {
+        Optional<Stage> optStage = stageList.stream().filter(stage -> stage.getInside(location)!=null).findFirst();
+        return optStage.orElse(null);
     }
 
 }

@@ -62,8 +62,8 @@ public class UtilCustomEvents {
             }
         }
         UtilItemStack uis = new UtilItemStack(plugin,player.getInventory().getItemInMainHand());
-        int xp=uis.calculateXp(entity.getXp(),player);
-        int money=uis.calculateMoney(entity.getMoney(),player);
+        int xp=(int) uis.calculateXp(entity.getXp(),player);
+        double money=uis.calculateMoney(entity.getMoney(),player);
         new UtilUser(plugin,player).giveXpAndMoney(xp,money,entity);
     }
 
