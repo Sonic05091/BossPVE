@@ -10,3 +10,6 @@ commands:
   data:
     usage: /<command>
     description: Get NBT data
+  stage:
+    usage: /<command>
+    description: Go to a stage

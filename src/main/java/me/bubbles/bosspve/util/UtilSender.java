@@ -44,4 +44,11 @@ public class UtilSender {
         return getPlayer().hasPermission(permission);
     }
 
+    public UtilUserData getUserData() {
+        if(!isPlayer()) {
+            return null;
+        }
+        return plugin.getMySQL().getData(getPlayer().getUniqueId());
+    }
+
 }

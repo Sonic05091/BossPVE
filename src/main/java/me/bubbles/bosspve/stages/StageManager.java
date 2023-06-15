@@ -2,12 +2,11 @@ package me.bubbles.bosspve.stages;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.configs.Config;
-import me.bubbles.bosspve.util.UtilUserData;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.logging.Level;
 
 public class StageManager {
 
@@ -18,18 +17,27 @@ public class StageManager {
     public StageManager(BossPVE plugin, Config config) {
         this.plugin=plugin;
         this.config=config;
+        this.stageList=new HashSet<>();
+        loadStages();
     }
 
     private void loadStages() {
+        if(config.getFileConfiguration().getKeys(false).isEmpty()) {
+            plugin.getLogger().log(Level.WARNING, "No not find any stages.");
+            return;
+        }
         for(String stageKey : config.getFileConfiguration().getKeys(false)) {
             Stage stage = new Stage(plugin, config.getFileConfiguration().getConfigurationSection(stageKey)).getStage();
             if(stage!=null) {
                 stageList.add(stage);
+            }else{
+                plugin.getLogger().log(Level.SEVERE, "A stage is null!");
             }
         }
+        setSpawningAll(true);
     }
 
-    public boolean setSpawningEnabled(int level, boolean bool) {
+    public boolean setSpawning(int level, boolean bool) {
         Optional<Stage> optStage = stageList.stream().filter(stage -> stage.getLevelRequirement()==level).findFirst();
         if(!optStage.isPresent()) {
             return false;
@@ -38,13 +46,22 @@ public class StageManager {
         return true;
     }
 
-    public void setSpawningEnabledAll(boolean bool) {
+    public void setSpawningAll(boolean bool) {
         stageList.forEach(stage -> stage.setEnabled(bool));
     }
 
     public Stage getStage(Location location) {
         Optional<Stage> optStage = stageList.stream().filter(stage -> stage.getInside(location)!=null).findFirst();
         return optStage.orElse(null);
+    }
+
+    public Stage getStage(int requiredLevel) {
+        Optional<Stage> optStage = stageList.stream().filter(stage -> stage.getLevelRequirement()==requiredLevel).findFirst();
+        return optStage.orElse(null);
+    }
+
+    public HashSet<Stage> getStages() {
+        return stageList;
     }
 
 }

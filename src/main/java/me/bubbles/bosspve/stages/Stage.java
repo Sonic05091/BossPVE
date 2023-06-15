@@ -3,6 +3,7 @@ package me.bubbles.bosspve.stages;
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.entities.manager.IEntityBase;
 import me.bubbles.bosspve.util.UtilUserData;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -48,16 +49,17 @@ public class Stage {
             }
         }
         this.entityList=new HashSet<>();
-        this.spawn=section.getLocation("spawn");
-        this.pos1=section.getLocation("pos1");
-        this.pos2=section.getLocation("pos2");
+        this.spawn=getLocation(section.getString("spawn"));
+        this.pos1=getLocation(section.getString("pos1"));
+        this.pos2=getLocation(section.getString("pos2"));
         this.xpMultiplier=section.getDouble("xpMultiplier");
         this.moneyMultiplier=section.getDouble("moneyMultiplier");
-        loadEntities();
+        valid=loadEntities();
     }
 
-    private void loadEntities() {
+    private boolean loadEntities() {
         ConfigurationSection entities = section.getConfigurationSection("entities");
+        boolean result=false;
         for(String entityKey : entities.getKeys(false)) {
             IEntityBase entityBase = plugin.getEntityManager().getEntityByName(entityKey);
             if(entityBase==null) {
@@ -65,19 +67,28 @@ public class Stage {
                 continue;
             }
             ConfigurationSection entitySection = entities.getConfigurationSection(entityKey);
+            boolean cont=true;
             for(String key : requiredEntityKeys) {
                 if(!entitySection.contains(key)) {
                     plugin.getLogger().log(Level.SEVERE,"Could not load entity: " + entityKey +"."+key+" @ "+key);
-                    continue;
+                    cont=false;
                 }
+            }
+            if(!cont) {
+                continue;
             }
             StageEntity stageEntity = new StageEntity(plugin,
                     entityBase,
-                    entitySection.getLocation("pos"),
+                    getLocation(entitySection.getString("pos")),
                     entitySection.getInt("interval")
             );
             entityList.add(stageEntity);
+            result=true;
         }
+        if(!result) {
+            plugin.getLogger().log(Level.SEVERE, "Could not find any entities @ " +getLevelRequirement() + ", stage will not be loaded.");
+        }
+        return result;
     }
 
     public Stage getStage() {
@@ -136,6 +147,35 @@ public class Stage {
     public boolean isAllowed(Player player) {
         UtilUserData utilUserData = plugin.getMySQL().getData(player.getUniqueId());
         return utilUserData.getLevel()>=getLevelRequirement();
+    }
+
+    public Location getSpawn() {
+        return spawn;
+    }
+
+    private Location getLocation(String value) {
+        String[] values = value.split(",");
+        Location location;
+        if(values.length==4) {
+            location=new Location(
+                    Bukkit.getWorld(values[0]),
+                    Double.parseDouble(values[1]),
+                    Double.parseDouble(values[2]),
+                    Double.parseDouble(values[3])
+                    );
+        } else if (values.length==6) {
+            location=new Location(
+                    Bukkit.getWorld(values[0]),
+                    Double.parseDouble(values[1]),
+                    Double.parseDouble(values[2]),
+                    Double.parseDouble(values[3]),
+                    Float.parseFloat(values[4]),
+                    Float.parseFloat(values[5])
+            );
+        } else {
+            location=null;
+        }
+        return location;
     }
 
 }

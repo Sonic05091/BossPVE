@@ -1,16 +1,14 @@
-1:
-  spawn: 0,0,0,0,0
-  pos1: 0,0,0
-  pos2: 1,1,1
+0:
+  spawn:
+    world,0.5,0,0.5
+  pos1:
+    world,10,100,10
+  pos2:
+    world,-10,0,-10
   xpMultiplier: 1.0
   moneyMultiplier: 1.0
   entities:
     Simpleton:
-      pos: 0,0,0
-      interval: 60
-    Other:
-      pos: 0,0,0
-      interval: 60
-    Etc:
-      pos: 0,0,0
-      interval: 60
+      pos:
+        world,0.5,0,0.5
+      interval: 300

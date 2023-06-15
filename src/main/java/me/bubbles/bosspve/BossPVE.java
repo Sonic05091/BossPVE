@@ -47,9 +47,9 @@ public final class BossPVE extends JavaPlugin {
         eventManager=new EventManager(this);
         itemManager=new ItemManager(this);
         entityManager=new EntityManager(this);
+        stageManager=new StageManager(this, configManager.getConfig("stages.yml"));
         commandManager=new CommandManager(this);
         mySQL=new MySQL(configManager.getConfig("config.yml").getFileConfiguration().getConfigurationSection("mySQL"));
-        stageManager=new StageManager(this, configManager.getConfig("stages.yml"));
         setupEconomy();
 
         // Ticker
@@ -64,7 +64,9 @@ public final class BossPVE extends JavaPlugin {
 
     // RELOAD CFG
     public void reload() {
+        getStageManager().setSpawningAll(false);
         getConfigManager().reloadAll();
+        stageManager=new StageManager(this,configManager.getConfig("stages.yml"));
     }
 
     // TICKER
