@@ -2,25 +2,32 @@ package me.bubbles.bosspve.stages;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.entities.manager.IEntityBase;
+import me.bubbles.bosspve.ticker.Timer;
 import me.bubbles.bosspve.util.UtilUserData;
+import net.minecraft.world.entity.Entity;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
-public class Stage {
+public class Stage extends Timer {
 
-    private BossPVE plugin;
+    public BossPVE plugin;
     private Location pos1;
     private Location pos2;
     private Location spawn;
     private double xpMultiplier;
     private double moneyMultiplier;
+    private int maxEntities;
     private HashSet<StageEntity> entityList;
+    private HashSet<Entity> spawnedEntities;
     private ConfigurationSection section;
     private boolean valid;
     private final List<String> requiredStageKeys =
@@ -29,16 +36,19 @@ public class Stage {
                     "pos1",
                     "pos2",
                     "xpMultiplier",
-                    "moneyMultiplier"
+                    "moneyMultiplier",
+                    "maxEntities"
             );
 
     private final List<String> requiredEntityKeys =
             List.of(
+                    "entity",
                     "pos",
                     "interval"
             );
 
     public Stage(BossPVE plugin, ConfigurationSection section) {
+        super(plugin,section.getInt("killAll"));
         this.plugin=plugin;
         this.section=section;
         for(String key : requiredStageKeys) {
@@ -49,24 +59,47 @@ public class Stage {
             }
         }
         this.entityList=new HashSet<>();
+        this.spawnedEntities=new HashSet<>();
         this.spawn=getLocation(section.getString("spawn"));
         this.pos1=getLocation(section.getString("pos1"));
         this.pos2=getLocation(section.getString("pos2"));
         this.xpMultiplier=section.getDouble("xpMultiplier");
         this.moneyMultiplier=section.getDouble("moneyMultiplier");
+        this.maxEntities=section.getInt("maxEntities");
         valid=loadEntities();
+        if(valid) {
+            setEnabled(true);
+        }
+    }
+
+    @Override
+    public void onComplete() {
+        killAll();
+        restart();
+    }
+
+    public void killAll() {
+        Iterator<Entity> iterator = spawnedEntities.iterator();
+        while(iterator.hasNext()) {
+            Entity entity = iterator.next();
+            if(entity.isAlive()) {
+                entity.kill();
+            }
+            iterator.remove();
+        }
     }
 
     private boolean loadEntities() {
         ConfigurationSection entities = section.getConfigurationSection("entities");
         boolean result=false;
-        for(String entityKey : entities.getKeys(false)) {
+        for(String entityID : entities.getKeys(false)) {
+            String entityKey = entities.getConfigurationSection(entityID).getString("entity");
             IEntityBase entityBase = plugin.getEntityManager().getEntityByName(entityKey);
             if(entityBase==null) {
                 plugin.getLogger().log(Level.WARNING, "Could not load entity: "+entityKey+" @ "+getLevelRequirement());
                 continue;
             }
-            ConfigurationSection entitySection = entities.getConfigurationSection(entityKey);
+            ConfigurationSection entitySection = entities.getConfigurationSection(entityID);
             boolean cont=true;
             for(String key : requiredEntityKeys) {
                 if(!entitySection.contains(key)) {
@@ -75,9 +108,11 @@ public class Stage {
                 }
             }
             if(!cont) {
+                result=false;
                 continue;
             }
-            StageEntity stageEntity = new StageEntity(plugin,
+            StageEntity stageEntity = new StageEntity(
+                    this,
                     entityBase,
                     getLocation(entitySection.getString("pos")),
                     entitySection.getInt("interval")
@@ -101,6 +136,14 @@ public class Stage {
 
     public Stage setEnabled(boolean bool) {
         entityList.forEach(stageEntity -> stageEntity.setEnabled(bool));
+        if(plugin.getTimerManager().containsTimer(this)==bool) {
+            return this;
+        }
+        if(bool) {
+            plugin.getTimerManager().addTimer(this);
+        } else {
+            plugin.getTimerManager().removeTimer(this);
+        }
         return this;
     }
 
@@ -117,6 +160,10 @@ public class Stage {
     }
 
     public boolean isInside(Location location) {
+
+        if(!(location.getWorld().equals(pos1.getWorld())||location.getWorld().equals(pos2.getWorld()))) {
+            return false;
+        }
 
         // POS 1
         double x1 = pos1.getX();
@@ -151,14 +198,14 @@ public class Stage {
         Location location;
         if(values.length==4) {
             location=new Location(
-                    Bukkit.getWorld(values[0]),
+                    plugin.getMultiverseCore().getMVWorldManager().getMVWorld(values[0]).getCBWorld(),
                     Double.parseDouble(values[1]),
                     Double.parseDouble(values[2]),
                     Double.parseDouble(values[3])
                     );
         } else if (values.length==6) {
             location=new Location(
-                    Bukkit.getWorld(values[0]),
+                    plugin.getMultiverseCore().getMVWorldManager().getMVWorld(values[0]).getCBWorld(),
                     Double.parseDouble(values[1]),
                     Double.parseDouble(values[2]),
                     Double.parseDouble(values[3]),
@@ -169,6 +216,14 @@ public class Stage {
             location=null;
         }
         return location;
+    }
+
+    public void spawnEntity(Entity entity) {
+        spawnedEntities.add(entity);
+    }
+
+    public boolean allowSpawn() {
+        return spawnedEntities.stream().filter(Entity::isAlive).collect(Collectors.toList()).size()<maxEntities;
     }
 
 }

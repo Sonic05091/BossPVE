@@ -2,17 +2,15 @@ package me.bubbles.bosspve.commands.base;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.commands.manager.Argument;
-import me.bubbles.bosspve.util.UtilUserData;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
-public class XpArg extends Argument {
+public class BalanceArg extends Argument {
 
-    public XpArg(BossPVE plugin, int index) {
-        super(plugin, "xp", "xp <player>", index);
-        setPermission("xp");
-        setAlias("xp");
+    public BalanceArg(BossPVE plugin, int index) {
+        super(plugin, "balance", "balance <player>", index);
+        setAlias("balance");
     }
 
     @Override
@@ -28,23 +26,21 @@ public class XpArg extends Argument {
                 return;
             }
         }
-        UtilUserData uud;
+        OfflinePlayer player;
         if(args.length==relativeIndex) { // no args
-            uud = plugin.getMySQL().getData(utilSender.getPlayer().getUniqueId());
-            utilSender.sendMessage("%prefix% %primary%Your xp is %secondary%"+uud.getXp()+"%primary%.");
+            player = utilSender.getPlayer();
+            utilSender.sendMessage("%prefix% %primary%Your balance is %secondary%$"+plugin.getEconomy().getBalance(player)+"%primary%.");
             return;
         }
-        OfflinePlayer player = Bukkit.getOfflinePlayer(args[relativeIndex]);
-        if(!utilSender.hasPermission("bosspve.xp.other")) {
+        player = Bukkit.getOfflinePlayer(args[relativeIndex]);
+        if(!utilSender.hasPermission("bosspve.balance.other")) {
             utilSender.sendMessage("%prefix% %primary%You do not have permission to do that.");
-            return;
         }
         if(!player.hasPlayedBefore()) {
             utilSender.sendMessage("%prefix% %primary%Could not find player %secondary%"+args[relativeIndex]+"%primary%.");
             return;
         }
-        uud = plugin.getMySQL().getData(player.getUniqueId());
-        utilSender.sendMessage("%prefix% %secondary%"+player.getName()+"'s %primary%xp is %secondary%"+uud.getXp()+"%primary%.");
+        utilSender.sendMessage("%prefix% %secondary%"+player.getName()+"'s %primary%xp is %secondary%$"+plugin.getEconomy().getBalance(player)+"%primary%.");
     }
 
 }

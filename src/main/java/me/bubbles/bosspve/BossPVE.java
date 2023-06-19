@@ -1,21 +1,27 @@
 package me.bubbles.bosspve;
 
+import com.onarandombox.MultiverseCore.MultiverseCore;
 import me.bubbles.bosspve.commands.manager.CommandManager;
 import me.bubbles.bosspve.configs.ConfigManager;
 import me.bubbles.bosspve.entities.manager.EntityManager;
 import me.bubbles.bosspve.events.manager.EventManager;
 import me.bubbles.bosspve.items.manager.ItemManager;
 import me.bubbles.bosspve.mysql.MySQL;
+import me.bubbles.bosspve.stages.Stage;
 import me.bubbles.bosspve.stages.StageManager;
 import me.bubbles.bosspve.ticker.Ticker;
 import me.bubbles.bosspve.ticker.TimerManager;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.time.Instant;
+import java.util.logging.Level;
 
 public final class BossPVE extends JavaPlugin {
+
+    private MultiverseCore multiverseCore;
     private CommandManager commandManager;
     private EventManager eventManager;
     private ConfigManager configManager;
@@ -43,6 +49,14 @@ public final class BossPVE extends JavaPlugin {
 
         // MANAGERS
         // THIS ORDER IS VERY IMPORTANT, SWAPPING THINGS AROUND WILL CAUSE VALUES TO BE RETURNED AS NULL
+        if(!setupEconomy()) {
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+        if(!setupMultiverse()) {
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
         timerManager=new TimerManager(this);
         eventManager=new EventManager(this);
         itemManager=new ItemManager(this);
@@ -50,7 +64,6 @@ public final class BossPVE extends JavaPlugin {
         stageManager=new StageManager(this, configManager.getConfig("stages.yml"));
         commandManager=new CommandManager(this);
         mySQL=new MySQL(configManager.getConfig("config.yml").getFileConfiguration().getConfigurationSection("mySQL"));
-        setupEconomy();
 
         // Ticker
         ticker=new Ticker(this).setEnabled(true);
@@ -59,13 +72,20 @@ public final class BossPVE extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        if(stageManager!=null) {
+            stageManager.getStages().forEach(stage -> stage.setEnabled(false));
+            stageManager.getStages().forEach(Stage::killAll);
+        }
     }
 
     // RELOAD CFG
     public void reload() {
         getStageManager().setSpawningAll(false);
         getConfigManager().reloadAll();
+        if(stageManager!=null) {
+            stageManager.getStages().forEach(stage -> stage.setEnabled(false));
+            stageManager.getStages().forEach(Stage::killAll);
+        }
         stageManager=new StageManager(this,configManager.getConfig("stages.yml"));
     }
 
@@ -78,19 +98,34 @@ public final class BossPVE extends JavaPlugin {
     // VAULT
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            getLogger().log(Level.SEVERE, "NO VAULT PLUGIN");
             return false;
         }
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
+            getLogger().log(Level.SEVERE, "NO ECONOMY SUPPORT");
             return false;
         }
         economy = rsp.getProvider();
         return economy != null;
     }
 
+    // Worlds
+    private boolean setupMultiverse() {
+        multiverseCore = (MultiverseCore) getServer().getPluginManager().getPlugin("Multiverse-Core");
+        if (multiverseCore == null) {
+            getLogger().log(Level.SEVERE, "No Multiverse-Core");
+            return false;
+        }
+        return true;
+    }
+
     // GETTERS
     public long getEpochTimestamp() {
         return Instant.now().getEpochSecond();
+    }
+    public MultiverseCore getMultiverseCore() {
+        return multiverseCore;
     }
     public CommandManager getCommandManager() {
         return commandManager;

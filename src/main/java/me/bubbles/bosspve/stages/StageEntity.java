@@ -4,23 +4,30 @@ import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.entities.manager.IEntityBase;
 import me.bubbles.bosspve.ticker.Timer;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_20_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_20_R1.entity.CraftEntity;
+import org.bukkit.entity.Entity;
 
 public class StageEntity extends Timer {
 
+    private Stage stage;
     private BossPVE plugin;
     private IEntityBase entity;
     private Location location;
 
-    public StageEntity(BossPVE plugin, IEntityBase entity, Location location, int ticks) {
-        super(plugin,ticks);
-        this.plugin=plugin;
+    public StageEntity(Stage stage, IEntityBase entity, Location location, int ticks) {
+        super(stage.plugin,ticks);
+        this.stage=stage;
+        this.plugin=stage.plugin;
         this.entity=entity;
         this.location=location;
     }
 
     @Override
     public void onComplete() {
-        entity.spawn(location);
+        if(stage.allowSpawn()) {
+            stage.spawnEntity(entity.spawn(location));
+        }
         restart();
     }
 

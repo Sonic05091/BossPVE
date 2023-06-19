@@ -4,9 +4,6 @@ import me.bubbles.bosspve.BossPVE;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class PlayerTimerManager {
 
@@ -49,7 +46,11 @@ public class PlayerTimerManager {
     }
 
     public boolean isTimerActive(Player player) {
-        return timers.get(player).isActive();
+        return getTimer(player).isActive();
+    }
+
+    public Timer getTimer(Player player) {
+        return timers.get(player);
     }
 
 }

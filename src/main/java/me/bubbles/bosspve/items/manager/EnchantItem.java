@@ -17,7 +17,7 @@ public class EnchantItem extends Item {
     private Enchant enchant;
 
     public EnchantItem(BossPVE plugin, Material material, Enchant enchant, String nbtIdentifier) {
-        super(plugin, material, nbtIdentifier+"Ench",Type.ENCHANT);
+        super(plugin, material, nbtIdentifier.toLowerCase()+"Ench",Type.ENCHANT);
         this.enchant=enchant;
         ItemStack itemStack = nmsAsItemStack();
         itemStack.addUnsafeEnchantment(enchant,1);
@@ -48,6 +48,12 @@ public class EnchantItem extends Item {
             }
             if(secondSlot.getAmount()>1) {
                 return;
+            }
+            Item customFirst = plugin.getItemManager().getItemFromStack(firstSlot);
+            if(customFirst!=null) {
+                if(!enchant.allowedTypes.contains(customFirst.getType())) {
+                    return;
+                }
             }
             UtilItemStack uiu = new UtilItemStack(plugin,firstSlot);
             ItemStack result = uiu.enchantItem(secondSlot);
@@ -83,6 +89,17 @@ public class EnchantItem extends Item {
             inventory.setItem(2,null);
         }
 
+    }
+
+    public ItemStack getAtLevel(int level) {
+        ItemStack result = nmsAsItemStack();
+        ItemMeta itemMeta = result.getItemMeta();
+        itemMeta.removeEnchant(enchant);
+        itemMeta.addEnchant(enchant, level, true);
+        result.setItemMeta(itemMeta);
+        itemMeta.setLore(new UtilItemStack(plugin,result).getUpdatedLore());
+        result.setItemMeta(itemMeta);
+        return result;
     }
 
 }

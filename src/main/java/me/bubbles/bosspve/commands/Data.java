@@ -11,12 +11,16 @@ public class Data extends Command {
 
     public Data(BossPVE plugin) {
         super(plugin, "data");
+        setPermission("getitemdata");
     }
 
     @Override
     public void run(CommandSender sender, String[] args) {
         super.run(sender, args);
         if(!utilSender.isPlayer()) {
+            return;
+        }
+        if(!permissionCheck()) {
             return;
         }
         ItemStack bukkitStack = utilSender.getPlayer().getInventory().getItemInMainHand();

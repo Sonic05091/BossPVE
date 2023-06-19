@@ -2,6 +2,7 @@ package me.bubbles.bosspve.commands.manager;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.commands.Data;
+import me.bubbles.bosspve.commands.Spawn;
 import me.bubbles.bosspve.commands.base.BaseCommand;
 
 import java.util.ArrayList;
@@ -21,7 +22,8 @@ public class CommandManager {
     public void registerCommands() {
         addCommand(
                 new BaseCommand(plugin),
-                new Data(plugin)
+                new Data(plugin),
+                new Spawn(plugin)
         );
     }
 

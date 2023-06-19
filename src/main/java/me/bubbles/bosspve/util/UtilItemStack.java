@@ -2,6 +2,7 @@ package me.bubbles.bosspve.util;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.items.manager.Enchant;
+import me.bubbles.bosspve.items.manager.IArmor;
 import me.bubbles.bosspve.items.manager.Item;
 import me.bubbles.bosspve.stages.Stage;
 import org.bukkit.ChatColor;
@@ -44,22 +45,51 @@ public class UtilItemStack {
         int dmg=(int) calculateDamage(1,player)-1;
         int xp=(int) calculateXp(1,player);
         int money=(int) calculateMoney(1,player);
-        List<String> lore = new ArrayList<>(getUpdatedLore(itemStack));
+        List<String> lore = new ArrayList<>();
         Item item = plugin.getItemManager().getItemFromStack(itemStack);
+        UtilUserData uud = plugin.getMySQL().getData(player.getUniqueId());
+        int enchantsAmt = itemStack.getEnchantments().size();
+        boolean cont=true;
+        for(Enchantment enchantment : itemStack.getEnchantments().keySet()) {
+            if(enchantment instanceof Enchant) {
+                Enchant enchant = (Enchant) enchantment;
+                if(!(uud.getLevel()>=enchant.getLevelRequirement())) {
+                    lore.add(ChatColor.translateAlternateColorCodes('&',
+                            "&c" + enchantment.getName() + " " + itemStack.getItemMeta().getEnchantLevel(enchantment)
+                    ));
+                } else {
+                    lore.add(ChatColor.translateAlternateColorCodes('&',
+                            "&9" + enchantment.getName() + " " + itemStack.getItemMeta().getEnchantLevel(enchantment)
+                    ));
+                    if(enchantsAmt<5) {
+                        if(enchant.getDescription()!=null) {
+                            lore.add(ChatColor.translateAlternateColorCodes('&',"&7"+enchant.getDescription()));
+
+                        }
+                    }
+                    cont=false;
+                }
+            }
+            if(cont) {
+                lore.add(ChatColor.translateAlternateColorCodes('&',
+                        "&9" + enchantment.getName() + " " + itemStack.getItemMeta().getEnchantLevel(enchantment)
+                ));
+            }
+        }
         if(item!=null) {
             if((!item.getDescription().equals(""))&&item.getDescription()!=null) {
-                lore.add(item.getDescription());
+                lore.add(new UtilString(plugin).colorFillPlaceholders("&8"+item.getDescription()));
             }
             if(item.getType().equals(Item.Type.WEAPON)) {
-                lore.add(ChatColor.translateAlternateColorCodes('&',
-                        "&8Base Damage:&7 "+dmg
-                ));
-                lore.add(ChatColor.translateAlternateColorCodes('&',
-                        "&8Base XP:&7 "+xp
-                ));
-                lore.add(ChatColor.translateAlternateColorCodes('&',
-                        "&8Base Money:&7 $"+money
-                ));
+                lore.add(
+                        new UtilString(plugin).colorFillPlaceholders("%primary%Damage:%secondary% "+dmg)
+                );
+                lore.add(
+                        new UtilString(plugin).colorFillPlaceholders("%primary%XP:%secondary% "+xp)
+                );
+                lore.add(
+                        new UtilString(plugin).colorFillPlaceholders("%primary%Money:%secondary% $"+money)
+                );
             }
         }
         return lore;
@@ -134,6 +164,8 @@ public class UtilItemStack {
         if(stage!=null) {
             if(stage.isAllowed(player)) {
                 result*=stage.getMoneyMultiplier();
+            }else{
+                return 0;
             }
         }
         if(!itemStack.hasItemMeta()) {
@@ -170,6 +202,8 @@ public class UtilItemStack {
         if(stage!=null) {
             if(stage.isAllowed(player)) {
                 result*=stage.getXpMultiplier();
+            }else{
+                return 0;
             }
         }
         if(!itemStack.hasItemMeta()) {
@@ -206,20 +240,12 @@ public class UtilItemStack {
             return init;
         }
         Item item = plugin.getItemManager().getItemFromStack(itemStack);
-        if(item==null) {
-            if(itemStack.getItemMeta().hasEnchants()) {
-                for(Enchant enchant : getCustomEnchants()) {
-                    if(enchant.allowUsage(player)) {
-                        result*=enchant.getDamageMultiplier(itemStack.getItemMeta().getEnchantLevel(enchant));
-                    }
-                }
+        if(item!=null) {
+            if(!item.allowUsage(player)) {
+                return result;
             }
-            return result;
+            result+=item.getBaseDamage();
         }
-        if(!item.allowUsage(player)) {
-            return result;
-        }
-        result+=item.getBaseDamage();
         if(itemStack.getItemMeta().hasEnchants()) {
             for(Enchant enchant : getCustomEnchants()) {
                 if(enchant.allowUsage(player)) {
@@ -232,6 +258,12 @@ public class UtilItemStack {
 
     public HashSet<Enchant> getCustomEnchants() {
         // probably unsafe but idc
+        if(!itemStack.hasItemMeta()) {
+            return new HashSet<>();
+        }
+        if(!itemStack.getItemMeta().hasEnchants()) {
+            return new HashSet<>();
+        }
         HashSet<Enchant> result=new HashSet<>();
         itemStack.getItemMeta().getEnchants().keySet().stream()
                 .filter(enchantment -> enchantment instanceof Enchant).collect(Collectors.toList()).forEach(enchantment -> result.add((Enchant) enchantment));

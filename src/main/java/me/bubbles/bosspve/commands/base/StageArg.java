@@ -5,6 +5,9 @@ import me.bubbles.bosspve.commands.manager.Argument;
 import me.bubbles.bosspve.stages.Stage;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,37 +31,47 @@ public class StageArg extends Argument {
             return;
         }
         if(args.length!=relativeIndex+1) {
-            utilSender.sendMessage("%prefix% %primary%GUI support is W.I.P., please use any of the available stages for you: "+
+            utilSender.sendMessage("%prefix% %primary%Available stages for you: "+
                     getAvailableStages()+"\n"+getArgsMessage());
             return;
         }
-        Stage stage = plugin.getStageManager().getStage(Integer.parseInt(args[relativeIndex]));
+        int stageNum;
+        try {
+            stageNum=Integer.parseInt(args[relativeIndex]);
+        } catch(NumberFormatException e) {
+            utilSender.sendMessage("%prefix% %primary%Could not find stage!");
+            return;
+        }
+        Stage stage = plugin.getStageManager().getStage(stageNum);
         if(stage==null) {
             utilSender.sendMessage("%prefix% %primary%Could not find stage!");
             return;
         }
         if(!stage.isAllowed(utilSender.getPlayer())) {
-            utilSender.sendMessage("%primary% %primary%Hey, You can't go here!");
+            utilSender.sendMessage("%prefix% %primary%Hey, you can't go there!");
             return;
         }
-        utilSender.sendMessage("%primary% %primary%Teleporting to stage %secondary%"+stage.getLevelRequirement()+"%primary%.");
+        utilSender.sendMessage("%prefix% %primary%Teleporting to stage %secondary%"+stage.getLevelRequirement()+"%primary%.");
         utilSender.getPlayer().teleport(stage.getSpawn());
     }
 
     private String getAvailableStages() {
         int playerLevel = utilSender.getUserData().getLevel();
-        List<Stage> allowedStages = plugin.getStageManager().getStages().stream()
+        List<Integer> allowedStages = new ArrayList<>();
+        plugin.getStageManager().getStages().stream()
                 .filter(stage -> playerLevel>=stage.getLevelRequirement())
-                .collect(Collectors.toList());
+                .forEach(stage -> allowedStages.add(stage.getLevelRequirement())
+                );
+        Collections.sort(allowedStages);
         StringBuilder stringBuilder = new StringBuilder();
         boolean first=true;
-        for(Stage stage : allowedStages) {
+        for(Integer stage : allowedStages) {
             if(!first) {
                 stringBuilder.append("%primary%, ");
             } else {
                 first=false;
             }
-            stringBuilder.append("%secondary%").append(stage.getLevelRequirement());
+            stringBuilder.append("%secondary%").append(stage);
         }
         return stringBuilder.toString();
     }

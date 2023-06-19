@@ -28,22 +28,23 @@ public class LevelArg extends Argument {
                 return;
             }
         }
-        UtilUserData uid;
+        UtilUserData uud;
         if(args.length==relativeIndex) { // no args
-            uid = plugin.getMySQL().getData(utilSender.getPlayer().getUniqueId());
-            utilSender.sendMessage("%prefix% %primary%Your level is %secondary%"+uid.getLevel()+"%primary%.");
+            uud = plugin.getMySQL().getData(utilSender.getPlayer().getUniqueId());
+            utilSender.sendMessage("%prefix% %primary%Your level is %secondary%"+uud.getLevel()+"%primary%.");
             return;
         }
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[relativeIndex]);
         if(!utilSender.hasPermission("bosspve.level.other")) {
             utilSender.sendMessage("%prefix% %primary%You do not have permission to do that.");
+            return;
         }
         if(!player.hasPlayedBefore()) {
             utilSender.sendMessage("%prefix% %primary%Could not find player %secondary%"+args[relativeIndex]+"%primary%.");
             return;
         }
-        uid = plugin.getMySQL().getData(player.getUniqueId());
-        utilSender.sendMessage("%prefix% %secondary%"+player.getName()+"'s %primary%level is "+uid.getLevel());
+        uud = plugin.getMySQL().getData(player.getUniqueId());
+        utilSender.sendMessage("%prefix% %secondary%"+player.getName()+"'s %primary%level is %secondary%"+uud.getLevel()+"%primary%.");
     }
 
 }

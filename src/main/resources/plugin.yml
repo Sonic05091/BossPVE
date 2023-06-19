@@ -2,6 +2,7 @@ name: BossPVE
 version: '${project.version}'
 main: me.bubbles.bosspve.BossPVE
 api-version: '1.20'
+depend: [Vault, Multiverse-Core]
 commands:
   bosspve:
     usage: /<command>
@@ -13,9 +14,17 @@ commands:
   stage:
     usage: /<command>
     description: Go to a stage
+    aliases: [stages]
   level:
     usage: /<command>
     description: Check the level of yourself or others
   xp:
     usage: /<command>
     description: Check the xp amount of yourself or others
+  balance:
+    usage: /<command>
+    description: Check the balance of yourself or others
+    aliases: [bal]
+  spawn:
+    usage: /<command>
+    description: Teleport to spawn

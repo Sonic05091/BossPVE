@@ -1,7 +1,6 @@
 package me.bubbles.bosspve.items.manager;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.mysql.MySQL;
 import net.minecraft.nbt.CompoundTag;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -49,11 +48,11 @@ public class Item {
         return 0;
     }
 
-    public int getBaseMoney() {
+    public double getBaseMoney() {
         return 0;
     }
 
-    public int getBaseDamage() {
+    public double getBaseDamage() {
         return 0;
     }
 
@@ -153,11 +152,12 @@ public class Item {
             return false;
         }
         String name = nbtTagCompound.getString("bpveIdentifier");
-        return name.equals(nbtIdentifier);
+        return name.equalsIgnoreCase(nbtIdentifier);
     }
 
     public enum Type {
         WEAPON,
+        ARMOR,
         ENCHANT,
         MISC
 

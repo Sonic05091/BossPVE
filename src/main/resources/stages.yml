@@ -7,8 +7,11 @@
     world,-10,0,-10
   xpMultiplier: 1.0
   moneyMultiplier: 1.0
+  killAll: 1200
+  maxEntities: 15
   entities:
-    Simpleton:
+    1:
+      entity: Simpleton
       pos:
         world,0.5,0,0.5
       interval: 300

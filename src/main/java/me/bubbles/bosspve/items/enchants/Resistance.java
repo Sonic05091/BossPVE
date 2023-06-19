@@ -7,22 +7,27 @@ import org.bukkit.Material;
 
 import java.util.List;
 
-public class Telepathy extends Enchant {
+public class Resistance extends Enchant {
 
-    public Telepathy(ItemManager itemManager) {
-        super(itemManager, "Telepathy", Material.BOOK, 1);
-        getEnchantItem().setDisplayName("&5Telepathy");
+    public Resistance(ItemManager itemManager) {
+        super(itemManager, "Resistance", Material.CONDUIT, 10);
+        getEnchantItem().setDisplayName("&4Resistance");
         allowedTypes.addAll(
                 List.of(
-                        Item.Type.WEAPON,
+                        Item.Type.ARMOR,
                         Item.Type.ENCHANT
                 )
         );
     }
 
     @Override
+    public double getDamageProtection(int level) {
+        return 1.0/(level*1.1);
+    }
+
+    @Override
     public String getDescription() {
-        return "Teleports items into your inventory";
+        return "Protects you from attacks";
     }
 
 }

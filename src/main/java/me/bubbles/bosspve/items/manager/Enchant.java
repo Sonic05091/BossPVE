@@ -13,10 +13,7 @@ import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Enchant extends Enchantment {
@@ -28,6 +25,7 @@ public class Enchant extends Enchantment {
     private int coolDown;
     private EnchantItem enchantItem;
     private Material material;
+    public HashSet<Item.Type> allowedTypes;
 
     public Enchant(ItemManager itemManager, String name, Material material, int maxLevel) {
         this(itemManager,name,material,maxLevel,0);
@@ -37,10 +35,11 @@ public class Enchant extends Enchantment {
         super(NamespacedKey.minecraft(name.toLowerCase()));
         this.name=name;
         this.plugin=itemManager.plugin;
-        timerManager=new PlayerTimerManager(plugin);
         this.coolDown=coolDown;
+        timerManager=new PlayerTimerManager(plugin);
         this.maxLevel=maxLevel;
         this.material=material;
+        this.allowedTypes=new HashSet<>();
         register(itemManager);
     }
 
@@ -127,16 +126,16 @@ public class Enchant extends Enchantment {
     }
 
     public boolean coolDowns() {
-        return coolDown==0;
+        return coolDown!=0;
     }
 
     public boolean isOnCoolDown(Player player) {
-        if(coolDown==0) {
-            return true;
+        if(!coolDowns()) {
+            return false;
         }
         if(!timerManager.contains(player)) {
             timerManager.addTimer(player,new Timer(plugin,coolDown));
-            return true;
+            return false;
         }
         return timerManager.isTimerActive(player);
     }
@@ -152,8 +151,15 @@ public class Enchant extends Enchantment {
         timerManager.restartTimer(player);
     }
 
+    public int getCoolDown(Player player) {
+        if(timerManager.contains(player)) {
+            return timerManager.getTimer(player).getRemainingTicks();
+        }
+        return -1;
+    }
+
     public void onTick() {
-        if(timerManager!=null) {
+        if(coolDowns()) {
             timerManager.onTick();
         }
     }
@@ -176,6 +182,13 @@ public class Enchant extends Enchantment {
 
     public double getDamageMultiplier(int level) {
         return 1;
+    }
+    public double getDamageProtection(int level) {
+        return 1;
+    }
+
+    public String getDescription() {
+        return null;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package me.bubbles.bosspve.items.enchants;
 
 import me.bubbles.bosspve.items.manager.Enchant;
+import me.bubbles.bosspve.items.manager.Item;
 import me.bubbles.bosspve.items.manager.ItemManager;
 import me.bubbles.bosspve.ticker.Timer;
 import org.bukkit.Material;
@@ -10,16 +11,23 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class Speed extends Enchant {
 
     private Timer timer;
 
     public Speed(ItemManager itemManager) {
-        super(itemManager, "Speed", Material.FEATHER, 5);
-        getEnchantItem().setDisplayName("&f&lSpeed");
+        super(itemManager, "Speed", Material.FEATHER, 10);
+        getEnchantItem().setDisplayName("&fSpeed");
         timer=new Timer(plugin,20);
         plugin.getTimerManager().addTimer(timer);
+        allowedTypes.addAll(
+                List.of(
+                        Item.Type.WEAPON,
+                        Item.Type.ENCHANT
+                )
+        );
     }
 
     @Override
@@ -36,6 +44,11 @@ public class Speed extends Enchant {
             player.addPotionEffect(speed);
         });
         timer.restart();
+    }
+
+    @Override
+    public String getDescription() {
+        return "Gives you speed";
     }
 
 }

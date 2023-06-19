@@ -22,7 +22,10 @@ public class EventManager {
                 new AnvilEnchantedBook(plugin),
                 new UpdateAnvil(plugin),
                 new PlayerDmgOther(plugin),
-                new UpdateLore(plugin)
+                new UpdateLore(plugin),
+                new PreventSpawning(plugin),
+                new MaxFood(plugin),
+                new Respawn(plugin)
         );
     }
 

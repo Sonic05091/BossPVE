@@ -13,10 +13,11 @@ public class BaseCommand extends Command {
                 new StageArg(plugin, index),
                 new LevelArg(plugin, index),
                 new XpArg(plugin, index),
+                new GiveXpArg(plugin, index),
+                new BalanceArg(plugin, index),
                 new ItemArg(plugin, index),
                 new SummonArg(plugin, index),
-                new ReloadArg(plugin, index),
-                new TestArg(plugin, index)
+                new ReloadArg(plugin, index)
         );
     }
 

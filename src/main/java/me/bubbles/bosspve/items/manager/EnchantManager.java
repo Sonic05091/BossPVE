@@ -1,8 +1,12 @@
 package me.bubbles.bosspve.items.manager;
 
 import me.bubbles.bosspve.BossPVE;
+import me.bubbles.bosspve.items.armor.oger.OgreBoots;
+import me.bubbles.bosspve.items.enchants.Resistance;
 import me.bubbles.bosspve.items.enchants.Speed;
 import me.bubbles.bosspve.items.enchants.Telepathy;
+import me.bubbles.bosspve.items.enchants.Throw;
+import me.bubbles.bosspve.items.weapons.SkeletonSword;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.Event;
 
@@ -20,7 +24,9 @@ public class EnchantManager {
         this.plugin=itemManager.plugin;
         registerEnchants(
                 new Telepathy(itemManager),
-                new Speed(itemManager)
+                new Speed(itemManager),
+                new Throw(itemManager),
+                new Resistance(itemManager)
         );
     }
 

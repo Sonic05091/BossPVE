@@ -1,6 +1,8 @@
 package me.bubbles.bosspve.entities.manager;
 
 import me.bubbles.bosspve.BossPVE;
+import me.bubbles.bosspve.entities.Hellbringer;
+import me.bubbles.bosspve.entities.Ogre;
 import me.bubbles.bosspve.entities.Simpleton;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Event;
@@ -17,7 +19,9 @@ public class EntityManager {
         this.plugin=plugin;
         this.entities=new HashSet<>();
         registerEntities(
-                new Simpleton(plugin)
+                new Simpleton(plugin),
+                new Ogre(plugin),
+                new Hellbringer(plugin)
         );
     }
 
@@ -26,7 +30,7 @@ public class EntityManager {
     }
 
     public void onEvent(Event event) {
-        entities.forEach(iEntityBase -> iEntityBase.onEvent(event));
+        entities.forEach(iEntityBase -> iEntityBase.onEvent(plugin,event));
     }
 
     public HashSet<IEntityBase> getEntities() {
