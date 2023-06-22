@@ -1,9 +1,7 @@
 package me.bubbles.bosspve.entities.manager;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.entities.Hellbringer;
-import me.bubbles.bosspve.entities.Ogre;
-import me.bubbles.bosspve.entities.Simpleton;
+import me.bubbles.bosspve.entities.*;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Event;
 
@@ -21,7 +19,10 @@ public class EntityManager {
         registerEntities(
                 new Simpleton(plugin),
                 new Ogre(plugin),
-                new Hellbringer(plugin)
+                new Hellbringer(plugin),
+                new Goblin(plugin),
+                new Ferrum(plugin),
+                new Volcono(plugin)
         );
     }
 

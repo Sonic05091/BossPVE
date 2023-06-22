@@ -7,6 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.ZombieVillager;
 import org.bukkit.Bukkit;
@@ -34,6 +35,7 @@ public class Ogre extends ZombieVillager implements IEntityBase {
         setPos(location.getX(),location.getY(),location.getZ());
         setCustomNameVisible(true);
         setCustomName(Component.literal(ChatColor.translateAlternateColorCodes('&',customName)));
+        getAttribute(Attributes.MAX_HEALTH).setBaseValue(getDefaultHp());
         setHealth(getDefaultHp());
         goalSelector.addGoal(0, new MeleeAttackGoal(
                 this, 1, false
@@ -69,16 +71,16 @@ public class Ogre extends ZombieVillager implements IEntityBase {
     @Override
     public List<ItemStack> getDrops() {
         List<ItemStack> result=new ArrayList<>();
-        if(UtilChances.rollTheDice(1,100,3)) {
+        if(UtilChances.rollTheDice(1,100,1)) {
             result.add(plugin.getItemManager().getItemByName("ogreBoots").nmsAsItemStack());
         }
-        if(UtilChances.rollTheDice(1,100,3)) {
+        if(UtilChances.rollTheDice(1,100,1)) {
             result.add(plugin.getItemManager().getItemByName("ogrePants").nmsAsItemStack());
         }
-        if(UtilChances.rollTheDice(1,100,3)) {
+        if(UtilChances.rollTheDice(1,100,1)) {
             result.add(plugin.getItemManager().getItemByName("ogreChestplate").nmsAsItemStack());
         }
-        if(UtilChances.rollTheDice(1,100,3)) {
+        if(UtilChances.rollTheDice(1,100,1)) {
             result.add(plugin.getItemManager().getItemByName("ogreHelmet").nmsAsItemStack());
         }
         return result;
@@ -96,7 +98,7 @@ public class Ogre extends ZombieVillager implements IEntityBase {
 
     @Override
     public int getDefaultHp() {
-        return 10;
+        return 7;
     }
 
     @Override

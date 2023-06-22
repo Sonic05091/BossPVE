@@ -3,8 +3,8 @@ package me.bubbles.bosspve.util;
 import com.google.common.util.concurrent.AtomicDouble;
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.entities.manager.IEntityBase;
-import me.bubbles.bosspve.items.manager.Enchant;
-import me.bubbles.bosspve.items.manager.IArmor;
+import me.bubbles.bosspve.items.manager.enchant.Enchant;
+import me.bubbles.bosspve.items.manager.armor.IArmor;
 import me.bubbles.bosspve.items.manager.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -12,6 +12,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashSet;
 import java.util.List;
 
 public class UtilCustomEvents {
@@ -45,21 +46,19 @@ public class UtilCustomEvents {
         ItemStack itemStack = player.getInventory().getItemInMainHand();
         UtilItemStack uis = new UtilItemStack(plugin,itemStack);
         List<ItemStack> drops = entity.getDrops();
-        if(drops.isEmpty()) {
+        if(!drops.isEmpty()) {
             e.getDrops().addAll(drops);
             if(itemStack.hasItemMeta()) {
-                if(itemStack.getItemMeta().hasEnchants()) {
-                    boolean telepathy=false;
-                    for(Enchant enchant : uis.getCustomEnchants()) {
-                        if(enchant.getName().equalsIgnoreCase("telepathy")) {
-                            telepathy=true;
-                        }
+                boolean telepathy=false;
+                for(Enchant enchant : uis.getCustomEnchants()) {
+                    if(enchant.getName().equalsIgnoreCase("telepathy")) {
+                        telepathy=true;
                     }
-                    if(telepathy) {
-                        if(player.getInventory().firstEmpty()!=-1) {
-                            e.getDrops().clear();
-                            drops.forEach(drop -> player.getInventory().addItem(drop));
-                        }
+                }
+                if(telepathy) {
+                    if(player.getInventory().firstEmpty()!=-1) {
+                        e.getDrops().clear();
+                        drops.forEach(drop -> player.getInventory().addItem(drop));
                     }
                 }
             }
@@ -69,7 +68,7 @@ public class UtilCustomEvents {
         new UtilUser(plugin,player).giveXpAndMoney(xp,money,entity);
     }
 
-    public void customEntityDamageByEntityEvent(IEntityBase entity) {
+    public void customEntityDamageByEntityEvent(IEntityBase entity) { // mob v player
         if(!(event instanceof EntityDamageByEntityEvent)) {
             return;
         }
@@ -89,7 +88,7 @@ public class UtilCustomEvents {
         e.setDamage(result);
     }
 
-    public void customEntityDamageByEntityEvent() {
+    public void customEntityDamageByEntityEvent() { // player v entity
         if(!(event instanceof EntityDamageByEntityEvent)) {
             return;
         }
@@ -103,14 +102,7 @@ public class UtilCustomEvents {
         }
         ItemStack usedItem = player.getInventory().getItemInMainHand();
         UtilItemStack uis = new UtilItemStack(plugin,usedItem);
-        double damage;
-        Item item = plugin.getItemManager().getItemFromStack(usedItem);
-        if(item==null) {
-            damage=e.getDamage();
-        } else {
-            damage=item.getBaseDamage();
-        }
-        double result = uis.calculateDamage(damage,((Player) e.getDamager()).getPlayer());
+        double result = uis.calculateDamage(1,((Player) e.getDamager()).getPlayer())-1;
         if(e.getEntity() instanceof Player) {
             result=getResultFromArmor(result,((Player) e.getEntity()));
         }
@@ -120,14 +112,16 @@ public class UtilCustomEvents {
     private double getResultFromArmor(double init, Player player) {
         double result=init;
         for(ItemStack armor : player.getInventory().getArmorContents()) {
-            Item armorItem = plugin.getItemManager().getItemFromStack(armor);
-            if(armorItem==null) {
+            if(armor==null) {
                 continue;
             }
-            if(armorItem.getType().equals(Item.Type.ARMOR)) {
-                IArmor iArmor = (IArmor) armorItem;
-                result-=iArmor.baseProtection();
-                result*=iArmor.damageMultiplier();
+            Item armorItem = plugin.getItemManager().getItemFromStack(armor);
+            if(armorItem!=null) {
+                if(armorItem.getType().equals(Item.Type.ARMOR)) {
+                    IArmor iArmor = (IArmor) armorItem;
+                    result-=iArmor.baseProtection();
+                    result*=iArmor.damageMultiplier();
+                }
             }
             if(!armor.hasItemMeta()) {
                 continue;
@@ -137,10 +131,14 @@ public class UtilCustomEvents {
             }
             UtilItemStack uis = new UtilItemStack(plugin,armor);
             AtomicDouble atomicDouble = new AtomicDouble(1);
-            uis.getCustomEnchants().forEach(enchant -> atomicDouble.set(atomicDouble.get()*enchant.getDamageMultiplier(armor.getItemMeta().getEnchantLevel(enchant))));
+            HashSet<Enchant> customEnchants=uis.getCustomEnchants();
+            customEnchants.forEach(enchant -> atomicDouble.set(atomicDouble.get()*enchant.getDamageMultiplier(armor.getItemMeta().getEnchantLevel(enchant))));
             result*=atomicDouble.get();
-            uis.getCustomEnchants().forEach(enchant -> atomicDouble.set(atomicDouble.get()*enchant.getDamageProtection(armor.getItemMeta().getEnchantLevel(enchant))));
-            result-=atomicDouble.get();
+            AtomicDouble atomicProt = new AtomicDouble(0);
+            customEnchants.forEach(enchant -> {
+                atomicProt.set(atomicProt.get()+enchant.getDamageProtection(armor.getItemMeta().getEnchantLevel(enchant)));
+            });
+            result-=atomicProt.get();
         }
         return result;
     }

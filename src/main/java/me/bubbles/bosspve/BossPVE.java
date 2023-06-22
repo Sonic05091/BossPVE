@@ -11,6 +11,7 @@ import me.bubbles.bosspve.stages.Stage;
 import me.bubbles.bosspve.stages.StageManager;
 import me.bubbles.bosspve.ticker.Ticker;
 import me.bubbles.bosspve.ticker.TimerManager;
+import me.bubbles.bosspve.util.PAPI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -57,11 +58,15 @@ public final class BossPVE extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
+        if(!setupPAPI()) {
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
         timerManager=new TimerManager(this);
         eventManager=new EventManager(this);
         itemManager=new ItemManager(this);
         entityManager=new EntityManager(this);
-        stageManager=new StageManager(this, configManager.getConfig("stages.yml"));
+        initStageManager();
         commandManager=new CommandManager(this);
         mySQL=new MySQL(configManager.getConfig("config.yml").getFileConfiguration().getConfigurationSection("mySQL"));
 
@@ -82,6 +87,10 @@ public final class BossPVE extends JavaPlugin {
     public void reload() {
         getStageManager().setSpawningAll(false);
         getConfigManager().reloadAll();
+        initStageManager();
+    }
+
+    public void initStageManager() {
         if(stageManager!=null) {
             stageManager.getStages().forEach(stage -> stage.setEnabled(false));
             stageManager.getStages().forEach(Stage::killAll);
@@ -118,6 +127,14 @@ public final class BossPVE extends JavaPlugin {
             return false;
         }
         return true;
+    }
+
+    private boolean setupPAPI() {
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new PAPI(this).register();
+            return true;
+        }
+        return false;
     }
 
     // GETTERS

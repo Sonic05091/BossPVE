@@ -28,7 +28,7 @@ public class SkeletonSword extends Item {
 
     @Override
     public double getBaseDamage() {
-        return 9.5;
+        return 10;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package me.bubbles.bosspve.items.enchants;
 
-import me.bubbles.bosspve.items.manager.Enchant;
+import me.bubbles.bosspve.items.manager.enchant.Enchant;
 import me.bubbles.bosspve.items.manager.Item;
 import me.bubbles.bosspve.items.manager.ItemManager;
 import me.bubbles.bosspve.util.UtilUser;
@@ -21,6 +21,7 @@ public class Throw extends Enchant {
 
     public Throw(ItemManager itemManager) {
         super(itemManager, "Throw", Material.LIGHTNING_ROD, 10, 450);
+        getEnchantItem().setDisplayName("&c&lThrow");
         allowedTypes.addAll(
                 List.of(
                         Item.Type.WEAPON,
@@ -57,7 +58,7 @@ public class Throw extends Enchant {
                 return;
             }
             Entity entity = e.getRightClicked();
-            Vector up = new Vector(0,2*Math.min(level,4),0);
+            Vector up = new Vector(entity.getVelocity().getX(),2*Math.min(level,4),entity.getVelocity().getZ());
             entity.setVelocity(up);
             entity.setLastDamageCause(new EntityDamageByEntityEvent(player , entity, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1.5*level));
             restartCoolDown(player);

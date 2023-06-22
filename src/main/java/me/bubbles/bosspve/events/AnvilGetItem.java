@@ -2,6 +2,7 @@ package me.bubbles.bosspve.events;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.events.manager.Event;
+import me.bubbles.bosspve.items.manager.Item;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -9,9 +10,9 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
 
-public class AnvilEnchantedBook extends Event {
+public class AnvilGetItem extends Event {
 
-    public AnvilEnchantedBook(BossPVE plugin) {
+    public AnvilGetItem(BossPVE plugin) {
         super(plugin, InventoryClickEvent.class);
     }
 
@@ -31,11 +32,20 @@ public class AnvilEnchantedBook extends Event {
         ItemStack firstSlot = inventory.getContents()[0];
         ItemStack secondSlot = inventory.getContents()[1];
         ItemStack thirdSlot = e.getCurrentItem();
-        if(firstSlot==null||secondSlot==null||thirdSlot==null) {
+        /*if(firstSlot==null||secondSlot==null||thirdSlot==null) {
+            return;
+        }*/
+        if(firstSlot==null||thirdSlot==null) {
             return;
         }
-        if(!(secondSlot.getType().equals(Material.ENCHANTED_BOOK))) {
+        /*if(!(secondSlot.getType().equals(Material.ENCHANTED_BOOK))) {
             return;
+        }*/
+        Item item = plugin.getItemManager().getItemFromStack(secondSlot);
+        if(item!=null) {
+            if(item.getType().equals(Item.Type.ENCHANT)) {
+                return;
+            }
         }
         Player player = (Player) e.getWhoClicked();
         player.getInventory().addItem(thirdSlot);

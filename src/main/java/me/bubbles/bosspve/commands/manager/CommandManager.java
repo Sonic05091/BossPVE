@@ -2,8 +2,9 @@ package me.bubbles.bosspve.commands.manager;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.commands.Data;
-import me.bubbles.bosspve.commands.Spawn;
+import me.bubbles.bosspve.commands.other.Spawn;
 import me.bubbles.bosspve.commands.base.BaseCommand;
+import me.bubbles.bosspve.commands.other.Vote;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,7 +24,8 @@ public class CommandManager {
         addCommand(
                 new BaseCommand(plugin),
                 new Data(plugin),
-                new Spawn(plugin)
+                new Spawn(plugin),
+                new Vote(plugin)
         );
     }
 

@@ -2,7 +2,6 @@ package me.bubbles.bosspve.events.manager;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.events.*;
-import org.bukkit.entity.Player;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -19,19 +18,20 @@ public class EventManager {
         Collections.addAll(this.events, // REGISTER EVENT HANDLERS
                 new Join(plugin),
                 new Leave(plugin),
-                new AnvilEnchantedBook(plugin),
+                new AnvilGetItem(plugin),
                 new UpdateAnvil(plugin),
                 new PlayerDmgOther(plugin),
                 new UpdateLore(plugin),
                 new PreventSpawning(plugin),
                 new MaxFood(plugin),
-                new Respawn(plugin)
+                new Respawn(plugin),
+                new AnvilNameChange(plugin)
         );
     }
 
     public void onEvent(org.bukkit.event.Event event) {
-        plugin.getItemManager().onEvent(event);
         plugin.getEntityManager().onEvent(event);
+        plugin.getItemManager().onEvent(event);
         events.stream()
                 .filter(eventObj -> eventObj.getEvent().equals(event.getClass()))
                 .collect(Collectors.toList())

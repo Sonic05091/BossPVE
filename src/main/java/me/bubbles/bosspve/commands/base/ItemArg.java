@@ -2,14 +2,18 @@ package me.bubbles.bosspve.commands.base;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.commands.manager.Argument;
+import me.bubbles.bosspve.items.manager.enchant.EnchantItem;
 import me.bubbles.bosspve.items.manager.Item;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 public class ItemArg extends Argument {
 
     public ItemArg(BossPVE plugin, int index) {
-        super(plugin, "item", "item <item>", index);
+        super(plugin, "giveitem", "giveitem <player> <item> [level]", index);
         setPermission("admin");
     }
 
@@ -19,30 +23,52 @@ public class ItemArg extends Argument {
         if(!permissionCheck()) {
             return;
         }
-        if(args.length==relativeIndex) { // SENDS NO ARGS
+        if(args.length<=relativeIndex+1) { // DOESNT SEND ENOUGH ARGS
             utilSender.sendMessage(getItemsList());
+            utilSender.sendMessage(getArgsMessage());
             return;
         }
-        if(!utilSender.isPlayer()) {
-            utilSender.sendMessage("%prefix% %primary%You must be in game to do this.");
+        Player player = Bukkit.getPlayer(args[relativeIndex]);
+        if(player==null) {
+            utilSender.sendMessage("%prefix% %primary%Could not find player.");
             return;
         }
-        if(utilSender.getPlayer().getInventory().firstEmpty()==-1) {
-            utilSender.sendMessage("%prefix% %primary%Your inventory is full!");
-            return;
-        }
-        Item item = plugin.getItemManager().getItemByName(args[relativeIndex]);
+        Item item = plugin.getItemManager().getItemByName(args[relativeIndex+1]);
         if(item==null) {
-            utilSender.sendMessage("%prefix% %primary%Item %secondary%"+args[relativeIndex]+"%primary% does not exist.");
+            utilSender.sendMessage("%prefix% %primary%Item %secondary%"+args[relativeIndex+1]+"%primary% does not exist.");
             return;
         }
-        PlayerInventory inventory = utilSender.getPlayer().getInventory();
-        if(inventory.getItem(inventory.getHeldItemSlot())==null) {
-            inventory.setItem(inventory.getHeldItemSlot(),item.nmsAsItemStack());
-        }else{
-            inventory.setItem(inventory.firstEmpty(),item.nmsAsItemStack());
+        ItemStack result = null;
+        if(item instanceof EnchantItem) {
+            if(args.length>=relativeIndex+2) {
+                EnchantItem enchantItem = (EnchantItem) item;
+                int level;
+                try {
+                    level=Integer.parseInt(args[relativeIndex+2]);
+                } catch(NumberFormatException | IndexOutOfBoundsException e) {
+                    level=-1;
+                }
+                if(enchantItem.getEnchant().getMaxLevel()>=level&&level>0) {
+                    result=enchantItem.getAtLevel(level);
+                }else{
+                    result=enchantItem.nmsAsItemStack();
+                }
+            }
         }
-        utilSender.getPlayer().getInventory().setContents(inventory.getContents());
+        if(result==null) {
+            result=item.nmsAsItemStack();
+        }
+        PlayerInventory inventory = player.getInventory();
+        if(inventory.firstEmpty()!=-1) {
+            if(inventory.getItem(inventory.getHeldItemSlot())==null) {
+                inventory.setItem(inventory.getHeldItemSlot(),result);
+            }else{
+                inventory.setItem(inventory.firstEmpty(),result);
+            }
+            player.getInventory().setContents(inventory.getContents());
+        } else {
+            player.getWorld().dropItem(player.getLocation(),result);
+        }
         utilSender.sendMessage("%prefix% %primary%Item %secondary%"+item.getNBTIdentifier()+"%primary% has been given.");
     }
 

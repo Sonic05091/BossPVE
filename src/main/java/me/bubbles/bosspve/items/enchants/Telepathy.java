@@ -1,6 +1,6 @@
 package me.bubbles.bosspve.items.enchants;
 
-import me.bubbles.bosspve.items.manager.Enchant;
+import me.bubbles.bosspve.items.manager.enchant.Enchant;
 import me.bubbles.bosspve.items.manager.Item;
 import me.bubbles.bosspve.items.manager.ItemManager;
 import org.bukkit.Material;

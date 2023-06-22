@@ -36,11 +36,11 @@ public class BalanceArg extends Argument {
         if(!utilSender.hasPermission("bosspve.balance.other")) {
             utilSender.sendMessage("%prefix% %primary%You do not have permission to do that.");
         }
-        if(!player.hasPlayedBefore()) {
+        if(!player.hasPlayedBefore()&&player.getPlayer()==null) {
             utilSender.sendMessage("%prefix% %primary%Could not find player %secondary%"+args[relativeIndex]+"%primary%.");
             return;
         }
-        utilSender.sendMessage("%prefix% %secondary%"+player.getName()+"'s %primary%xp is %secondary%$"+plugin.getEconomy().getBalance(player)+"%primary%.");
+        utilSender.sendMessage("%prefix% %secondary%"+player.getName()+"'s %primary%balance is %secondary%$"+plugin.getEconomy().getBalance(player)+"%primary%.");
     }
 
 }

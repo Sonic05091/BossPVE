@@ -1,6 +1,6 @@
 package me.bubbles.bosspve.items.enchants;
 
-import me.bubbles.bosspve.items.manager.Enchant;
+import me.bubbles.bosspve.items.manager.enchant.Enchant;
 import me.bubbles.bosspve.items.manager.Item;
 import me.bubbles.bosspve.items.manager.ItemManager;
 import org.bukkit.Material;
@@ -22,7 +22,7 @@ public class Resistance extends Enchant {
 
     @Override
     public double getDamageProtection(int level) {
-        return 1.0/(level*1.1);
+        return level*1.1;
     }
 
     @Override

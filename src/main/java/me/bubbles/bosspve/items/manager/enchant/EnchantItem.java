@@ -1,6 +1,7 @@
-package me.bubbles.bosspve.items.manager;
+package me.bubbles.bosspve.items.manager.enchant;
 
 import me.bubbles.bosspve.BossPVE;
+import me.bubbles.bosspve.items.manager.Item;
 import me.bubbles.bosspve.util.UtilItemStack;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -88,7 +89,6 @@ public class EnchantItem extends Item {
             inventory.setItem(1,null);
             inventory.setItem(2,null);
         }
-
     }
 
     public ItemStack getAtLevel(int level) {
@@ -100,6 +100,10 @@ public class EnchantItem extends Item {
         itemMeta.setLore(new UtilItemStack(plugin,result).getUpdatedLore());
         result.setItemMeta(itemMeta);
         return result;
+    }
+
+    public Enchant getEnchant() {
+        return enchant;
     }
 
 }

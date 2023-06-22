@@ -2,12 +2,13 @@ package me.bubbles.bosspve.entities;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.entities.manager.IEntityBase;
-import me.bubbles.bosspve.items.manager.EnchantItem;
+import me.bubbles.bosspve.items.manager.enchant.EnchantItem;
 import me.bubbles.bosspve.util.UtilChances;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Vindicator;
 import org.bukkit.Bukkit;
@@ -37,6 +38,7 @@ public class Hellbringer extends Vindicator implements IEntityBase {
         setPos(location.getX(),location.getY(),location.getZ());
         setCustomNameVisible(true);
         setCustomName(Component.literal(ChatColor.translateAlternateColorCodes('&',customName)));
+        getAttribute(Attributes.MAX_HEALTH).setBaseValue(getDefaultHp());
         setHealth(getDefaultHp());
         setItemInHand(InteractionHand.MAIN_HAND, CraftItemStack.asNMSCopy(new ItemStack(Material.IRON_AXE)));
         goalSelector.addGoal(0, new MeleeAttackGoal(
@@ -68,10 +70,10 @@ public class Hellbringer extends Vindicator implements IEntityBase {
     @Override
     public List<ItemStack> getDrops() {
         List<ItemStack> result=new ArrayList<>();
-        if(UtilChances.rollTheDice(1,100,2)) {
+        if(UtilChances.rollTheDice(1,300,2)) {
             result.add(plugin.getItemManager().getItemByName("resistanceEnch").nmsAsItemStack());
         }
-        if(UtilChances.rollTheDice(1,100,2)) {
+        if(UtilChances.rollTheDice(1,250,4)) {
             EnchantItem speedEnch = ((EnchantItem) plugin.getItemManager().getItemByName("speedEnch"));
             result.add(speedEnch.getAtLevel(2));
         }
@@ -90,7 +92,7 @@ public class Hellbringer extends Vindicator implements IEntityBase {
 
     @Override
     public int getDefaultHp() {
-        return 15;
+        return 10;
     }
 
     @Override

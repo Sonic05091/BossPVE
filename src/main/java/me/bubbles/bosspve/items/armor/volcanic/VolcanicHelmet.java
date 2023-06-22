@@ -1,7 +1,9 @@
-package me.bubbles.bosspve.items.armor.oger;
+package me.bubbles.bosspve.items.armor.volcanic;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.items.manager.armor.Armor;
+import me.bubbles.bosspve.items.manager.armor.IArmor;
+import me.bubbles.bosspve.items.manager.Item;
 import me.bubbles.bosspve.util.UtilItemStack;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -11,14 +13,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
-public class OgreHelmet extends Armor {
+public class VolcanicHelmet extends Armor {
 
-    public OgreHelmet(BossPVE plugin) {
-        super(plugin, Material.LEATHER_HELMET, "ogreHelmet", Type.ARMOR);
+    public VolcanicHelmet(BossPVE plugin) {
+        super(plugin, Material.LEATHER_HELMET, "volcanicHelmet", Type.ARMOR);
         ItemStack itemStack = nmsAsItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
-                "&3&lOgre's Helmet"
+                "&6&lVolcanic Helmet"
         ));
         itemMeta.setLore(new UtilItemStack(plugin, itemStack).getUpdatedLore());
         itemMeta.setUnbreakable(true);
@@ -26,14 +28,14 @@ public class OgreHelmet extends Armor {
         itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         itemMeta.addItemFlags(ItemFlag.HIDE_DYE);
         LeatherArmorMeta laMeta = (LeatherArmorMeta) itemMeta;
-        laMeta.setColor(Color.LIME);
+        laMeta.setColor(Color.ORANGE);
         itemStack.setItemMeta(itemMeta);
         setNMSStack(itemStack);
     }
 
     @Override
     public int baseProtection() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -43,7 +45,7 @@ public class OgreHelmet extends Armor {
 
     @Override
     public String getDescription() {
-        return "Helmet from an Ogre";
+        return "Helmet from a Volcono";
     }
 
 }

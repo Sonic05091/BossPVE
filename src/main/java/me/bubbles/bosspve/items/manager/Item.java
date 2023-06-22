@@ -121,6 +121,10 @@ public class Item {
 
     }
 
+    public void onTick() {
+
+    }
+
     public boolean isInInventory(Player player) {
         for(ItemStack itemStack : player.getInventory().getContents()) {
             if(equals(itemStack)) {

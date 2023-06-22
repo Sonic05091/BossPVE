@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class MySQL {
@@ -112,6 +113,32 @@ public class MySQL {
         } catch (Exception exc) {
             exc.printStackTrace();
         }
+    }
+
+    public ArrayList<UUID> sortByXP() {
+        ArrayList<UUID> result = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM User_Data ORDER BY xp DESC");
+            ResultSet resultSet = statement.executeQuery();
+            while(resultSet.next()) {
+                result.add(UUID.fromString(resultSet.getString("uuid")));
+            }
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+        return result;
+    }
+
+    public int getPosition(UUID uuid) {
+        ArrayList<UUID> list = sortByXP();
+        if(list.isEmpty()) {
+            return -1;
+        }
+        int i=1;
+        while(!list.get(i-1).equals(uuid)) {
+            i++;
+        }
+        return i;
     }
 
     public enum Columns {

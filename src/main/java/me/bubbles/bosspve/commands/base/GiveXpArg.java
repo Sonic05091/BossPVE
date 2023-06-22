@@ -25,7 +25,7 @@ public class GiveXpArg extends Argument {
             return;
         }
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[relativeIndex]);
-        if(!player.hasPlayedBefore()) {
+        if(!player.hasPlayedBefore()&&player.getPlayer()==null) {
             utilSender.sendMessage("%prefix% %primary%Could not find player.");
             return;
         }

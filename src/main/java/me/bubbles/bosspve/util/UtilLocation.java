@@ -1,42 +1,11 @@
-package me.bubbles.bosspve.commands;
+package me.bubbles.bosspve.util;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.commands.manager.Command;
 import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
 
-public class Spawn extends Command {
+public class UtilLocation {
 
-    public Spawn(BossPVE plugin) {
-        super(plugin, "spawn");
-        setPermission("spawn");
-    }
-
-    @Override
-    public void run(CommandSender sender, String[] args) {
-        super.run(sender, args);
-        if(!permissionCheck()) {
-            return;
-        }
-        if(!utilSender.isPlayer()) {
-            utilSender.sendMessage("%prefix% %primary%You must be in game to do that!");
-            return;
-        }
-        if(args.length==index+1) { // 1 arg
-            if(utilSender.hasPermission("setspawn")) {
-                if(args[index].equalsIgnoreCase("set")) {
-                    plugin.getConfigManager().getConfig("config.yml").getFileConfiguration().set("spawn",asLocation(utilSender.getPlayer().getLocation()));
-                    utilSender.sendMessage("%prefix% %primary%Spawn has been set.");
-                    plugin.getConfigManager().saveAll();
-                    return;
-                }
-            }
-        }
-        utilSender.sendMessage("%prefix% %primary%Teleporting to spawn.");
-        utilSender.getPlayer().teleport(getLocation(plugin.getConfigManager().getConfig("config.yml").getFileConfiguration().getString("spawn")));
-    }
-
-    private Location getLocation(String value) {
+    public static Location toLocation(BossPVE plugin, String value) {
         String[] values = value.split(",");
         Location location;
         if(values.length==4) {
@@ -61,7 +30,7 @@ public class Spawn extends Command {
         return location;
     }
 
-    private String asLocation(Location location) {
+    public static String asLocationString(Location location) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(location.getWorld().getName());
         stringBuilder.append(",");

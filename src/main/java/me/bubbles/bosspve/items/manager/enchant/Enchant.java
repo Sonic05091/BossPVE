@@ -1,6 +1,8 @@
-package me.bubbles.bosspve.items.manager;
+package me.bubbles.bosspve.items.manager.enchant;
 
 import me.bubbles.bosspve.BossPVE;
+import me.bubbles.bosspve.items.manager.Item;
+import me.bubbles.bosspve.items.manager.ItemManager;
 import me.bubbles.bosspve.ticker.PlayerTimerManager;
 import me.bubbles.bosspve.ticker.Timer;
 import org.bukkit.Bukkit;

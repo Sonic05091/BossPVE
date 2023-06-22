@@ -13,7 +13,9 @@ public class UtilPlayerMessage {
         this.plugin=plugin;
     }
 
-    public void sendMessage(String string) {
+    public void sendMessage(
+            //MessageType type,
+            String string) {
         player.sendMessage(new UtilString(plugin).colorFillPlaceholders(string));
     }
 

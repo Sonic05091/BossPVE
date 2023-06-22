@@ -2,7 +2,7 @@ name: BossPVE
 version: '${project.version}'
 main: me.bubbles.bosspve.BossPVE
 api-version: '1.20'
-depend: [Vault, Multiverse-Core]
+depend: [Vault, Multiverse-Core, PlaceholderAPI]
 commands:
   bosspve:
     usage: /<command>
@@ -28,3 +28,6 @@ commands:
   spawn:
     usage: /<command>
     description: Teleport to spawn
+  vote:
+    usage: /<command>
+    description: Get vote links

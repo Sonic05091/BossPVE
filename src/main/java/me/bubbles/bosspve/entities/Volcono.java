@@ -4,12 +4,13 @@ import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.entities.manager.IEntityBase;
 import me.bubbles.bosspve.util.UtilChances;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.MagmaCube;
+import net.minecraft.world.entity.player.Player;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -20,40 +21,32 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Simpleton extends Skeleton implements IEntityBase {
+public class Volcono extends MagmaCube implements IEntityBase {
 
-    private final String customName = ChatColor.translateAlternateColorCodes('&',"&7&lSimpleton");
 
+    private final String customName = ChatColor.translateAlternateColorCodes('&',"&6&lVolcono");
     private BossPVE plugin;
 
-    public Simpleton(BossPVE plugin) {
+    public Volcono(BossPVE plugin) {
         this(plugin, ((CraftWorld) Bukkit.getWorlds().get(0)).getHandle().getWorld().getSpawnLocation());
     }
 
-    public Simpleton(BossPVE plugin, Location location) {
-        super(EntityType.SKELETON, ((CraftWorld) plugin.getMultiverseCore().getMVWorldManager().getMVWorld(location.getWorld()).getCBWorld()).getHandle());
+    public Volcono(BossPVE plugin, Location location) {
+        super(EntityType.MAGMA_CUBE, ((CraftWorld) plugin.getMultiverseCore().getMVWorldManager().getMVWorld(location.getWorld()).getCBWorld()).getHandle());
         this.plugin=plugin;
         setPos(location.getX(),location.getY(),location.getZ());
         setCustomNameVisible(true);
         setCustomName(Component.literal(ChatColor.translateAlternateColorCodes('&',customName)));
         getAttribute(Attributes.MAX_HEALTH).setBaseValue(getDefaultHp());
+        getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(getDamage());
         setHealth(getDefaultHp());
-        goalSelector.addGoal(0, new RangedBowAttackGoal<>(
-                this, 1, 1, 5
+        setSize(5,false);
+        goalSelector.addGoal(0, new NearestAttackableTargetGoal<>(
+                this, Player.class, false
         ));
-        goalSelector.addGoal(0, new MeleeAttackGoal(
-                this, 1, false
-        ));
-        goalSelector.addGoal(1, new PanicGoal(
-                this, 1.5D
-        ));
-        goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(
-                this, 0.6D
-        ));
-        goalSelector.addGoal(3, new RandomLookAroundGoal(
+        goalSelector.addGoal(4, new RandomLookAroundGoal(
                 this
         ));
-        setItemInHand(InteractionHand.MAIN_HAND,plugin.getItemManager().getItemByName("SkeletonSword").getNMSStack());
         if(getDrops()!=null) {
             drops.clear();
             drops.addAll(getDrops());
@@ -63,7 +56,7 @@ public class Simpleton extends Skeleton implements IEntityBase {
 
     @Override
     public Entity spawn(Location location) {
-        Entity entity = new Simpleton(plugin,location);
+        Entity entity = new Volcono(plugin,location);
         ((CraftWorld) location.getWorld()).addEntityToWorld(entity, CreatureSpawnEvent.SpawnReason.CUSTOM);
         return entity;
     }
@@ -71,31 +64,42 @@ public class Simpleton extends Skeleton implements IEntityBase {
     @Override
     public List<ItemStack> getDrops() {
         List<ItemStack> result=new ArrayList<>();
-        if(UtilChances.rollTheDice(1,100,2)) {
-            result.add(plugin.getItemManager().getItemByName("telepathyEnch").nmsAsItemStack());
+        if(UtilChances.rollTheDice(1,600,1)) {
+            result.add(plugin.getItemManager().getItemByName("volcanictear").nmsAsItemStack());
         }
-        if(UtilChances.rollTheDice(1,200,2)) {
-            result.add(plugin.getItemManager().getItemByName("speedEnch").nmsAsItemStack());
+        if(UtilChances.rollTheDice(1,300,1)) {
+            result.add(plugin.getItemManager().getItemByName("volcanicHelmet").nmsAsItemStack());
         }
-        if(UtilChances.rollTheDice(1,150,1)) {
-            result.add(plugin.getItemManager().getItemByName("skeletonSword").nmsAsItemStack());
+        if(UtilChances.rollTheDice(1,400,1)) {
+            result.add(plugin.getItemManager().getItemByName("volcanicChestplate").nmsAsItemStack());
+        }
+        if(UtilChances.rollTheDice(1,350,1)) {
+            result.add(plugin.getItemManager().getItemByName("volcanicPants").nmsAsItemStack());
+        }
+        if(UtilChances.rollTheDice(1,300,1)) {
+            result.add(plugin.getItemManager().getItemByName("volcanicBoots").nmsAsItemStack());
         }
         return result;
     }
 
     @Override
     public double getMoney() {
-        return 0.5;
+        return 15;
     }
 
     @Override
     public int getXp() {
-        return 2;
+        return 6;
     }
 
     @Override
     public int getDefaultHp() {
-        return 5;
+        return 30;
+    }
+
+    @Override
+    public int getDamage() {
+        return 23;
     }
 
     @Override
@@ -105,12 +109,7 @@ public class Simpleton extends Skeleton implements IEntityBase {
 
     @Override
     public String getNBTIdentifier() {
-        return "simpleton";
-    }
-
-    @Override
-    public int getDamage() {
-        return 2;
+        return "volcono";
     }
 
 }

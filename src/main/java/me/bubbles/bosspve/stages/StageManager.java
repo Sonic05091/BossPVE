@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 
 public class StageManager {
@@ -67,6 +69,19 @@ public class StageManager {
 
     public boolean inAStage(Player player) {
         return getStage(player.getLocation())!=null;
+    }
+
+    public Stage getHighestAllowedStage(Player player) {
+        AtomicInteger ceiling= new AtomicInteger(0);
+        AtomicReference<Stage> result = new AtomicReference<>(null);
+        stageList.stream().filter(stage -> stage.isAllowed(player)).forEach(stage -> {
+            if(stage.getLevelRequirement()>=ceiling.get()) {
+                ceiling.set(stage.getLevelRequirement());
+                result.set(stage);
+                return;
+            }
+        });
+        return result.get();
     }
 
 }

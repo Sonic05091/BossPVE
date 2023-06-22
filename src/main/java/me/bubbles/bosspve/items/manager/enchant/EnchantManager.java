@@ -1,12 +1,8 @@
-package me.bubbles.bosspve.items.manager;
+package me.bubbles.bosspve.items.manager.enchant;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.items.armor.oger.OgreBoots;
-import me.bubbles.bosspve.items.enchants.Resistance;
-import me.bubbles.bosspve.items.enchants.Speed;
-import me.bubbles.bosspve.items.enchants.Telepathy;
-import me.bubbles.bosspve.items.enchants.Throw;
-import me.bubbles.bosspve.items.weapons.SkeletonSword;
+import me.bubbles.bosspve.items.enchants.*;
+import me.bubbles.bosspve.items.manager.ItemManager;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.Event;
 
@@ -26,7 +22,8 @@ public class EnchantManager {
                 new Telepathy(itemManager),
                 new Speed(itemManager),
                 new Throw(itemManager),
-                new Resistance(itemManager)
+                new Resistance(itemManager),
+                new KeyFinder(itemManager)
         );
     }
 
@@ -45,12 +42,8 @@ public class EnchantManager {
     }
 
     public Enchant asCustomEnchant(Enchantment enchantment) {
-        if(!enchants.contains(enchantment)) {
-            return null;
-        }
-        Optional<Enchant> result = enchants.stream().filter(enchant -> enchant==enchantment).findFirst();
+        Optional<Enchant> result = enchants.stream().filter(enchant -> enchant.getKey().equals(enchantment.getKey())).findFirst();
         return result.orElse(null);
     }
-
 
 }

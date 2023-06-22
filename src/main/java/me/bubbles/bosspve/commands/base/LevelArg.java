@@ -39,7 +39,7 @@ public class LevelArg extends Argument {
             utilSender.sendMessage("%prefix% %primary%You do not have permission to do that.");
             return;
         }
-        if(!player.hasPlayedBefore()) {
+        if(!player.hasPlayedBefore()&&player.getPlayer()==null) {
             utilSender.sendMessage("%prefix% %primary%Could not find player %secondary%"+args[relativeIndex]+"%primary%.");
             return;
         }

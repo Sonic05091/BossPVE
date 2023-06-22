@@ -17,6 +17,7 @@ public class BaseCommand extends Command {
                 new BalanceArg(plugin, index),
                 new ItemArg(plugin, index),
                 new SummonArg(plugin, index),
+                new AddSpawnArg(plugin, index),
                 new ReloadArg(plugin, index)
         );
     }

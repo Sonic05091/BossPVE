@@ -1,8 +1,7 @@
 package me.bubbles.bosspve.util;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.items.manager.Enchant;
-import me.bubbles.bosspve.items.manager.IArmor;
+import me.bubbles.bosspve.items.manager.enchant.Enchant;
 import me.bubbles.bosspve.items.manager.Item;
 import me.bubbles.bosspve.stages.Stage;
 import org.bukkit.ChatColor;
@@ -17,8 +16,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class UtilItemStack {
 
@@ -64,7 +61,6 @@ public class UtilItemStack {
                     if(enchantsAmt<5) {
                         if(enchant.getDescription()!=null) {
                             lore.add(ChatColor.translateAlternateColorCodes('&',"&7"+enchant.getDescription()));
-
                         }
                     }
                     cont=false;
@@ -240,6 +236,9 @@ public class UtilItemStack {
             return init;
         }
         Item item = plugin.getItemManager().getItemFromStack(itemStack);
+        if(item==null&&getCustomEnchants().size()==0) {
+            return init;
+        }
         if(item!=null) {
             if(!item.allowUsage(player)) {
                 return result;
@@ -265,8 +264,13 @@ public class UtilItemStack {
             return new HashSet<>();
         }
         HashSet<Enchant> result=new HashSet<>();
-        itemStack.getItemMeta().getEnchants().keySet().stream()
-                .filter(enchantment -> enchantment instanceof Enchant).collect(Collectors.toList()).forEach(enchantment -> result.add((Enchant) enchantment));
+        itemStack.getItemMeta().getEnchants().keySet()
+                .forEach(enchantment -> {
+                    Enchant customEnchant = plugin.getItemManager().getEnchantManager().asCustomEnchant(enchantment);
+                    if(customEnchant!=null) {
+                        result.add(customEnchant);
+                    }
+                });
         return result;
     }
 

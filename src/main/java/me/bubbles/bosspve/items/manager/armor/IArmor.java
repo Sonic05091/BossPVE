@@ -1,4 +1,4 @@
-package me.bubbles.bosspve.items.manager;
+package me.bubbles.bosspve.items.manager.armor;
 
 public interface IArmor {
 

@@ -3,6 +3,7 @@ package me.bubbles.bosspve.stages;
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.entities.manager.IEntityBase;
 import me.bubbles.bosspve.ticker.Timer;
+import me.bubbles.bosspve.util.UtilLocation;
 import me.bubbles.bosspve.util.UtilUserData;
 import net.minecraft.world.entity.Entity;
 import org.bukkit.Bukkit;
@@ -60,9 +61,9 @@ public class Stage extends Timer {
         }
         this.entityList=new HashSet<>();
         this.spawnedEntities=new HashSet<>();
-        this.spawn=getLocation(section.getString("spawn"));
-        this.pos1=getLocation(section.getString("pos1"));
-        this.pos2=getLocation(section.getString("pos2"));
+        this.spawn=UtilLocation.toLocation(plugin,section.getString("spawn"));
+        this.pos1=UtilLocation.toLocation(plugin,section.getString("pos1"));
+        this.pos2=UtilLocation.toLocation(plugin,section.getString("pos2"));
         this.xpMultiplier=section.getDouble("xpMultiplier");
         this.moneyMultiplier=section.getDouble("moneyMultiplier");
         this.maxEntities=section.getInt("maxEntities");
@@ -91,6 +92,9 @@ public class Stage extends Timer {
 
     private boolean loadEntities() {
         ConfigurationSection entities = section.getConfigurationSection("entities");
+        if(entities==null) {
+            return false;
+        }
         boolean result=false;
         for(String entityID : entities.getKeys(false)) {
             String entityKey = entities.getConfigurationSection(entityID).getString("entity");
@@ -114,7 +118,7 @@ public class Stage extends Timer {
             StageEntity stageEntity = new StageEntity(
                     this,
                     entityBase,
-                    getLocation(entitySection.getString("pos")),
+                    UtilLocation.toLocation(plugin,entitySection.getString("pos")),
                     entitySection.getInt("interval")
             );
             entityList.add(stageEntity);
@@ -193,37 +197,16 @@ public class Stage extends Timer {
         return spawn;
     }
 
-    private Location getLocation(String value) {
-        String[] values = value.split(",");
-        Location location;
-        if(values.length==4) {
-            location=new Location(
-                    plugin.getMultiverseCore().getMVWorldManager().getMVWorld(values[0]).getCBWorld(),
-                    Double.parseDouble(values[1]),
-                    Double.parseDouble(values[2]),
-                    Double.parseDouble(values[3])
-                    );
-        } else if (values.length==6) {
-            location=new Location(
-                    plugin.getMultiverseCore().getMVWorldManager().getMVWorld(values[0]).getCBWorld(),
-                    Double.parseDouble(values[1]),
-                    Double.parseDouble(values[2]),
-                    Double.parseDouble(values[3]),
-                    Float.parseFloat(values[4]),
-                    Float.parseFloat(values[5])
-            );
-        } else {
-            location=null;
-        }
-        return location;
-    }
-
     public void spawnEntity(Entity entity) {
         spawnedEntities.add(entity);
     }
 
     public boolean allowSpawn() {
         return spawnedEntities.stream().filter(Entity::isAlive).collect(Collectors.toList()).size()<maxEntities;
+    }
+
+    public ConfigurationSection getConfigurationSection() {
+        return section;
     }
 
 }
