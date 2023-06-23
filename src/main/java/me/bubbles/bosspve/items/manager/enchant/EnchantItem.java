@@ -13,6 +13,10 @@ import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.HashSet;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
+
 public class EnchantItem extends Item {
 
     private Enchant enchant;
@@ -43,6 +47,9 @@ public class EnchantItem extends Item {
                 return;
             }
             ItemStack firstSlot = e.getInventory().getContents()[0];
+            if(firstSlot==null) {
+                return;
+            }
             ItemStack secondSlot = e.getInventory().getContents()[1];
             if(firstSlot.getAmount()>1) {
                 return;
@@ -50,14 +57,32 @@ public class EnchantItem extends Item {
             if(secondSlot.getAmount()>1) {
                 return;
             }
+            UtilItemStack uis = new UtilItemStack(plugin,firstSlot);
+            UtilItemStack uis2 = new UtilItemStack(plugin,secondSlot);
             Item customFirst = plugin.getItemManager().getItemFromStack(firstSlot);
+            Item customSecond = plugin.getItemManager().getItemFromStack(secondSlot);
+            HashSet<Enchant> firstCustomEnchants=uis.getCustomEnchants();
+            HashSet<Enchant> secondCustomEnchants=uis2.getCustomEnchants();
             if(customFirst!=null) {
-                if(!enchant.allowedTypes.contains(customFirst.getType())) {
+                AtomicBoolean allowedCont = new AtomicBoolean(true);
+                if(customSecond!=null) {
+                    if(!customFirst.getType().equals(customSecond.getType())) {
+                        secondCustomEnchants.forEach(enchant1 -> {
+                            if(!enchant1.allowedTypes.contains(customFirst.getType())) {
+                                allowedCont.set(false);
+                            }});
+                    }
+                }
+                if(!allowedCont.get()) {
                     return;
                 }
             }
-            UtilItemStack uiu = new UtilItemStack(plugin,firstSlot);
-            ItemStack result = uiu.enchantItem(secondSlot);
+            if((!firstCustomEnchants.isEmpty()&&(!secondCustomEnchants.isEmpty()))) {
+                if(!anyOverLap(firstCustomEnchants,secondCustomEnchants)) {
+                    return;
+                }
+            }
+            ItemStack result = uis.enchantItem(secondSlot);
             e.getInventory().setItem(2,result);
             result.setAmount(1);
             e.setResult(result);
@@ -104,6 +129,20 @@ public class EnchantItem extends Item {
 
     public Enchant getEnchant() {
         return enchant;
+    }
+
+    private boolean anyOverLap(HashSet<Enchant> first, HashSet<Enchant> second) {
+        AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+        first.forEach(firstEnch -> {
+            second.forEach(secondEnch -> {
+                secondEnch.allowedTypes.forEach(type -> {
+                    if(firstEnch.allowedTypes.contains(type)) {
+                        atomicBoolean.set(true);
+                    }
+                });
+            });
+        });
+        return atomicBoolean.get();
     }
 
 }

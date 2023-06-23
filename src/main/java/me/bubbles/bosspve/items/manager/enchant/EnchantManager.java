@@ -23,7 +23,11 @@ public class EnchantManager {
                 new Speed(itemManager),
                 new Throw(itemManager),
                 new Resistance(itemManager),
-                new KeyFinder(itemManager)
+                new KeyFinder(itemManager),
+                new Grinder(itemManager),
+                new Nuker(itemManager),
+                new Banker(itemManager),
+                new Damager(itemManager)
         );
     }
 

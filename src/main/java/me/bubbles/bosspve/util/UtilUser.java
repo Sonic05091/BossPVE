@@ -22,9 +22,9 @@ public class UtilUser {
         uud.setXp(uud.getXp()+xp);
         if(message) {
             if(level!=uud.getLevel()) {
-                sendMessage("%prefix% %primary%You have level up from %secondary%"+level+"%primary% to %secondary%"+uud.getLevel()+"%primary%.");
+                sendMessage(MessageType.KILL_MESSAGE, "%prefix% %primary%You have level up from %secondary%"+level+"%primary% to %secondary%"+uud.getLevel()+"%primary%.");
             } else {
-                sendMessage("%prefix% %primary%You have gained %secondary%"+xp+"%primary% XP.");
+                sendMessage(MessageType.KILL_MESSAGE, "%prefix% %primary%You have gained %secondary%"+xp+"%primary% XP.");
             }
         }
         mySQL.save(uud);
@@ -36,9 +36,9 @@ public class UtilUser {
         int level=uud.getLevel();
         uud.setXp(uud.getXp()+xp);
         if(level!=uud.getLevel()) {
-            sendMessage("%prefix% %primary%You killed a %secondary%"+entity.getUncoloredName()+"%primary% and level up from %secondary%"+level+"%primary% to %secondary%"+uud.getLevel()+"%primary%.");
+            sendMessage(MessageType.KILL_MESSAGE, "%prefix% %primary%You killed a %secondary%"+entity.getUncoloredName()+"%primary% and level up from %secondary%"+level+"%primary% to %secondary%"+uud.getLevel()+"%primary%.");
         } else {
-            sendMessage("%prefix% %primary%You killed a %secondary%"+entity.getUncoloredName()+"%primary% and gained %secondary%"+xp+"%primary% XP.");
+            sendMessage(MessageType.KILL_MESSAGE, "%prefix% %primary%You killed a %secondary%"+entity.getUncoloredName()+"%primary% and gained %secondary%"+xp+"%primary% XP.");
         }
         mySQL.save(uud);
     }
@@ -49,10 +49,10 @@ public class UtilUser {
         int level=uud.getLevel();
         uud.setXp(uud.getXp()+xp);
         if(level!=uud.getLevel()) {
-            sendMessage("%prefix% %primary%You killed a %secondary%"+entity.getUncoloredName()+"%primary% and gained %secondary%$"+money+
+            sendMessage(MessageType.KILL_MESSAGE, "%prefix% %primary%You killed a %secondary%"+entity.getUncoloredName()+"%primary% and gained %secondary%$"+money+
                     " %primary%and leveled up from %secondary%"+level+"%primary% to %secondary%"+uud.getLevel()+"%primary%.");
         } else {
-            sendMessage("%prefix% %primary%You killed a %secondary%"+entity.getUncoloredName()+"%primary% and gained %secondary%$"+money+"%primary% and %secondary%"+xp+"%primary% XP.");
+            sendMessage(MessageType.KILL_MESSAGE, "%prefix% %primary%You killed a %secondary%"+entity.getUncoloredName()+"%primary% and gained %secondary%$"+money+"%primary% and %secondary%"+xp+"%primary% XP.");
         }
         mySQL.save(uud);
         plugin.getEconomy().depositPlayer(player,money);
@@ -65,18 +65,25 @@ public class UtilUser {
         uud.setXp(uud.getXp()+xp);
         if(message) {
             if(level!=uud.getLevel()) {
-                sendMessage("%prefix% %primary%You gained %secondary%$"+money+
+                sendMessage(MessageType.KILL_MESSAGE, "%prefix% %primary%You gained %secondary%$"+money+
                         " %primary%and leveled up from %secondary%"+level+"%primary% to %secondary%"+uud.getLevel()+"%primary%.");
             } else {
-                sendMessage("%prefix% %primary%You gained %secondary%$"+money+"%primary% and %secondary%"+xp+"%primary% XP.");
+                sendMessage(MessageType.KILL_MESSAGE, "%prefix% %primary%You gained %secondary%$"+money+"%primary% and %secondary%"+xp+"%primary% XP.");
             }
         }
         mySQL.save(uud);
         plugin.getEconomy().depositPlayer(player,money);
     }
 
-    public void sendMessage(String message) {
-        player.sendMessage(new UtilString(plugin).colorFillPlaceholders(message));
+    public void giveMoney(int money, boolean message) {
+        if(message) {
+            sendMessage(MessageType.KILL_MESSAGE, "%prefix% %primary%You gained %secondary%$"+money+"%primary%.");
+        };
+        plugin.getEconomy().depositPlayer(player,money);
+    }
+
+    public void sendMessage(MessageType type, String message) {
+        new UtilPlayerMessage(plugin,player).sendMessage(type, message);
     }
 
 }

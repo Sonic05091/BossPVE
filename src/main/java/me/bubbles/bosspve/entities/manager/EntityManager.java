@@ -22,7 +22,9 @@ public class EntityManager {
                 new Hellbringer(plugin),
                 new Goblin(plugin),
                 new Ferrum(plugin),
-                new Volcono(plugin)
+                new Volcono(plugin),
+                new Protector(plugin),
+                new Ninja(plugin)
         );
     }
 

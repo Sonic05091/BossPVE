@@ -53,7 +53,7 @@ public class Item {
     }
 
     public double getBaseDamage() {
-        return 0;
+        return 1;
     }
 
     public String getDescription() {

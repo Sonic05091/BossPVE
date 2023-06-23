@@ -1,7 +1,11 @@
 package me.bubbles.bosspve.util;
 
 import me.bubbles.bosspve.BossPVE;
+import me.bubbles.bosspve.items.manager.enchant.Enchant;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 public class UtilPlayerMessage {
 
@@ -14,10 +18,19 @@ public class UtilPlayerMessage {
     }
 
     public void sendMessage(
-            //MessageType type,
+            MessageType type,
             String string) {
+        if(type.equals(MessageType.KILL_MESSAGE)) {
+            PersistentDataContainer data = player.getPersistentDataContainer();
+            if(!data.get(new NamespacedKey(plugin,"mobKillMessages"), PersistentDataType.BOOLEAN)) {
+                return;
+            }
+        }
         player.sendMessage(new UtilString(plugin).colorFillPlaceholders(string));
     }
 
+    public void onProc(Enchant enchant) {
+        sendMessage(MessageType.ENCHANT_PROC, "%primary% %secondary%"+enchant.getName()+" %primary%has activated!");
+    }
 
 }

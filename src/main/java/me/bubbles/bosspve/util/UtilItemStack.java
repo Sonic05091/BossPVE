@@ -1,6 +1,7 @@
 package me.bubbles.bosspve.util;
 
 import me.bubbles.bosspve.BossPVE;
+import me.bubbles.bosspve.items.manager.armor.Armor;
 import me.bubbles.bosspve.items.manager.enchant.Enchant;
 import me.bubbles.bosspve.items.manager.Item;
 import me.bubbles.bosspve.stages.Stage;
@@ -58,7 +59,7 @@ public class UtilItemStack {
                     lore.add(ChatColor.translateAlternateColorCodes('&',
                             "&9" + enchantment.getName() + " " + itemStack.getItemMeta().getEnchantLevel(enchantment)
                     ));
-                    if(enchantsAmt<5) {
+                    if(enchantsAmt<=5) {
                         if(enchant.getDescription()!=null) {
                             lore.add(ChatColor.translateAlternateColorCodes('&',"&7"+enchant.getDescription()));
                         }
@@ -85,6 +86,12 @@ public class UtilItemStack {
                 );
                 lore.add(
                         new UtilString(plugin).colorFillPlaceholders("%primary%Money:%secondary% $"+money)
+                );
+            }
+            if(item.getType().equals(Item.Type.ARMOR)) {
+                Armor armor = (Armor) item;
+                lore.add(
+                        new UtilString(plugin).colorFillPlaceholders("%primary%Defence:%secondary% "+armor.baseProtection())
                 );
             }
         }

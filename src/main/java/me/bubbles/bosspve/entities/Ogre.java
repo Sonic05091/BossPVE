@@ -49,6 +49,7 @@ public class Ogre extends ZombieVillager implements IEntityBase {
         goalSelector.addGoal(3, new RandomLookAroundGoal(
                 this
         ));
+        expToDrop=0;
         // AMOR
         setItemSlot(EquipmentSlot.FEET, plugin.getItemManager().getItemByName("ogreBoots").getNMSStack());
         setItemSlot(EquipmentSlot.LEGS, plugin.getItemManager().getItemByName("ogrePants").getNMSStack());

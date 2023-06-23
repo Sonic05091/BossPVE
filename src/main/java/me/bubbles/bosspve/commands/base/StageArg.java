@@ -4,6 +4,7 @@ import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.commands.manager.Argument;
 import me.bubbles.bosspve.stages.Stage;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,21 +31,22 @@ public class StageArg extends Argument {
             utilSender.sendMessage("%prefix% %primary%You must be in game to do this!");
             return;
         }
+        Player player = utilSender.getPlayer();
         if(args.length!=relativeIndex+1) {
-            utilSender.sendMessage("%prefix% %primary%Available stages for you: "+
-                    getAvailableStages()+"\n"+getArgsMessage());
+            Stage stage = plugin.getStageManager().getHighestAllowedStage(player);
+            player.teleport(stage.getSpawn());
             return;
         }
         int stageNum;
         try {
             stageNum=Integer.parseInt(args[relativeIndex]);
         } catch(NumberFormatException e) {
-            utilSender.sendMessage("%prefix% %primary%Could not find stage!");
+            utilSender.sendMessage("%prefix% %primary%Could not find stage!"+"\n%primary%Your stages: "+getAvailableStages());
             return;
         }
         Stage stage = plugin.getStageManager().getStage(stageNum);
         if(stage==null) {
-            utilSender.sendMessage("%prefix% %primary%Could not find stage!");
+            utilSender.sendMessage("%prefix% %primary%Could not find stage!"+"\n%primary%Your stages: "+getAvailableStages());
             return;
         }
         if(!stage.isAllowed(utilSender.getPlayer())) {

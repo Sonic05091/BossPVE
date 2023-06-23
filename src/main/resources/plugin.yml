@@ -14,7 +14,11 @@ commands:
   stage:
     usage: /<command>
     description: Go to a stage
-    aliases: [stages]
+    aliases: [st]
+  stages:
+    usage: /<command>
+    description: Get a list of the stages
+    aliases: [ sts ]
   level:
     usage: /<command>
     description: Check the level of yourself or others

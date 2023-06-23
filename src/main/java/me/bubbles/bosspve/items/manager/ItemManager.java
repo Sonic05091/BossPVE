@@ -1,12 +1,14 @@
 package me.bubbles.bosspve.items.manager;
 
 import me.bubbles.bosspve.BossPVE;
+import me.bubbles.bosspve.items.armor.ninja.NinjaSet;
 import me.bubbles.bosspve.items.armor.oger.*;
 import me.bubbles.bosspve.items.armor.volcanic.*;
 import me.bubbles.bosspve.items.manager.armor.ArmorSet;
 import me.bubbles.bosspve.items.manager.enchant.EnchantManager;
 import me.bubbles.bosspve.items.util.EnchantExtractor;
 import me.bubbles.bosspve.items.util.Extracted;
+import me.bubbles.bosspve.items.weapons.NinjaDagger;
 import me.bubbles.bosspve.items.weapons.SkeletonSword;
 import me.bubbles.bosspve.items.weapons.VolcanicTear;
 import org.bukkit.Bukkit;
@@ -33,12 +35,14 @@ public class ItemManager {
                 new SkeletonSword(plugin),
                 new VolcanicTear(plugin),
                 new EnchantExtractor(plugin),
-                new Extracted(plugin)
+                new Extracted(plugin),
+                new NinjaDagger(plugin)
         );
         // REGISTER ARMOR
         registerArmorSet(
                 new VolcanicSet(plugin),
-                new OgreSet(plugin)
+                new OgreSet(plugin),
+                new NinjaSet(plugin)
         );
     }
 

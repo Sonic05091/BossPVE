@@ -1,10 +1,11 @@
 package me.bubbles.bosspve.items.enchants;
 
-import me.bubbles.bosspve.items.manager.enchant.Enchant;
 import me.bubbles.bosspve.items.manager.Item;
 import me.bubbles.bosspve.items.manager.ItemManager;
+import me.bubbles.bosspve.items.manager.enchant.Enchant;
+import me.bubbles.bosspve.stages.Stage;
 import me.bubbles.bosspve.util.UtilChances;
-import org.bukkit.Bukkit;
+import me.bubbles.bosspve.util.UtilPlayerMessage;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -13,11 +14,11 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class KeyFinder extends Enchant {
+public class Nuker extends Enchant {
 
-    public KeyFinder(ItemManager itemManager) {
-        super(itemManager, "KeyFinder", Material.TRIPWIRE_HOOK, 20);
-        getEnchantItem().setDisplayName("&dKey Finder");
+    public Nuker(ItemManager itemManager) {
+        super(itemManager, "nuker", Material.TNT, 5);
+        getEnchantItem().setDisplayName("&c&lNuker");
         allowedTypes.addAll(
                 List.of(
                         Item.Type.WEAPON
@@ -39,25 +40,18 @@ public class KeyFinder extends Enchant {
             }
             int level = main.getItemMeta().getEnchantLevel(this);
             double addition = level-1*(.25);
-            if(UtilChances.rollTheDice(1,1000,3+addition)) {
-                giveKey(player,"Stage",level);
+            if(!UtilChances.rollTheDice(1,1000,3+addition)) {
+                return;
             }
-            if(UtilChances.rollTheDice(1,2000,1+addition)) {
-                giveKey(player,"Enchant",level);
-            }
-            if(UtilChances.rollTheDice(1,10000,1+addition)) {
-                giveKey(player,"Rank",1);
-            }
+            Stage stage = plugin.getStageManager().getStage(player.getLocation());
+            stage.killAll(player);
+            new UtilPlayerMessage(plugin,player).onProc(this);
         }
-    }
-
-    private void giveKey(Player player, String key, int amt) {
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"cc give v "+key+" "+amt+" "+player.getName());
     }
 
     @Override
     public String getDescription() {
-        return "Chance of getting keys when killing mobs";
+        return "Chance of killing all mobs in current stage";
     }
 
 }

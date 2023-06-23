@@ -12,6 +12,7 @@ import me.bubbles.bosspve.stages.StageManager;
 import me.bubbles.bosspve.ticker.Ticker;
 import me.bubbles.bosspve.ticker.TimerManager;
 import me.bubbles.bosspve.util.PAPI;
+import me.bubbles.bosspve.util.UpdateXP;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -72,6 +73,9 @@ public final class BossPVE extends JavaPlugin {
 
         // Ticker
         ticker=new Ticker(this).setEnabled(true);
+
+        // XP Bar
+        timerManager.addTimer(new UpdateXP(this));
 
     }
 

@@ -1,6 +1,7 @@
 package me.bubbles.bosspve.util;
 
 import me.bubbles.bosspve.BossPVE;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -24,10 +25,10 @@ public class UtilSender {
 
     public void sendMessage(String message) {
         if(isPlayer()) {
-            getPlayer().sendMessage(new  UtilString(plugin).colorFillPlaceholders(message));
+            getPlayer().sendMessage(new UtilString(plugin).colorFillPlaceholders(message));
             return;
         }
-        plugin.getLogger().info("\n"+new UtilString(plugin).colorFillPlaceholders(message));
+        Bukkit.getConsoleSender().sendMessage(new UtilString(plugin).colorFillPlaceholders(message.replace("\n","\n&f")));
     }
 
     public Player getPlayer() {

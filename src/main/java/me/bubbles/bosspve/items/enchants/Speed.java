@@ -18,14 +18,13 @@ public class Speed extends Enchant {
     private Timer timer;
 
     public Speed(ItemManager itemManager) {
-        super(itemManager, "Speed", Material.FEATHER, 15);
+        super(itemManager, "Speed", Material.FEATHER, 20);
         getEnchantItem().setDisplayName("&fSpeed");
         timer=new Timer(plugin,20);
         plugin.getTimerManager().addTimer(timer);
         allowedTypes.addAll(
                 List.of(
-                        Item.Type.WEAPON,
-                        Item.Type.ENCHANT
+                        Item.Type.WEAPON
                 )
         );
     }

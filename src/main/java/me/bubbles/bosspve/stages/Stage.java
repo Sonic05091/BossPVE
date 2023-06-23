@@ -9,8 +9,12 @@ import net.minecraft.world.entity.Entity;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.craftbukkit.v1_20_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_20_R1.entity.CraftEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -90,10 +94,24 @@ public class Stage extends Timer {
         }
     }
 
+    public void killAll(Player player) {
+        Iterator<Entity> iterator = spawnedEntities.iterator();
+        while(iterator.hasNext()) {
+            Entity entity = iterator.next();
+            if(entity.isAlive()) {
+                CraftEntity craftEntity = CraftEntity.getEntity((CraftServer) Bukkit.getServer(), entity);
+                craftEntity
+                        .setLastDamageCause(new EntityDamageByEntityEvent(player, craftEntity, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1000000));
+                entity.kill();
+            }
+            iterator.remove();
+        }
+    }
+
     private boolean loadEntities() {
         ConfigurationSection entities = section.getConfigurationSection("entities");
         if(entities==null) {
-            return false;
+            return true;
         }
         boolean result=false;
         for(String entityID : entities.getKeys(false)) {

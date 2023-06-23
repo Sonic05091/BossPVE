@@ -21,7 +21,7 @@ public class UtilItemUser extends UtilItemStack {
     }
 
     public void sendMessage(String message) {
-        new UtilPlayerMessage(plugin,player).sendMessage(message);
+        new UtilPlayerMessage(plugin,player).sendMessage(MessageType.OTHER, message);
     }
 
 }

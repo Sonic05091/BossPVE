@@ -34,6 +34,7 @@ public class Volcono extends MagmaCube implements IEntityBase {
     public Volcono(BossPVE plugin, Location location) {
         super(EntityType.MAGMA_CUBE, ((CraftWorld) plugin.getMultiverseCore().getMVWorldManager().getMVWorld(location.getWorld()).getCBWorld()).getHandle());
         this.plugin=plugin;
+        expToDrop=0;
         setPos(location.getX(),location.getY(),location.getZ());
         setCustomNameVisible(true);
         setCustomName(Component.literal(ChatColor.translateAlternateColorCodes('&',customName)));

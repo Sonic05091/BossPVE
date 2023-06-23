@@ -32,15 +32,9 @@ public class AnvilGetItem extends Event {
         ItemStack firstSlot = inventory.getContents()[0];
         ItemStack secondSlot = inventory.getContents()[1];
         ItemStack thirdSlot = e.getCurrentItem();
-        /*if(firstSlot==null||secondSlot==null||thirdSlot==null) {
-            return;
-        }*/
-        if(firstSlot==null||thirdSlot==null) {
+        if(firstSlot==null||secondSlot==null||thirdSlot==null) {
             return;
         }
-        /*if(!(secondSlot.getType().equals(Material.ENCHANTED_BOOK))) {
-            return;
-        }*/
         Item item = plugin.getItemManager().getItemFromStack(secondSlot);
         if(item!=null) {
             if(item.getType().equals(Item.Type.ENCHANT)) {

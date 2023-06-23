@@ -10,7 +10,7 @@ public class SummonArg extends Argument {
 
     public SummonArg(BossPVE plugin, int index) {
         super(plugin, "summon", "summon <entity>", index);
-        setPermission("admin");
+        setPermission("summon");
     }
 
     @Override

@@ -6,6 +6,7 @@ import me.bubbles.bosspve.entities.manager.IEntityBase;
 import me.bubbles.bosspve.items.manager.enchant.Enchant;
 import me.bubbles.bosspve.items.manager.armor.IArmor;
 import me.bubbles.bosspve.items.manager.Item;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -101,6 +102,12 @@ public class UtilCustomEvents {
             return;
         }
         ItemStack usedItem = player.getInventory().getItemInMainHand();
+        if(usedItem==null) {
+            return;
+        }
+        if(usedItem.getType().equals(Material.AIR)) {
+            return;
+        }
         UtilItemStack uis = new UtilItemStack(plugin,usedItem);
         double result = uis.calculateDamage(1,((Player) e.getDamager()).getPlayer())-1;
         if(e.getEntity() instanceof Player) {

@@ -1,10 +1,11 @@
 package me.bubbles.bosspve.items.enchants;
 
-import me.bubbles.bosspve.items.manager.enchant.Enchant;
 import me.bubbles.bosspve.items.manager.Item;
 import me.bubbles.bosspve.items.manager.ItemManager;
+import me.bubbles.bosspve.items.manager.enchant.Enchant;
 import me.bubbles.bosspve.util.UtilChances;
-import org.bukkit.Bukkit;
+import me.bubbles.bosspve.util.UtilPlayerMessage;
+import me.bubbles.bosspve.util.UtilUser;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -13,11 +14,11 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class KeyFinder extends Enchant {
+public class Banker extends Enchant {
 
-    public KeyFinder(ItemManager itemManager) {
-        super(itemManager, "KeyFinder", Material.TRIPWIRE_HOOK, 20);
-        getEnchantItem().setDisplayName("&dKey Finder");
+    public Banker(ItemManager itemManager) {
+        super(itemManager, "Banker", Material.EMERALD, 20);
+        getEnchantItem().setDisplayName("&a&lBanker");
         allowedTypes.addAll(
                 List.of(
                         Item.Type.WEAPON
@@ -38,26 +39,18 @@ public class KeyFinder extends Enchant {
                 return;
             }
             int level = main.getItemMeta().getEnchantLevel(this);
-            double addition = level-1*(.25);
+            double addition = level-1*(.5);
             if(UtilChances.rollTheDice(1,1000,3+addition)) {
-                giveKey(player,"Stage",level);
-            }
-            if(UtilChances.rollTheDice(1,2000,1+addition)) {
-                giveKey(player,"Enchant",level);
-            }
-            if(UtilChances.rollTheDice(1,10000,1+addition)) {
-                giveKey(player,"Rank",1);
+                UtilUser utilUser = new UtilUser(plugin,player);
+                utilUser.giveMoney(level*1000,true);
+                new UtilPlayerMessage(plugin,player).onProc(this);
             }
         }
     }
 
-    private void giveKey(Player player, String key, int amt) {
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"cc give v "+key+" "+amt+" "+player.getName());
-    }
-
     @Override
     public String getDescription() {
-        return "Chance of getting keys when killing mobs";
+        return "Chance of getting money when killing mobs";
     }
 
 }

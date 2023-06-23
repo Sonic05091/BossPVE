@@ -2,14 +2,17 @@ package me.bubbles.bosspve.entities;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.entities.manager.IEntityBase;
+import me.bubbles.bosspve.items.manager.enchant.Enchant;
+import me.bubbles.bosspve.items.manager.enchant.EnchantItem;
 import me.bubbles.bosspve.util.UtilChances;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.monster.Ravager;
+import net.minecraft.world.entity.player.Player;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -20,41 +23,32 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Simpleton extends Skeleton implements IEntityBase {
+public class Protector extends Ravager implements IEntityBase {
 
-    private final String customName = ChatColor.translateAlternateColorCodes('&',"&7&lSimpleton");
 
+    private final String customName = ChatColor.translateAlternateColorCodes('&',"&8&lProtector");
     private BossPVE plugin;
 
-    public Simpleton(BossPVE plugin) {
+    public Protector(BossPVE plugin) {
         this(plugin, ((CraftWorld) Bukkit.getWorlds().get(0)).getHandle().getWorld().getSpawnLocation());
     }
 
-    public Simpleton(BossPVE plugin, Location location) {
-        super(EntityType.SKELETON, ((CraftWorld) plugin.getMultiverseCore().getMVWorldManager().getMVWorld(location.getWorld()).getCBWorld()).getHandle());
+    public Protector(BossPVE plugin, Location location) {
+        super(EntityType.RAVAGER, ((CraftWorld) plugin.getMultiverseCore().getMVWorldManager().getMVWorld(location.getWorld()).getCBWorld()).getHandle());
         this.plugin=plugin;
         expToDrop=0;
         setPos(location.getX(),location.getY(),location.getZ());
         setCustomNameVisible(true);
         setCustomName(Component.literal(ChatColor.translateAlternateColorCodes('&',customName)));
         getAttribute(Attributes.MAX_HEALTH).setBaseValue(getDefaultHp());
+        getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(getDamage());
         setHealth(getDefaultHp());
-        goalSelector.addGoal(0, new RangedBowAttackGoal<>(
-                this, 1, 1, 5
-        ));
         goalSelector.addGoal(0, new MeleeAttackGoal(
-                this, 1, false
+                this, 1.0, false
         ));
-        goalSelector.addGoal(1, new PanicGoal(
-                this, 1.5D
-        ));
-        goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(
-                this, 0.6D
-        ));
-        goalSelector.addGoal(3, new RandomLookAroundGoal(
+        goalSelector.addGoal(1, new RandomLookAroundGoal(
                 this
         ));
-        setItemInHand(InteractionHand.MAIN_HAND,plugin.getItemManager().getItemByName("SkeletonSword").getNMSStack());
         if(getDrops()!=null) {
             drops.clear();
             drops.addAll(getDrops());
@@ -64,7 +58,7 @@ public class Simpleton extends Skeleton implements IEntityBase {
 
     @Override
     public Entity spawn(Location location) {
-        Entity entity = new Simpleton(plugin,location);
+        Entity entity = new Protector(plugin,location);
         ((CraftWorld) location.getWorld()).addEntityToWorld(entity, CreatureSpawnEvent.SpawnReason.CUSTOM);
         return entity;
     }
@@ -72,31 +66,33 @@ public class Simpleton extends Skeleton implements IEntityBase {
     @Override
     public List<ItemStack> getDrops() {
         List<ItemStack> result=new ArrayList<>();
-        if(UtilChances.rollTheDice(1,100,2)) {
-            result.add(plugin.getItemManager().getItemByName("telepathyEnch").nmsAsItemStack());
+        if(UtilChances.rollTheDice(1,400,1)) {
+            result.add(plugin.getItemManager().getItemByName("damagerEnch").nmsAsItemStack());
         }
-        if(UtilChances.rollTheDice(1,200,2)) {
-            result.add(plugin.getItemManager().getItemByName("speedEnch").nmsAsItemStack());
-        }
-        if(UtilChances.rollTheDice(1,150,1)) {
-            result.add(plugin.getItemManager().getItemByName("skeletonSword").nmsAsItemStack());
+        if(UtilChances.rollTheDice(1,350,1)) {
+            result.add(((EnchantItem)plugin.getItemManager().getItemByName("resistanceEnch")).getAtLevel(3));
         }
         return result;
     }
 
     @Override
     public double getMoney() {
-        return 0.5;
+        return 100;
     }
 
     @Override
     public int getXp() {
-        return 2;
+        return 20;
     }
 
     @Override
     public int getDefaultHp() {
-        return 5;
+        return 30;
+    }
+
+    @Override
+    public int getDamage() {
+        return 30;
     }
 
     @Override
@@ -106,12 +102,7 @@ public class Simpleton extends Skeleton implements IEntityBase {
 
     @Override
     public String getNBTIdentifier() {
-        return "simpleton";
-    }
-
-    @Override
-    public int getDamage() {
-        return 2;
+        return "protector";
     }
 
 }

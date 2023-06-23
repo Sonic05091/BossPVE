@@ -10,12 +10,11 @@ import java.util.List;
 public class Resistance extends Enchant {
 
     public Resistance(ItemManager itemManager) {
-        super(itemManager, "Resistance", Material.CONDUIT, 10);
+        super(itemManager, "Resistance", Material.CONDUIT, 15);
         getEnchantItem().setDisplayName("&4Resistance");
         allowedTypes.addAll(
                 List.of(
-                        Item.Type.ARMOR,
-                        Item.Type.ENCHANT
+                        Item.Type.ARMOR
                 )
         );
     }

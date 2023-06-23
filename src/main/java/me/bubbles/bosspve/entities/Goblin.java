@@ -41,6 +41,7 @@ public class Goblin extends Piglin implements IEntityBase {
         this.plugin=plugin;
         setPos(location.getX(),location.getY(),location.getZ());
         setCustomNameVisible(true);
+        expToDrop=0;
         setCustomName(Component.literal(ChatColor.translateAlternateColorCodes('&',customName)));
         getAttribute(Attributes.MAX_HEALTH).setBaseValue(getDefaultHp());
         setHealth(getDefaultHp());

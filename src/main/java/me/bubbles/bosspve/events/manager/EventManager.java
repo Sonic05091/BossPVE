@@ -25,7 +25,8 @@ public class EventManager {
                 new PreventSpawning(plugin),
                 new MaxFood(plugin),
                 new Respawn(plugin),
-                new AnvilNameChange(plugin)
+                new AnvilNameChange(plugin),
+                new AntiDeathRespawn(plugin)
         );
     }
 

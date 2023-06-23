@@ -8,6 +8,8 @@ import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.logging.Level;
+
 public class AnvilNameChange extends Event {
 
     public AnvilNameChange(BossPVE plugin) {
@@ -20,7 +22,10 @@ public class AnvilNameChange extends Event {
         ItemStack firstSlot = e.getInventory().getContents()[0];
         ItemStack secondSlot = e.getInventory().getContents()[1];
         ItemStack thirdSlot = e.getResult();
-        if(firstSlot==null||secondSlot!=null) {
+        if(firstSlot==null) {
+            return;
+        }
+        if(secondSlot!=null) {
             return;
         }
         if(!firstSlot.hasItemMeta()) {
@@ -42,11 +47,7 @@ public class AnvilNameChange extends Event {
         if(firstSlot.getItemMeta().getDisplayName().equals(thirdSlot.getItemMeta().getDisplayName())) {
             return;
         }
-        ItemMeta resultMeta = firstSlot.getItemMeta();
-        resultMeta.setDisplayName(firstSlot.getItemMeta().getDisplayName());
-        thirdSlot.setItemMeta(resultMeta);
-        UtilItemStack uis = new UtilItemStack(plugin,thirdSlot);
-        e.setResult(uis.enchantItem(firstSlot));
+        e.setResult(null);
     }
 
 }

@@ -8,6 +8,8 @@ import me.bubbles.bosspve.util.UtilItemStack;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.logging.Level;
+
 public class UpdateAnvil extends Event {
 
     public UpdateAnvil(BossPVE plugin) {
