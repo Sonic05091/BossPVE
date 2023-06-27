@@ -1,8 +1,7 @@
 package me.bubbles.bosspve.entities;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.entities.manager.IEntityBase;
-import me.bubbles.bosspve.items.manager.enchant.Enchant;
+import me.bubbles.bosspve.entities.manager.IEntity;
 import me.bubbles.bosspve.items.manager.enchant.EnchantItem;
 import me.bubbles.bosspve.util.UtilChances;
 import net.minecraft.network.chat.Component;
@@ -12,7 +11,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.monster.Ravager;
-import net.minecraft.world.entity.player.Player;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -23,7 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Protector extends Ravager implements IEntityBase {
+public class Protector extends Ravager implements IEntity {
 
 
     private final String customName = ChatColor.translateAlternateColorCodes('&',"&8&lProtector");

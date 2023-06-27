@@ -28,6 +28,7 @@ public class Join extends Event {
         if(!data.has(new NamespacedKey(plugin,"mobKillMessages"), PersistentDataType.BOOLEAN)) {
             data.set(new NamespacedKey(plugin,"mobKillMessages"), PersistentDataType.BOOLEAN, true);
         }
+
     }
 
 }

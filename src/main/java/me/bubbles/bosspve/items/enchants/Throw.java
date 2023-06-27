@@ -3,6 +3,7 @@ package me.bubbles.bosspve.items.enchants;
 import me.bubbles.bosspve.items.manager.enchant.Enchant;
 import me.bubbles.bosspve.items.manager.Item;
 import me.bubbles.bosspve.items.manager.ItemManager;
+import me.bubbles.bosspve.stages.Stage;
 import me.bubbles.bosspve.util.UtilChances;
 import me.bubbles.bosspve.util.UtilPlayerMessage;
 import org.bukkit.Material;
@@ -71,12 +72,18 @@ public class Throw extends Enchant {
             if(!containsEnchant(main)) {
                 return;
             }
+            Entity entity = e.getEntity();
+            if(entity instanceof Player) {
+                Stage stage = plugin.getStageManager().getStage(e.getEntity().getLocation());
+                if(stage!=null) {
+                    return;
+                }
+            }
             int level = main.getItemMeta().getEnchantLevel(this);
             double addition = level-1*(.25);
             if(!UtilChances.rollTheDice(1,100,3+addition)) {
                 return;
             }
-            Entity entity = e.getEntity();
             Vector up = new Vector(entity.getVelocity().getX(),2*Math.min(level,4),entity.getVelocity().getZ());
             entity.setVelocity(up);
             entity.setLastDamageCause(new EntityDamageByEntityEvent(player , entity, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1.5*level));

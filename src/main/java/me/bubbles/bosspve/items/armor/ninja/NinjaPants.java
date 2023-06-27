@@ -32,12 +32,12 @@ public class NinjaPants extends Armor {
     }
 
     @Override
-    public int baseProtection() {
+    public int getBaseProtection() {
         return 4;
     }
 
     @Override
-    public double damageMultiplier() {
+    public double getDamageMultiplier() {
         return 1;
     }
 

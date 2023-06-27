@@ -2,7 +2,7 @@ package me.bubbles.bosspve.commands.base;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.commands.manager.Argument;
-import me.bubbles.bosspve.entities.manager.IEntityBase;
+import me.bubbles.bosspve.entities.manager.IEntity;
 import me.bubbles.bosspve.stages.Stage;
 import me.bubbles.bosspve.util.UtilLocation;
 import org.bukkit.ChatColor;
@@ -37,8 +37,8 @@ public class AddSpawnArg extends Argument {
             utilSender.sendMessage("%prefix% %primary%Must be inside a stage to do this!");
             return;
         }
-        IEntityBase iEntityBase = plugin.getEntityManager().getEntityByName(args[relativeIndex]);
-        if(iEntityBase==null) {
+        IEntity iEntity = plugin.getEntityManager().getEntityByName(args[relativeIndex]);
+        if(iEntity ==null) {
             utilSender.sendMessage(getEntitiesList());
             utilSender.sendMessage(getArgsMessage());
             return;
@@ -60,7 +60,7 @@ public class AddSpawnArg extends Argument {
         }
         int newKey = entities.getKeys(false).size()+1;
         ConfigurationSection newEntry = entities.createSection(String.valueOf(newKey));
-        newEntry.set("entity",iEntityBase.getUncoloredName());
+        newEntry.set("entity", iEntity.getUncoloredName());
         newEntry.set("pos",UtilLocation.asLocationString(player.getLocation()));
         newEntry.set("interval",interval);
         plugin.getConfigManager().saveAll();
@@ -71,7 +71,7 @@ public class AddSpawnArg extends Argument {
     private String getEntitiesList() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("%prefix% %primary%Entities:");
-        for(IEntityBase entity : plugin.getEntityManager().getEntities()) {
+        for(IEntity entity : plugin.getEntityManager().getEntities()) {
             stringBuilder.append("\n").append("%primary%").append("- ").append("%secondary%").append(ChatColor.stripColor(entity.getUncoloredName()).replaceAll(" ","_"));
         }
         return stringBuilder.toString();

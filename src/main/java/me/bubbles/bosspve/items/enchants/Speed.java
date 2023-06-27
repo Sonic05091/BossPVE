@@ -18,7 +18,7 @@ public class Speed extends Enchant {
     private Timer timer;
 
     public Speed(ItemManager itemManager) {
-        super(itemManager, "Speed", Material.FEATHER, 20);
+        super(itemManager, "Speed", Material.FEATHER, 30);
         getEnchantItem().setDisplayName("&fSpeed");
         timer=new Timer(plugin,20);
         plugin.getTimerManager().addTimer(timer);

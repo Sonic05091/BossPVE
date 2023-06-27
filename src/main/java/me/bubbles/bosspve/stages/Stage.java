@@ -1,7 +1,7 @@
 package me.bubbles.bosspve.stages;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.entities.manager.IEntityBase;
+import me.bubbles.bosspve.entities.manager.IEntity;
 import me.bubbles.bosspve.ticker.Timer;
 import me.bubbles.bosspve.util.UtilLocation;
 import me.bubbles.bosspve.util.UtilUserData;
@@ -10,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_20_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_20_R1.entity.CraftEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -102,7 +101,6 @@ public class Stage extends Timer {
                 CraftEntity craftEntity = CraftEntity.getEntity((CraftServer) Bukkit.getServer(), entity);
                 craftEntity
                         .setLastDamageCause(new EntityDamageByEntityEvent(player, craftEntity, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1000000));
-                entity.kill();
             }
             iterator.remove();
         }
@@ -116,7 +114,7 @@ public class Stage extends Timer {
         boolean result=false;
         for(String entityID : entities.getKeys(false)) {
             String entityKey = entities.getConfigurationSection(entityID).getString("entity");
-            IEntityBase entityBase = plugin.getEntityManager().getEntityByName(entityKey);
+            IEntity entityBase = plugin.getEntityManager().getEntityByName(entityKey);
             if(entityBase==null) {
                 plugin.getLogger().log(Level.WARNING, "Could not load entity: "+entityKey+" @ "+getLevelRequirement());
                 continue;

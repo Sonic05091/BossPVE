@@ -1,4 +1,4 @@
-package me.bubbles.bosspve.commands;
+package me.bubbles.bosspve.commands.other;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.commands.manager.Command;

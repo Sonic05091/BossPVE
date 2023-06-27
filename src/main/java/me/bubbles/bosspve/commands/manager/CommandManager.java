@@ -1,7 +1,7 @@
 package me.bubbles.bosspve.commands.manager;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.commands.Data;
+import me.bubbles.bosspve.commands.other.Data;
 import me.bubbles.bosspve.commands.other.Spawn;
 import me.bubbles.bosspve.commands.base.BaseCommand;
 import me.bubbles.bosspve.commands.other.Vote;

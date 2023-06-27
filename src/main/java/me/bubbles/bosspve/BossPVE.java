@@ -11,6 +11,7 @@ import me.bubbles.bosspve.stages.Stage;
 import me.bubbles.bosspve.stages.StageManager;
 import me.bubbles.bosspve.ticker.Ticker;
 import me.bubbles.bosspve.ticker.TimerManager;
+import me.bubbles.bosspve.users.UserManager;
 import me.bubbles.bosspve.util.PAPI;
 import me.bubbles.bosspve.util.UpdateXP;
 import net.milkbowl.vault.economy.Economy;
@@ -31,6 +32,7 @@ public final class BossPVE extends JavaPlugin {
     private TimerManager timerManager;
     private EntityManager entityManager;
     private StageManager stageManager;
+    private UserManager userManager;
     private Economy economy;
     private MySQL mySQL;
     private Ticker ticker;
@@ -63,13 +65,14 @@ public final class BossPVE extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
+        userManager=new UserManager(this);
+        mySQL=new MySQL(configManager.getConfig("config.yml").getFileConfiguration().getConfigurationSection("mySQL"));
         timerManager=new TimerManager(this);
-        eventManager=new EventManager(this);
         itemManager=new ItemManager(this);
         entityManager=new EntityManager(this);
+        eventManager=new EventManager(this);
         initStageManager();
         commandManager=new CommandManager(this);
-        mySQL=new MySQL(configManager.getConfig("config.yml").getFileConfiguration().getConfigurationSection("mySQL"));
 
         // Ticker
         ticker=new Ticker(this).setEnabled(true);
@@ -177,6 +180,9 @@ public final class BossPVE extends JavaPlugin {
     }
     public Ticker getTicker() {
         return ticker;
+    }
+    public UserManager getUserManager() {
+        return userManager;
     }
 
 }

@@ -1,7 +1,7 @@
 package me.bubbles.bosspve.util;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.entities.manager.IEntityBase;
+import me.bubbles.bosspve.entities.manager.IEntity;
 import me.bubbles.bosspve.mysql.MySQL;
 import org.bukkit.entity.Player;
 
@@ -28,9 +28,10 @@ public class UtilUser {
             }
         }
         mySQL.save(uud);
+        plugin.getUserManager().getUser(player.getUniqueId()).update();
     }
 
-    public void giveXp(int xp, IEntityBase entity) {
+    public void giveXp(int xp, IEntity entity) {
         MySQL mySQL = plugin.getMySQL();
         UtilUserData uud = mySQL.getData(player.getUniqueId());
         int level=uud.getLevel();
@@ -41,9 +42,10 @@ public class UtilUser {
             sendMessage(MessageType.KILL_MESSAGE, "%prefix% %primary%You killed a %secondary%"+entity.getUncoloredName()+"%primary% and gained %secondary%"+xp+"%primary% XP.");
         }
         mySQL.save(uud);
+        plugin.getUserManager().getUser(player.getUniqueId()).update();
     }
 
-    public void giveXpAndMoney(int xp, double money, IEntityBase entity) {
+    public void giveXpAndMoney(int xp, double money, IEntity entity) {
         MySQL mySQL = plugin.getMySQL();
         UtilUserData uud = mySQL.getData(player.getUniqueId());
         int level=uud.getLevel();
@@ -56,6 +58,7 @@ public class UtilUser {
         }
         mySQL.save(uud);
         plugin.getEconomy().depositPlayer(player,money);
+        plugin.getUserManager().getUser(player.getUniqueId()).update();
     }
 
     public void giveXpAndMoney(int xp, double money, boolean message) {
@@ -73,6 +76,7 @@ public class UtilUser {
         }
         mySQL.save(uud);
         plugin.getEconomy().depositPlayer(player,money);
+        plugin.getUserManager().getUser(player.getUniqueId()).update();
     }
 
     public void giveMoney(int money, boolean message) {
@@ -80,6 +84,7 @@ public class UtilUser {
             sendMessage(MessageType.KILL_MESSAGE, "%prefix% %primary%You gained %secondary%$"+money+"%primary%.");
         };
         plugin.getEconomy().depositPlayer(player,money);
+        plugin.getUserManager().getUser(player.getUniqueId()).update();
     }
 
     public void sendMessage(MessageType type, String message) {

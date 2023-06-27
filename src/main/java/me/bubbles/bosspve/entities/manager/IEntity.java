@@ -11,7 +11,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
-public interface IEntityBase {
+public interface IEntity {
 
     Entity spawn(Location location);
     default void onEvent(BossPVE plugin, Event event) {

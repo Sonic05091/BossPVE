@@ -10,7 +10,7 @@ import java.util.List;
 public class Damager extends Enchant {
 
     public Damager(ItemManager itemManager) {
-        super(itemManager, "Damager", Material.EMERALD, 3);
+        super(itemManager, "Damager", Material.SPIDER_EYE, 3);
         getEnchantItem().setDisplayName("&4&lDamager");
         allowedTypes.addAll(
                 List.of(

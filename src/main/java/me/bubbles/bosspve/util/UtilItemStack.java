@@ -91,7 +91,7 @@ public class UtilItemStack {
             if(item.getType().equals(Item.Type.ARMOR)) {
                 Armor armor = (Armor) item;
                 lore.add(
-                        new UtilString(plugin).colorFillPlaceholders("%primary%Defence:%secondary% "+armor.baseProtection())
+                        new UtilString(plugin).colorFillPlaceholders("%primary%Defence:%secondary% "+armor.getBaseProtection())
                 );
             }
         }

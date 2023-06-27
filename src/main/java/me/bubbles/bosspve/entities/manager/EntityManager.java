@@ -10,7 +10,7 @@ import java.util.HashSet;
 
 public class EntityManager {
 
-    private HashSet<IEntityBase> entities;
+    private HashSet<IEntity> entities;
     private BossPVE plugin;
 
     public EntityManager(BossPVE plugin) {
@@ -28,7 +28,7 @@ public class EntityManager {
         );
     }
 
-    private void registerEntities(IEntityBase... entity) {
+    private void registerEntities(IEntity... entity) {
         entities.addAll(Arrays.asList(entity));
     }
 
@@ -36,12 +36,12 @@ public class EntityManager {
         entities.forEach(iEntityBase -> iEntityBase.onEvent(plugin,event));
     }
 
-    public HashSet<IEntityBase> getEntities() {
+    public HashSet<IEntity> getEntities() {
         return entities;
     }
 
-    public IEntityBase getEntityByName(String name) {
-        for(IEntityBase entity : entities) {
+    public IEntity getEntityByName(String name) {
+        for(IEntity entity : entities) {
             if(ChatColor.stripColor(entity.getUncoloredName()).replace(" ","_").equalsIgnoreCase(name)) {
                 return entity;
             }

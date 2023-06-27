@@ -34,12 +34,12 @@ public class VolcanicChestplate extends Armor {
     }
 
     @Override
-    public int baseProtection() {
+    public int getBaseProtection() {
         return 5;
     }
 
     @Override
-    public double damageMultiplier() {
+    public double getDamageMultiplier() {
         return 1;
     }
 

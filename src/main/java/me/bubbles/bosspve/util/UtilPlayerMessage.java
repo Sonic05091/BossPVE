@@ -30,7 +30,7 @@ public class UtilPlayerMessage {
     }
 
     public void onProc(Enchant enchant) {
-        sendMessage(MessageType.ENCHANT_PROC, "%primary% %secondary%"+enchant.getName()+" %primary%has activated!");
+        sendMessage(MessageType.ENCHANT_PROC, "%prefix% %secondary%"+enchant.getName()+" %primary%has activated!");
     }
 
 }

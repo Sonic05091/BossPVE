@@ -2,7 +2,7 @@ package me.bubbles.bosspve.util;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.entities.manager.IEntityBase;
+import me.bubbles.bosspve.entities.manager.IEntity;
 import me.bubbles.bosspve.items.manager.enchant.Enchant;
 import me.bubbles.bosspve.items.manager.armor.IArmor;
 import me.bubbles.bosspve.items.manager.Item;
@@ -26,7 +26,7 @@ public class UtilCustomEvents {
         this.event=event;
     }
 
-    public void customEntityDeathEvent(IEntityBase entity) { // player kills mob
+    public void customEntityDeathEvent(IEntity entity) { // player kills mob
         if(!(event instanceof EntityDeathEvent)) {
             return;
         }
@@ -69,7 +69,7 @@ public class UtilCustomEvents {
         new UtilUser(plugin,player).giveXpAndMoney(xp,money,entity);
     }
 
-    public void customEntityDamageByEntityEvent(IEntityBase entity) { // mob v player
+    public void customEntityDamageByEntityEvent(IEntity entity) { // mob v player
         if(!(event instanceof EntityDamageByEntityEvent)) {
             return;
         }
@@ -126,8 +126,8 @@ public class UtilCustomEvents {
             if(armorItem!=null) {
                 if(armorItem.getType().equals(Item.Type.ARMOR)) {
                     IArmor iArmor = (IArmor) armorItem;
-                    result-=iArmor.baseProtection();
-                    result*=iArmor.damageMultiplier();
+                    result-=iArmor.getBaseProtection();
+                    result*=iArmor.getDamageMultiplier();
                 }
             }
             if(!armor.hasItemMeta()) {

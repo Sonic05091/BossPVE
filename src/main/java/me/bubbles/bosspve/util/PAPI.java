@@ -1,6 +1,7 @@
 package me.bubbles.bosspve.util;
 
 import me.bubbles.bosspve.BossPVE;
+import me.bubbles.bosspve.users.User;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -40,9 +41,17 @@ public class PAPI extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer player, String params) {
         if(params.equalsIgnoreCase("xp")){
+            User user = plugin.getUserManager().getUser(player.getUniqueId());
+            if(user!=null) {
+                return String.valueOf(user.cachedXp);
+            }
             return String.valueOf(plugin.getMySQL().getData(player.getUniqueId()).getXp());
         }
         if(params.equalsIgnoreCase("level")) {
+            User user = plugin.getUserManager().getUser(player.getUniqueId());
+            if(user!=null) {
+                return String.valueOf(user.cachedLevel);
+            }
             return String.valueOf(plugin.getMySQL().getData(player.getUniqueId()).getLevel());
         }
         if(params.startsWith("player_position_")) {

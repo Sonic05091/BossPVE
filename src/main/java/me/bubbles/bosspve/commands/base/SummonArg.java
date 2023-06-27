@@ -2,7 +2,7 @@ package me.bubbles.bosspve.commands.base;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.commands.manager.Argument;
-import me.bubbles.bosspve.entities.manager.IEntityBase;
+import me.bubbles.bosspve.entities.manager.IEntity;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -27,7 +27,7 @@ public class SummonArg extends Argument {
             utilSender.sendMessage("%prefix% %primary%You must be in game to do this.");
             return;
         }
-        IEntityBase base = plugin.getEntityManager().getEntityByName(args[relativeIndex]);
+        IEntity base = plugin.getEntityManager().getEntityByName(args[relativeIndex]);
         if(base==null) {
             utilSender.sendMessage("%prefix% %primary%Entity %secondary%"+args[relativeIndex]+"%primary% does not exist.");
             return;
@@ -39,7 +39,7 @@ public class SummonArg extends Argument {
     private String getEntitiesList() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("%prefix% %primary%Entities:");
-        for(IEntityBase entity : plugin.getEntityManager().getEntities()) {
+        for(IEntity entity : plugin.getEntityManager().getEntities()) {
             stringBuilder.append("\n").append("%primary%").append("- ").append("%secondary%").append(ChatColor.stripColor(entity.getUncoloredName()).replaceAll(" ","_"));
         }
         return stringBuilder.toString();

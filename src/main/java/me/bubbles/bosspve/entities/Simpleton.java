@@ -1,26 +1,29 @@
 package me.bubbles.bosspve.entities;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.entities.manager.IEntityBase;
+import me.bubbles.bosspve.entities.manager.IEntity;
 import me.bubbles.bosspve.util.UtilChances;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Skeleton;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Simpleton extends Skeleton implements IEntityBase {
+public class Simpleton extends Skeleton implements IEntity {
 
     private final String customName = ChatColor.translateAlternateColorCodes('&',"&7&lSimpleton");
 
@@ -55,6 +58,7 @@ public class Simpleton extends Skeleton implements IEntityBase {
                 this
         ));
         setItemInHand(InteractionHand.MAIN_HAND,plugin.getItemManager().getItemByName("SkeletonSword").getNMSStack());
+        setItemSlot(EquipmentSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.LEATHER_HELMET)));
         if(getDrops()!=null) {
             drops.clear();
             drops.addAll(getDrops());

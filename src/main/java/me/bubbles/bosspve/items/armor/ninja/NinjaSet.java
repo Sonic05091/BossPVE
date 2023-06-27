@@ -27,10 +27,13 @@ public class NinjaSet extends ArmorSet {
             if(!wearingFullSet(player,true)) {
                 return;
             }
-            if(!UtilChances.rollTheDice(1,100,5)) {
+            if(!UtilChances.rollTheDice(1,100,10)) {
                 return;
             }
             Entity entity = e.getEntity();
+            if(entity instanceof Player) {
+                return;
+            }
             if(entity.isDead()) {
                 return;
             }

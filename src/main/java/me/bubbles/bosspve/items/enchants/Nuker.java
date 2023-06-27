@@ -17,7 +17,7 @@ import java.util.List;
 public class Nuker extends Enchant {
 
     public Nuker(ItemManager itemManager) {
-        super(itemManager, "nuker", Material.TNT, 5);
+        super(itemManager, "Nuker", Material.TNT, 10);
         getEnchantItem().setDisplayName("&c&lNuker");
         allowedTypes.addAll(
                 List.of(
@@ -39,7 +39,7 @@ public class Nuker extends Enchant {
                 return;
             }
             int level = main.getItemMeta().getEnchantLevel(this);
-            double addition = level-1*(.25);
+            double addition = level-1*(.5);
             if(!UtilChances.rollTheDice(1,1000,3+addition)) {
                 return;
             }

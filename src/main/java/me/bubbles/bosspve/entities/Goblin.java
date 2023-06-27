@@ -1,7 +1,7 @@
 package me.bubbles.bosspve.entities;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.entities.manager.IEntityBase;
+import me.bubbles.bosspve.entities.manager.IEntity;
 import me.bubbles.bosspve.items.manager.enchant.EnchantItem;
 import me.bubbles.bosspve.util.UtilChances;
 import net.minecraft.network.chat.Component;
@@ -27,7 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Goblin extends Piglin implements IEntityBase {
+public class Goblin extends Piglin implements IEntity {
 
     private final String customName = ChatColor.translateAlternateColorCodes('&',"&a&lGoblin");
     private BossPVE plugin;
