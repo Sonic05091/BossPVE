@@ -77,6 +77,7 @@ public class UtilCustomEvents {
         if(!(e.getEntity() instanceof Player)) {
             return;
         }
+
         if(!entity.hasSameTagAs(e.getDamager())) {
             return;
         }

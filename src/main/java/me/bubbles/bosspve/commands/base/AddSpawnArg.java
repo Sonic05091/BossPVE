@@ -60,7 +60,7 @@ public class AddSpawnArg extends Argument {
         }
         int newKey = entities.getKeys(false).size()+1;
         ConfigurationSection newEntry = entities.createSection(String.valueOf(newKey));
-        newEntry.set("entity", iEntity.getUncoloredName());
+        newEntry.set("entity", args[relativeIndex]);
         newEntry.set("pos",UtilLocation.asLocationString(player.getLocation()));
         newEntry.set("interval",interval);
         plugin.getConfigManager().saveAll();

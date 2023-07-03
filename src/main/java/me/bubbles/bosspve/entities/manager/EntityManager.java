@@ -24,7 +24,8 @@ public class EntityManager {
                 new Ferrum(plugin),
                 new Volcono(plugin),
                 new Protector(plugin),
-                new Ninja(plugin)
+                new Ninja(plugin),
+                new AngryBee(plugin)
         );
     }
 

@@ -3,6 +3,7 @@ package me.bubbles.bosspve.util;
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.items.manager.enchant.Enchant;
 import org.bukkit.NamespacedKey;
+import org.bukkit.craftbukkit.v1_20_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;

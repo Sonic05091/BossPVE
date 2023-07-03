@@ -20,6 +20,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.time.Instant;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
 public final class BossPVE extends JavaPlugin {

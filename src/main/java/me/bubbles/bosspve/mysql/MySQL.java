@@ -57,6 +57,9 @@ public class MySQL {
     public String getString(UUID uuid, Columns key) {
         try {
             ResultSet resultSet = getResultSet(uuid);
+            if(resultSet==null) {
+                return "";
+            }
             while (resultSet.next()) {
                 return resultSet.getString(key.getKey());
             }
@@ -69,6 +72,9 @@ public class MySQL {
     public int getInt(UUID uuid, Columns key) {
         try {
             ResultSet resultSet = getResultSet(uuid);
+            if(resultSet==null) {
+                return -1;
+            }
             while (resultSet.next()) {
                 return resultSet.getInt(key.getKey());
             }
