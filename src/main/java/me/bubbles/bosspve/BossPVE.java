@@ -68,7 +68,7 @@ public final class BossPVE extends JavaPlugin {
         }
         userManager=new UserManager(this);
         mySQL=new MySQL(configManager.getConfig("config.yml").getFileConfiguration().getConfigurationSection("mySQL"));
-        timerManager=new TimerManager(this);
+        timerManager=new TimerManager();
         itemManager=new ItemManager(this);
         entityManager=new EntityManager(this);
         eventManager=new EventManager(this);
