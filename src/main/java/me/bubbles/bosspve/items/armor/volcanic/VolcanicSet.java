@@ -1,15 +1,14 @@
 package me.bubbles.bosspve.items.armor.volcanic;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.items.manager.armor.Armor;
-import me.bubbles.bosspve.items.manager.armor.ArmorSet;
+import me.bubbles.bosspve.items.manager.bases.armor.Armor;
+import me.bubbles.bosspve.items.manager.bases.armor.ArmorSet;
 import me.bubbles.bosspve.ticker.Timer;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashSet;
-import java.util.logging.Level;
 
 public class VolcanicSet extends ArmorSet {
 

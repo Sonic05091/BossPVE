@@ -5,20 +5,27 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
-public class PlayerTimerManager {
+public class PlayerTimerManager extends Timer {
 
     private HashMap<Player, Timer> timers;
     private BossPVE plugin;
     private long lastClear;
 
     public PlayerTimerManager(BossPVE plugin) {
+        super(plugin,3600*20);
         this.plugin=plugin;
         timers=new HashMap<>();
         lastClear=plugin.getEpochTimestamp();
     }
 
+    @Override
     public void onTick() {
+        super.onTick();
         timers.forEach((player, timer) -> timer.onTick());
+    }
+
+    @Override
+    public void onComplete() {
         if(lastClear<=plugin.getEpochTimestamp()-3600) {
             HashMap<Player, Timer> copy = new HashMap<>(timers);
             copy.forEach(((player, timer) -> {

@@ -1,8 +1,7 @@
 package me.bubbles.bosspve.items.armor.volcanic;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.items.manager.armor.Armor;
-import me.bubbles.bosspve.items.manager.armor.ArmorSet;
+import me.bubbles.bosspve.items.manager.bases.armor.Armor;
 import me.bubbles.bosspve.util.UtilItemStack;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -45,11 +44,6 @@ public class VolcanicPants extends Armor {
     @Override
     public String getDescription() {
         return "Pants from a Volcono";
-    }
-
-    @Override
-    public ArmorSet getArmorSet() {
-        return null;
     }
 
 }

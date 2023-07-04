@@ -1,9 +1,8 @@
 package me.bubbles.bosspve.items.armor.oger;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.items.manager.ItemManager;
-import me.bubbles.bosspve.items.manager.armor.Armor;
-import me.bubbles.bosspve.items.manager.armor.ArmorSet;
+import me.bubbles.bosspve.items.manager.bases.armor.ArmorSet;
+import me.bubbles.bosspve.items.manager.bases.armor.Armor;
 
 public class OgreSet extends ArmorSet {
 

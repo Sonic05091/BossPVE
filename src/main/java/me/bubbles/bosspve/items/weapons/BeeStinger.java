@@ -2,6 +2,7 @@ package me.bubbles.bosspve.items.weapons;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.items.manager.Item;
+import me.bubbles.bosspve.items.manager.bases.weapon.IWeapon;
 import me.bubbles.bosspve.util.UtilItemStack;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -9,7 +10,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class BeeStinger extends Item {
+public class BeeStinger extends Item implements IWeapon {
 
     public BeeStinger(BossPVE plugin) {
         super(plugin, Material.GOLDEN_SWORD, "beeStinger",Type.WEAPON);

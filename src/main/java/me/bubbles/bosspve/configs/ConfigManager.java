@@ -5,11 +5,12 @@ import me.bubbles.bosspve.BossPVE;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class ConfigManager {
 
-    private List<Config> configList = new ArrayList<>();
+    private HashSet<Config> configList = new HashSet<>();
     private BossPVE plugin;
 
     public ConfigManager(BossPVE plugin) {
@@ -32,22 +33,11 @@ public class ConfigManager {
     }
 
     public void reloadAll() {
-        int index=0;
-        for(Config config : configList) {
-            configList.set(index,new Config(plugin,new File(config.getFile().getPath())));
-            index++;
-        }
-        plugin.reloadConfig();
+        configList.forEach(Config::reload);
     }
 
     public void saveAll() {
-        for(Config config : configList) {
-            try {
-                config.getFileConfiguration().save(config.getFile());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        configList.forEach(Config::save);
     }
 
 }

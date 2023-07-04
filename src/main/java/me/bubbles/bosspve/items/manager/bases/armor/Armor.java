@@ -1,4 +1,4 @@
-package me.bubbles.bosspve.items.manager.armor;
+package me.bubbles.bosspve.items.manager.bases.armor;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.items.manager.Item;
@@ -12,8 +12,9 @@ public abstract class Armor extends Item implements IArmor {
         this(plugin, null, material, nbtIdentifier, type);
     }
 
-    public Armor(BossPVE plugin, ArmorSet set, Material material, String nbtIdentifier, Type type) {
+    public Armor(BossPVE plugin, ArmorSet armorSet, Material material, String nbtIdentifier, Type type) {
         super(plugin, material, nbtIdentifier, type);
+        this.armorSet=armorSet;
     }
 
     @Override

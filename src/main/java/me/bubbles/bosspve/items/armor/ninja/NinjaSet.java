@@ -1,8 +1,8 @@
 package me.bubbles.bosspve.items.armor.ninja;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.items.manager.armor.Armor;
-import me.bubbles.bosspve.items.manager.armor.ArmorSet;
+import me.bubbles.bosspve.items.manager.bases.armor.ArmorSet;
+import me.bubbles.bosspve.items.manager.bases.armor.Armor;
 import me.bubbles.bosspve.util.UtilChances;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

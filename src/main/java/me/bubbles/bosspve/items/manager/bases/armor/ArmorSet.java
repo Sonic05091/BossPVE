@@ -1,8 +1,6 @@
-package me.bubbles.bosspve.items.manager.armor;
+package me.bubbles.bosspve.items.manager.bases.armor;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.items.manager.Item;
-import net.minecraft.world.entity.EquipmentSlot;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

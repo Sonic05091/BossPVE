@@ -42,9 +42,20 @@ public class Config {
     public String getName() {
         return name;
     }
-
     public File getFile() {
         return file;
+    }
+
+    public void reload() {
+        this.file=new File(file.getPath());
+    }
+
+    public void save() {
+        try {
+            fileConfiguration.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

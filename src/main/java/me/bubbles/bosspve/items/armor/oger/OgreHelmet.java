@@ -1,7 +1,7 @@
 package me.bubbles.bosspve.items.armor.oger;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.items.manager.armor.Armor;
+import me.bubbles.bosspve.items.manager.Item;
 import me.bubbles.bosspve.util.UtilItemStack;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -11,10 +11,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
-public class OgreHelmet extends Armor {
+public class OgreHelmet extends me.bubbles.bosspve.items.manager.bases.armor.Armor {
 
     public OgreHelmet(BossPVE plugin) {
-        super(plugin, Material.LEATHER_HELMET, "ogreHelmet", Type.ARMOR);
+        super(plugin, Material.LEATHER_HELMET, "ogreHelmet", Item.Type.ARMOR);
         ItemStack itemStack = nmsAsItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',

@@ -1,7 +1,8 @@
 package me.bubbles.bosspve.util;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.items.manager.armor.Armor;
+import me.bubbles.bosspve.items.manager.bases.armor.Armor;
+import me.bubbles.bosspve.items.manager.bases.weapon.IWeapon;
 import me.bubbles.bosspve.items.manager.enchant.Enchant;
 import me.bubbles.bosspve.items.manager.Item;
 import me.bubbles.bosspve.stages.Stage;
@@ -188,7 +189,9 @@ public class UtilItemStack {
         if(!item.allowUsage(player)) {
             return result;
         }
-        result+=item.getBaseMoney();
+        if(item instanceof IWeapon) {
+            result+=((IWeapon) item).getBaseMoney();
+        }
         if(itemStack.getItemMeta().hasEnchants()) {
             for(Enchant enchant : getCustomEnchants()) {
                 if(enchant.allowUsage(player)) {
@@ -226,7 +229,9 @@ public class UtilItemStack {
         if(!item.allowUsage(player)) {
             return result;
         }
-        result+=item.getBaseXP();
+        if(item instanceof IWeapon) {
+            result+=((IWeapon) item).getBaseXP();
+        }
         if(itemStack.getItemMeta().hasEnchants()) {
             for(Enchant enchant : getCustomEnchants()) {
                 if(enchant.allowUsage(player)) {
@@ -250,7 +255,9 @@ public class UtilItemStack {
             if(!item.allowUsage(player)) {
                 return result;
             }
-            result+=item.getBaseDamage();
+            if(item instanceof IWeapon) {
+                result+=((IWeapon) item).getBaseDamage();
+            }
         }
         if(itemStack.getItemMeta().hasEnchants()) {
             for(Enchant enchant : getCustomEnchants()) {

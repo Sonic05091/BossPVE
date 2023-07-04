@@ -44,18 +44,6 @@ public class Item {
         return -1;
     }
 
-    public int getBaseXP() {
-        return 0;
-    }
-
-    public double getBaseMoney() {
-        return 0;
-    }
-
-    public double getBaseDamage() {
-        return 1;
-    }
-
     public String getDescription() {
         return "";
     }
