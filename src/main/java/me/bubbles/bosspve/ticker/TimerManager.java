@@ -14,8 +14,9 @@ public class TimerManager {
         timers.forEach(Timer::onTick);
     }
 
-    public boolean addTimer(Timer timer) {
-        return timers.add(timer);
+    public Timer addTimer(Timer timer) {
+        timers.add(timer);
+        return timer;
     }
 
     public boolean removeTimer(Timer timer) {

@@ -37,8 +37,8 @@ public class PlayerTimerManager extends Timer {
         restart();
     }
 
-    public void addTimer(Player player, Timer timer) {
-        timers.put(player, timer);
+    public Timer addTimer(Player player, Timer timer) {
+        return timers.put(player, timer);
     }
 
     public boolean contains(Player player) {
