@@ -7,7 +7,7 @@ public class Timer {
     private int cap;
     private int ticks;
     private long lastCall;
-    private BossPVE plugin;
+    public BossPVE plugin;
 
     public Timer(BossPVE plugin, int cap) {
         this.cap=cap;

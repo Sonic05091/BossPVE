@@ -8,12 +8,10 @@ import java.util.HashMap;
 public class PlayerTimerManager extends Timer {
 
     private HashMap<Player, Timer> timers;
-    private BossPVE plugin;
     private long lastClear;
 
     public PlayerTimerManager(BossPVE plugin) {
         super(plugin,3600*20);
-        this.plugin=plugin;
         timers=new HashMap<>();
         lastClear=plugin.getEpochTimestamp();
     }
