@@ -34,6 +34,7 @@ public class PlayerTimerManager extends Timer {
                 }
             }));
         }
+        restart();
     }
 
     public void addTimer(Player player, Timer timer) {
