@@ -1,5 +1,6 @@
 package me.bubbles.bosspve.items.manager;
 
+import org.bukkit.event.Event;
 import org.bukkit.inventory.ShapedRecipe;
 
 public interface IItem {
@@ -17,5 +18,8 @@ public interface IItem {
     default String getDescription() {
         return "";
     }
+
+    default void onEvent(Event event) {}
+    default void onTick() {}
 
 }

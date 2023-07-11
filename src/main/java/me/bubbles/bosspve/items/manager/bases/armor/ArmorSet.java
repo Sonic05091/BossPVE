@@ -3,7 +3,6 @@ package me.bubbles.bosspve.items.manager.bases.armor;
 import me.bubbles.bosspve.BossPVE;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -15,14 +14,6 @@ public abstract class ArmorSet implements IArmorSet {
 
     public ArmorSet(BossPVE plugin) {
         this.plugin=plugin;
-    }
-
-    public void onEvent(Event event) {
-
-    }
-
-    public void onTick() {
-
     }
 
     public boolean wearingFullSet(Player player, boolean permissionCheck) {

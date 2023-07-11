@@ -6,9 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
@@ -51,11 +49,11 @@ public abstract class Item implements IItem {
         return nmsStack;
     }
 
-    public void setNMSStack(net.minecraft.world.item.ItemStack nmsStack) {
+    protected void setNMSStack(net.minecraft.world.item.ItemStack nmsStack) {
         this.nmsStack=nmsStack;
     }
 
-    public void setNMSStack(ItemStack itemStack) {
+    protected void setNMSStack(ItemStack itemStack) {
         this.nmsStack=CraftItemStack.asNMSCopy(itemStack);
     }
 
@@ -67,7 +65,7 @@ public abstract class Item implements IItem {
         return nbtIdentifier;
     }
 
-    public void setDisplayName(String string) {
+    protected void setDisplayName(String string) {
         ItemStack itemStack = nmsAsItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
@@ -77,7 +75,7 @@ public abstract class Item implements IItem {
         setNMSStack(itemStack);
     }
 
-    public void setLore(List<String> lore) {
+    protected void setLore(List<String> lore) {
         ItemStack itemStack = nmsAsItemStack();
         ItemMeta itemMeta = nmsAsItemStack().getItemMeta();
         List<String> result = new ArrayList<>();
@@ -87,21 +85,13 @@ public abstract class Item implements IItem {
         setNMSStack(itemStack);
     }
 
-    public void setLore(String lore) {
+    protected void setLore(String lore) {
         ItemStack itemStack = nmsAsItemStack();
         ItemMeta itemMeta = nmsAsItemStack().getItemMeta();
         List<String> result = Arrays.stream(lore.split("\n")).collect(Collectors.toList()); // add new lines for the /n
         itemMeta.setLore(result);
         itemStack.setItemMeta(itemMeta);
         setNMSStack(itemStack);
-    }
-
-    public void onEvent(Event event) {
-
-    }
-
-    public void onTick() {
-
     }
 
     public boolean isInInventory(Player player) {
