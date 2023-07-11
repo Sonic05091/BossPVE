@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 public class OgreChestplate extends Armor {
 
     public OgreChestplate(BossPVE plugin) {
-        super(plugin, Material.LEATHER_CHESTPLATE, "ogreChestplate", Type.ARMOR);
+        super(plugin, Material.LEATHER_CHESTPLATE, "ogreChestplate");
         ItemStack itemStack = nmsAsItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',

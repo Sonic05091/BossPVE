@@ -22,7 +22,7 @@ import java.util.logging.Level;
 public class EnchantExtractor extends Item {
 
     public EnchantExtractor(BossPVE plugin) {
-        super(plugin, Material.BRUSH, "enchantExtractor", Type.ENCHANT);
+        super(plugin, Material.BRUSH, "enchantExtractor");
         ItemStack itemStack = nmsAsItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
@@ -90,6 +90,11 @@ public class EnchantExtractor extends Item {
             inventory.setItem(1,null);
             inventory.setItem(2,null);
         }
+    }
+
+    @Override
+    public Type getType() {
+        return Type.ENCHANT;
     }
 
     @Override

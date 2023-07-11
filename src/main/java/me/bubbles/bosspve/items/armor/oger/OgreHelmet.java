@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 public class OgreHelmet extends me.bubbles.bosspve.items.manager.bases.armor.Armor {
 
     public OgreHelmet(BossPVE plugin) {
-        super(plugin, Material.LEATHER_HELMET, "ogreHelmet", Item.Type.ARMOR);
+        super(plugin, Material.LEATHER_HELMET, "ogreHelmet");
         ItemStack itemStack = nmsAsItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
@@ -39,6 +39,11 @@ public class OgreHelmet extends me.bubbles.bosspve.items.manager.bases.armor.Arm
     @Override
     public double getDamageMultiplier() {
         return 1;
+    }
+
+    @Override
+    public Type getType() {
+        return Type.ARMOR;
     }
 
     @Override

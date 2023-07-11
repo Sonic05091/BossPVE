@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 public class VolcanicBoots extends Armor {
 
     public VolcanicBoots(BossPVE plugin) {
-        super(plugin, Material.LEATHER_BOOTS, "volcanicBoots", Type.ARMOR);
+        super(plugin, Material.LEATHER_BOOTS, "volcanicBoots");
         ItemStack itemStack = nmsAsItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',

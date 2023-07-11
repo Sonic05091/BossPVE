@@ -8,13 +8,18 @@ public abstract class Armor extends Item implements IArmor {
 
     private ArmorSet armorSet;
 
-    public Armor(BossPVE plugin, Material material, String nbtIdentifier, Type type) { // no armor set
-        this(plugin, null, material, nbtIdentifier, type);
+    public Armor(BossPVE plugin, Material material, String nbtIdentifier) { // no armor set
+        this(plugin, null, material, nbtIdentifier);
     }
 
-    public Armor(BossPVE plugin, ArmorSet armorSet, Material material, String nbtIdentifier, Type type) {
-        super(plugin, material, nbtIdentifier, type);
+    public Armor(BossPVE plugin, ArmorSet armorSet, Material material, String nbtIdentifier) {
+        super(plugin, material, nbtIdentifier);
         this.armorSet=armorSet;
+    }
+
+    @Override
+    public Type getType() {
+        return Type.ARMOR;
     }
 
     @Override

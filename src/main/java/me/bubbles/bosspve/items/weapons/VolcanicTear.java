@@ -13,7 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class VolcanicTear extends Item implements IWeapon {
 
     public VolcanicTear(BossPVE plugin) {
-        super(plugin, Material.MAGMA_CREAM, "volcanicTear",Type.WEAPON);
+        super(plugin, Material.MAGMA_CREAM, "volcanicTear");
         ItemStack itemStack = nmsAsItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
@@ -40,6 +40,11 @@ public class VolcanicTear extends Item implements IWeapon {
     @Override
     public double getBaseMoney() {
         return 2;
+    }
+
+    @Override
+    public Type getType() {
+        return Type.WEAPON;
     }
 
     @Override

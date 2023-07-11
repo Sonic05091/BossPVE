@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 public class VolcanicChestplate extends Armor {
 
     public VolcanicChestplate(BossPVE plugin) {
-        super(plugin, Material.LEATHER_CHESTPLATE, "volcanicChestplate", Type.ARMOR);
+        super(plugin, Material.LEATHER_CHESTPLATE, "volcanicChestplate");
         ItemStack itemStack = nmsAsItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',

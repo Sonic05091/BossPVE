@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 public class OgrePants extends Armor {
 
     public OgrePants(BossPVE plugin) {
-        super(plugin, Material.LEATHER_LEGGINGS, "ogrePants", Type.ARMOR);
+        super(plugin, Material.LEATHER_LEGGINGS, "ogrePants");
         ItemStack itemStack = nmsAsItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',

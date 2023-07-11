@@ -13,7 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class SkeletonSword extends Item implements IWeapon {
 
     public SkeletonSword(BossPVE plugin) {
-        super(plugin, Material.IRON_SWORD, "skeletonSword",Type.WEAPON);
+        super(plugin, Material.IRON_SWORD, "skeletonSword");
         ItemStack itemStack = nmsAsItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
@@ -40,6 +40,11 @@ public class SkeletonSword extends Item implements IWeapon {
     @Override
     public double getBaseDamage() {
         return 10;
+    }
+
+    @Override
+    public Type getType() {
+        return Type.WEAPON;
     }
 
     @Override

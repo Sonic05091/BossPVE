@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 public class NinjaPants extends Armor {
 
     public NinjaPants(BossPVE plugin) {
-        super(plugin, Material.LEATHER_LEGGINGS, "ninjaPants", Type.ARMOR);
+        super(plugin, Material.LEATHER_LEGGINGS, "ninjaPants");
         ItemStack itemStack = nmsAsItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',

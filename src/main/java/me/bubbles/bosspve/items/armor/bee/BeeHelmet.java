@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 public class BeeHelmet extends Armor {
 
     public BeeHelmet(BossPVE plugin) {
-        super(plugin, Material.LEATHER_HELMET, "beeHelmet", Type.ARMOR);
+        super(plugin, Material.LEATHER_HELMET, "beeHelmet");
         ItemStack itemStack = nmsAsItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',

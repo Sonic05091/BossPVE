@@ -22,7 +22,7 @@ public class EnchantItem extends Item {
     private Enchant enchant;
 
     public EnchantItem(BossPVE plugin, Material material, Enchant enchant, String nbtIdentifier) {
-        super(plugin, material, nbtIdentifier.toLowerCase()+"Ench",Type.ENCHANT);
+        super(plugin, material, nbtIdentifier.toLowerCase()+"Ench");
         this.enchant=enchant;
         ItemStack itemStack = nmsAsItemStack();
         itemStack.addUnsafeEnchantment(enchant,1);
@@ -143,6 +143,11 @@ public class EnchantItem extends Item {
             });
         });
         return atomicBoolean.get();
+    }
+
+    @Override
+    public Type getType() {
+        return Type.ENCHANT;
     }
 
 }

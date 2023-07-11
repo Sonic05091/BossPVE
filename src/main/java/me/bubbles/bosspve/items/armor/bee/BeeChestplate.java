@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 public class BeeChestplate extends Armor {
 
     public BeeChestplate(BossPVE plugin) {
-        super(plugin, Material.LEATHER_CHESTPLATE, "beeChestplate", Type.ARMOR);
+        super(plugin, Material.LEATHER_CHESTPLATE, "beeChestplate");
         ItemStack itemStack = nmsAsItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',

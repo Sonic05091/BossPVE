@@ -23,7 +23,7 @@ import java.util.logging.Level;
 public class Extracted extends Item {
 
     public Extracted(BossPVE plugin) {
-        super(plugin, Material.KNOWLEDGE_BOOK, "extracted", Type.ENCHANT);
+        super(plugin, Material.KNOWLEDGE_BOOK, "extracted");
         ItemStack itemStack = nmsAsItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
@@ -112,4 +112,10 @@ public class Extracted extends Item {
             inventory.setItem(2,null);
         }
     }
+
+    @Override
+    public Type getType() {
+        return Type.ENCHANT;
+    }
+
 }

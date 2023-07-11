@@ -14,17 +14,17 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class Item {
+public abstract class Item implements IItem {
 
     public BossPVE plugin;
     private String nbtIdentifier;
     private net.minecraft.world.item.ItemStack nmsStack;
     private ShapedRecipe recipe;
-    private Type type;
 
-    public Item(BossPVE plugin, Material material, String nbtIdentifier, Type type) {
+    public Item(BossPVE plugin, Material material, String nbtIdentifier) {
         this.plugin=plugin;
         ItemStack itemStack=new ItemStack(material);
         itemStack.setAmount(1);
@@ -33,27 +33,19 @@ public class Item {
         CompoundTag nbtTagCompound = nmsStack.getOrCreateTag();
         nbtTagCompound.putString("bpveIdentifier",nbtIdentifier);
         nmsStack.setTag(nbtTagCompound);
-        this.type=type;
     }
 
-    public Type getType() {
-        return type;
+    public ItemStack create() {
+        return create(UUID.randomUUID());
     }
 
-    public int getLevelRequirement() {
-        return -1;
-    }
-
-    public String getDescription() {
-        return "";
-    }
-
-    public ShapedRecipe getRecipe() {
-        return recipe;
-    }
-
-    public void setRecipe(ShapedRecipe recipe) {
-        this.recipe = recipe;
+    public ItemStack create(UUID uuid) {
+        ItemStack itemStack = ItemStack.deserialize(nmsAsItemStack().serialize());
+        net.minecraft.world.item.ItemStack uuidStack = CraftItemStack.asNMSCopy(itemStack);
+        CompoundTag nbtTagCompound = uuidStack.getOrCreateTag();
+        nbtTagCompound.putString("uuid",uuid.toString());
+        uuidStack.setTag(nbtTagCompound);
+        return CraftItemStack.asBukkitCopy(uuidStack);
     }
 
     public net.minecraft.world.item.ItemStack getNMSStack() {
@@ -147,7 +139,26 @@ public class Item {
         return name.equalsIgnoreCase(nbtIdentifier);
     }
 
+    public static UUID getUUID(ItemStack itemStack) {
+        if(itemStack==null) {
+            return null;
+        }
+        if(!itemStack.hasItemMeta()) {
+            return null;
+        }
+        if(itemStack.getData()==null) {
+            return null;
+        }
+        CompoundTag nbtTagCompound = CraftItemStack.asNMSCopy(itemStack).getOrCreateTag();
+        if(nbtTagCompound.getString("uuid")==null) {
+            return null;
+        }
+        String uuid = nbtTagCompound.getString("uuid");
+        return UUID.fromString(uuid);
+    }
+
     public enum Type {
+        
         WEAPON,
         ARMOR,
         ENCHANT,

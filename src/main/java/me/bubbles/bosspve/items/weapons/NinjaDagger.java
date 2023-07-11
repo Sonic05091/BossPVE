@@ -13,7 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class NinjaDagger extends Item implements IWeapon {
 
     public NinjaDagger(BossPVE plugin) {
-        super(plugin, Material.SHEARS, "ninjaDagger",Type.WEAPON);
+        super(plugin, Material.SHEARS, "ninjaDagger");
         ItemStack itemStack = nmsAsItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
@@ -40,6 +40,11 @@ public class NinjaDagger extends Item implements IWeapon {
     @Override
     public double getBaseMoney() {
         return 5;
+    }
+
+    @Override
+    public Type getType() {
+        return Type.WEAPON;
     }
 
     @Override

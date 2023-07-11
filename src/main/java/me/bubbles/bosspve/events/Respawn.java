@@ -3,8 +3,14 @@ package me.bubbles.bosspve.events;
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.events.manager.Event;
 import me.bubbles.bosspve.stages.Stage;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.util.Vector;
+
+import java.util.Optional;
 
 public class Respawn extends Event {
 

@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 public class NinjaHelmet extends Armor {
 
     public NinjaHelmet(BossPVE plugin) {
-        super(plugin, Material.LEATHER_HELMET, "ninjaHelmet", Type.ARMOR);
+        super(plugin, Material.LEATHER_HELMET, "ninjaHelmet");
         ItemStack itemStack = nmsAsItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',

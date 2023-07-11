@@ -13,7 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class BeeStinger extends Item implements IWeapon {
 
     public BeeStinger(BossPVE plugin) {
-        super(plugin, Material.GOLDEN_SWORD, "beeStinger",Type.WEAPON);
+        super(plugin, Material.GOLDEN_SWORD, "beeStinger");
         ItemStack itemStack = nmsAsItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
@@ -40,6 +40,11 @@ public class BeeStinger extends Item implements IWeapon {
     @Override
     public double getBaseMoney() {
         return 7;
+    }
+
+    @Override
+    public Type getType() {
+        return Type.WEAPON;
     }
 
     @Override
