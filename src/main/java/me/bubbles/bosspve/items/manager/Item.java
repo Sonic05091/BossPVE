@@ -22,7 +22,6 @@ public abstract class Item implements IItem {
     public BossPVE plugin;
     private String nbtIdentifier;
     private net.minecraft.world.item.ItemStack nmsStack;
-    private ShapedRecipe recipe;
 
     public Item(BossPVE plugin, Material material, String nbtIdentifier) {
         this.plugin=plugin;
