@@ -1,4 +1,4 @@
-package me.bubbles.bosspve.items.armor.oger;
+package me.bubbles.bosspve.items.armor.ogre;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.items.manager.bases.armor.Armor;
@@ -11,14 +11,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
-public class OgreChestplate extends Armor {
+public class OgrePants extends Armor {
 
-    public OgreChestplate(BossPVE plugin) {
-        super(plugin, Material.LEATHER_CHESTPLATE, "ogreChestplate");
+    public OgrePants(BossPVE plugin) {
+        super(plugin, Material.LEATHER_LEGGINGS, "ogrePants");
         ItemStack itemStack = nmsAsItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
-                "&3&lOgre's Chestplate"
+                "&3&lOgre's Pants"
         ));
         itemMeta.setLore(new UtilItemStack(plugin, itemStack).getUpdatedLore());
         itemMeta.setUnbreakable(true);
@@ -43,7 +43,7 @@ public class OgreChestplate extends Armor {
 
     @Override
     public String getDescription() {
-        return "Chestplate from an Ogre";
+        return "Pants from an Ogre";
     }
 
 }

@@ -1,7 +1,6 @@
-package me.bubbles.bosspve.items.armor.oger;
+package me.bubbles.bosspve.items.armor.ogre;
 
 import me.bubbles.bosspve.BossPVE;
-import me.bubbles.bosspve.items.manager.Item;
 import me.bubbles.bosspve.util.UtilItemStack;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;

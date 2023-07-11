@@ -1,4 +1,4 @@
-package me.bubbles.bosspve.items.armor.oger;
+package me.bubbles.bosspve.items.armor.ogre;
 
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.items.manager.bases.armor.ArmorSet;

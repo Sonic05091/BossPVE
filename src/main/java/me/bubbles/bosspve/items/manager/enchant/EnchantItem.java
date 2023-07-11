@@ -33,6 +33,11 @@ public class EnchantItem extends Item {
     }
 
     @Override
+    public void setDisplayName(String string) {
+        super.setDisplayName(string);
+    }
+
+    @Override
     public void onEvent(Event event) {
         if(event instanceof PrepareAnvilEvent) {
             PrepareAnvilEvent e = (PrepareAnvilEvent) event;
@@ -117,7 +122,7 @@ public class EnchantItem extends Item {
     }
 
     public ItemStack getAtLevel(int level) {
-        ItemStack result = nmsAsItemStack();
+        ItemStack result = ItemStack.deserialize(nmsAsItemStack().serialize());
         ItemMeta itemMeta = result.getItemMeta();
         itemMeta.removeEnchant(enchant);
         itemMeta.addEnchant(enchant, level, true);

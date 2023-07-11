@@ -108,13 +108,13 @@ public class Ogre extends ZombieVillager implements IEntity {
     }
 
     @Override
-    public String getUncoloredName() {
-        return ChatColor.stripColor(customName);
+    public String getNBTIdentifier() {
+        return "ogre";
     }
 
     @Override
-    public String getNBTIdentifier() {
-        return "ogre";
+    public String getShowName() {
+        return customName;
     }
 
 }

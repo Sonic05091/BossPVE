@@ -120,8 +120,8 @@ public class AngryBee extends Bee implements IEntity {
     }
 
     @Override
-    public String getUncoloredName() {
-        return ChatColor.stripColor(customName);
+    public String getShowName() {
+        return customName;
     }
 
     @Override

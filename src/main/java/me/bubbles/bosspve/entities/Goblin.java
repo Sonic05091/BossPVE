@@ -102,8 +102,8 @@ public class Goblin extends Piglin implements IEntity {
     }
 
     @Override
-    public String getUncoloredName() {
-        return ChatColor.stripColor(customName);
+    public String getShowName() {
+        return customName;
     }
 
     @Override

@@ -3,6 +3,7 @@ package me.bubbles.bosspve.entities.manager;
 import me.bubbles.bosspve.BossPVE;
 import me.bubbles.bosspve.util.UtilCustomEvents;
 import net.minecraft.world.entity.Entity;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_20_R1.entity.CraftEntity;
 import org.bukkit.event.Event;
@@ -29,8 +30,11 @@ public interface IEntity {
     int getXp();
     int getDefaultHp();
     int getDamage();
-    String getUncoloredName();
     String getNBTIdentifier();
+    String getShowName();
+    default String getUncoloredName() {
+        return ChatColor.stripColor(getShowName());
+    }
     default boolean hasSameTagAs(Entity entity) {
         if(entity.getTags().isEmpty()) {
             return false;

@@ -1,7 +1,9 @@
 package me.bubbles.bosspve.items.manager;
 
 import me.bubbles.bosspve.BossPVE;
+import me.bubbles.bosspve.util.UtilArray;
 import net.minecraft.nbt.CompoundTag;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack;
@@ -9,10 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class Item implements IItem {
@@ -94,15 +93,6 @@ public abstract class Item implements IItem {
         setNMSStack(itemStack);
     }
 
-    public boolean isInInventory(Player player) {
-        for(ItemStack itemStack : player.getInventory().getContents()) {
-            if(equals(itemStack)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public boolean allowUsage(Player player) {
         if(getLevelRequirement()<=0) {
             return true;
@@ -146,13 +136,24 @@ public abstract class Item implements IItem {
         return UUID.fromString(uuid);
     }
 
+    public boolean isInInventory(Player player) {
+        for(ItemStack itemStack : player.getInventory().getContents()) {
+            if(equals(itemStack)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<Player> playersWithItem() {
+        return Bukkit.getOnlinePlayers().stream().filter(this::isInInventory).collect(Collectors.toList());
+    }
+
     public enum Type {
-        
         WEAPON,
         ARMOR,
         ENCHANT,
         MISC
-
     }
 
 }

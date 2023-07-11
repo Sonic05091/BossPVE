@@ -104,8 +104,8 @@ public class Simpleton extends Skeleton implements IEntity {
     }
 
     @Override
-    public String getUncoloredName() {
-        return ChatColor.stripColor(customName);
+    public String getShowName() {
+        return customName;
     }
 
     @Override

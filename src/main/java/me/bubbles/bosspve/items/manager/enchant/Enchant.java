@@ -68,10 +68,10 @@ public class Enchant extends Enchantment {
     public HashMap<Player, ItemStack> playersWithEnchantInMainHand() {
         HashMap<Player, ItemStack> result = new HashMap<>();
         for(Player player : Bukkit.getOnlinePlayers()) {
-            ItemStack mainHand = player.getInventory().getItemInMainHand();
             if(player.getInventory().getItemInMainHand()==null) {
                 continue;
             }
+            ItemStack mainHand = player.getInventory().getItemInMainHand();
             if(!mainHand.hasItemMeta()) {
                 continue;
             }
@@ -89,10 +89,10 @@ public class Enchant extends Enchantment {
     public HashMap<Player, ItemStack> playersWithEnchantInOffHand() {
         HashMap<Player, ItemStack> result = new HashMap<>();
         for(Player player : Bukkit.getOnlinePlayers()) {
-            ItemStack mainHand = player.getInventory().getItemInMainHand();
             if(player.getInventory().getItemInMainHand()==null) {
                 continue;
             }
+            ItemStack mainHand = player.getInventory().getItemInMainHand();
             if(!mainHand.hasItemMeta()) {
                 continue;
             }

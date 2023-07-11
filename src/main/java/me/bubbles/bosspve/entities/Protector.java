@@ -94,8 +94,8 @@ public class Protector extends Ravager implements IEntity {
     }
 
     @Override
-    public String getUncoloredName() {
-        return ChatColor.stripColor(customName);
+    public String getShowName() {
+        return customName;
     }
 
     @Override

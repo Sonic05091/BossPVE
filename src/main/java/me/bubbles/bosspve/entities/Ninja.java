@@ -125,13 +125,13 @@ public class Ninja extends Skeleton implements IEntity {
     }
 
     @Override
-    public String getUncoloredName() {
-        return ChatColor.stripColor(customName);
+    public String getNBTIdentifier() {
+        return "ninja";
     }
 
     @Override
-    public String getNBTIdentifier() {
-        return "ninja";
+    public String getShowName() {
+        return customName;
     }
 
     @Override
